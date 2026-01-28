@@ -393,38 +393,42 @@ class Modifier {
                     console.log('Set bundle section ID to: bundle-section');
                 }
                 
-                // Add critical inline styles to ensure visibility
-                const existingStyle = section.attr('style') || '';
-                const criticalStyles = 'display: block !important; visibility: visible !important; opacity: 1 !important; position: relative !important; z-index: 1 !important; width: 100% !important; overflow: visible !important; min-height: 100px !important;';
-                section.attr('style', existingStyle + ' ' + criticalStyles);
+                // Add critical inline styles for FULL WIDTH section
+                section.attr('style', 'display: block !important; visibility: visible !important; opacity: 1 !important; position: relative !important; z-index: 1 !important; width: 100% !important; max-width: 100% !important; overflow: visible !important; min-height: 100px !important; padding: 64px 16px !important; box-sizing: border-box !important; background-color: #FFF7F6 !important;');
                 
                 // Wrap the content in a centered container div
                 // First check if there's already a wrapper div inside the section
-                const existingWrapper = section.find('> div[style*="max-width"]').first();
+                const existingWrapper = section.find('> div.bundle-wrapper, > div[style*="max-width"]').first();
                 if (existingWrapper.length === 0) {
                     // No wrapper exists, so wrap all direct children
                     const children = section.children();
                     if (children.length > 0) {
-                        children.wrapAll('<div style="max-width: 1600px; margin: 0 auto;"></div>');
+                        children.wrapAll('<div class="bundle-wrapper" style="max-width: 1200px !important; margin: 0 auto !important; width: 100% !important; display: block !important;"></div>');
                         console.log('Wrapped bundle content in centered container');
                     }
+                } else {
+                    // Update existing wrapper with proper styles
+                    existingWrapper.attr('style', 'max-width: 1200px !important; margin: 0 auto !important; width: 100% !important; display: block !important;');
+                    existingWrapper.addClass('bundle-wrapper');
                 }
                 
-                // Also ensure the pricing-grid is visible
+                // Fix the pricing-grid with centered flexbox
                 const grid = $bundle('.pricing-grid');
                 if (grid.length > 0) {
-                    const gridStyle = grid.attr('style') || '';
-                    grid.attr('style', gridStyle + ' display: flex !important; visibility: visible !important; opacity: 1 !important;');
+                    grid.attr('style', 'display: flex !important; flex-wrap: wrap !important; justify-content: center !important; align-items: stretch !important; gap: 25px !important; max-width: 100% !important; margin: 0 auto !important; padding: 0 !important; visibility: visible !important; opacity: 1 !important;');
                 }
                 
-                // Ensure all cards are visible
+                // Fix all cards with fixed width for consistent sizing
                 $bundle('.card').each((_, card) => {
                     const $card = $bundle(card);
-                    const cardStyle = $card.attr('style') || '';
-                    $card.attr('style', cardStyle + ' display: flex !important; visibility: visible !important; opacity: 1 !important;');
+                    const existingCardStyle = $card.attr('style') || '';
+                    // Add fixed width while preserving other styles
+                    const newCardStyle = existingCardStyle.replace(/width:[^;]+;?/g, '').replace(/flex:[^;]+;?/g, '') + 
+                        ' width: 320px !important; min-width: 280px !important; max-width: 350px !important; flex: 0 0 auto !important; display: flex !important; visibility: visible !important; opacity: 1 !important;';
+                    $card.attr('style', newCardStyle);
                 });
                 
-                console.log('Added visibility styles to bundle section');
+                console.log('Added visibility and centering styles to bundle section');
                 console.log('Returning bundle section HTML with ID:', section.attr('id'));
                 return $bundle.html(section);
             }
