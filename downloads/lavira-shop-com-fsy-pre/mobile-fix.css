@@ -1,0 +1,149 @@
+/* AGGRESSIVE MOBILE-FIRST RESPONSIVE FIX */
+/* This file forces proper mobile responsiveness */
+
+/* Force proper box-sizing globally */
+*,
+*::before,
+*::after {
+    box-sizing: border-box !important;
+}
+
+/* Prevent horizontal scroll globally */
+html {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100% !important;
+}
+
+body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Force bundle section to be contained */
+#bundle-section,
+[id*="bundle"],
+section[class*="bundle"],
+div[class*="bundle"] {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* CRITICAL: Force single column and specific mobile styling */
+@media (max-width: 900px) {
+
+    /* Force any grid with pricing/bundle cards to single column */
+    .pricing-grid,
+    [class*="pricing-grid"],
+    [class*="bundle"] .grid,
+    [class*="bundle"] [class*="grid"] {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 16px !important;
+        /* Increased horizontal padding for the container */
+        margin: 0 !important;
+    }
+
+    /* Force cards to full width */
+    .card,
+    [class*="card"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        border-radius: 12px !important;
+        /* Slightly more rounded */
+        padding: 16px 12px !important;
+        /* Internal card padding */
+    }
+
+}
+
+/* STRICT DESIGN MATCHING FOR MOBILE (375px - 430px target) */
+/* 
+   NOTE: Disabling these rules as they conflict with the self-contained bundle design.
+   The bundle section now handles its own responsiveness via inline CSS.
+*/
+/*
+@media (max-width: 430px) {
+
+    #bundle-section {
+        padding: 32px 12px !important;
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+    }
+
+    #bundle-section .card .badge-red,
+    #bundle-section .card .badge-gray {
+        top: 0 !important;
+        left: 10px !important;
+        border-radius: 0px 0px 6px 6px !important;
+        padding: 6px 12px !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        z-index: 10 !important;
+    }
+
+
+    #bundle-section .card-content {
+        margin-top: 14px !important;
+        margin-bottom: 0px !important;
+        align-items: center !important;
+        gap: 0px !important;
+        display: flex !important;
+        flex-direction: row !important;
+    }
+
+
+    #bundle-section .card-content>div:first-child {
+        width: 20px !important; 
+        flex-shrink: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    #bundle-section .card-content img {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: contain !important;
+    }
+
+
+    #bundle-section .card-content {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    #bundle-section .info {
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    #bundle-section .card-content>div:first-child {
+        margin-right: 0 !important;
+        margin-bottom: 15px !important;
+        width: auto !important;
+    }
+
+    #bundle-section .card-content img {
+        max-width: 100% !important;
+        width: auto !important;
+    }
+}
+*/

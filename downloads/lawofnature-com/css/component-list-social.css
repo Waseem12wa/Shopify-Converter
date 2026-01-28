@@ -1,0 +1,33 @@
+.list-social {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  column-gap: 8px;
+}
+
+@media only screen and (max-width: 749px) {
+  .list-social {
+    justify-content: center;
+  }
+}
+
+.list-social__item .icon {
+  max-height: 17px;
+  max-width: 17px;
+}
+
+.list-social__link {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 5px;
+  color: rgb(var(--color-foreground));
+  background-color: #177442;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.list-social__link:hover .icon {
+  transform: scale(1.07);
+}
