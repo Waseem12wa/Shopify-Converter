@@ -1,6 +1,6 @@
 /* Responsive Grid Layout */
 .offer-container {
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
 }
 
@@ -8,7 +8,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
     max-width: 100%;
     margin: 0 auto;
     padding: 0 16px;
@@ -16,15 +16,15 @@
 }
 
 .pricing-grid > * {
-    flex: 0 0 calc(33.333% - 15px);
-    max-width: calc(33.333% - 15px);
+    flex: 0 0 calc(33.333% - 20px);
+    max-width: calc(33.333% - 20px);
 }
 
 /* Tablet / Medium Screens */
 @media (max-width: 1200px) {
     .pricing-grid > * {
-        flex: 0 0 calc(50% - 15px);
-        max-width: calc(50% - 15px);
+        flex: 0 0 calc(50% - 20px);
+        max-width: calc(50% - 20px);
     }
 }
 

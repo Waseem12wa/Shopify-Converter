@@ -1071,6 +1071,14 @@ async function handleElementRemoverClick(event) {
         
         console.log('📩 Received delete request for', count, 'elements');
         console.log('🎯 Selectors:', selectors);
+        console.log('📝 Current website name:', currentWebsiteName);
+        
+        if (!currentWebsiteName) {
+            elementRemoverStatus.textContent = '❌ Error: No website loaded';
+            elementRemoverStatus.style.color = '#e74c3c';
+            console.error('❌ Cannot delete: currentWebsiteName is not set');
+            return;
+        }
         
         try {
             elementRemoverStatus.textContent = `⏳ Deleting ${count} element(s)...`;
@@ -1335,6 +1343,16 @@ removeIconsCheck.addEventListener('change', (e) => {
 clearHeaderBtn.addEventListener('click', clearHeader);
 
 elementRemoverCheck.addEventListener('change', (e) => {
+    // Check if a website has been loaded
+    if (!currentWebsiteName) {
+        elementRemoverStatus.textContent = '⚠️ Please load a website first';
+        elementRemoverStatus.style.color = '#e67e22';
+        elementRemoverCheck.checked = false;
+        setTimeout(() => {
+            elementRemoverStatus.textContent = '';
+        }, 3000);
+        return;
+    }
     toggleElementRemoverMode(e.target.checked);
 });
 injectLogoBtn.addEventListener('click', () => logoInput.click());

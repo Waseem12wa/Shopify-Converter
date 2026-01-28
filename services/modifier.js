@@ -405,7 +405,7 @@ class Modifier {
                     // No wrapper exists, so wrap all direct children
                     const children = section.children();
                     if (children.length > 0) {
-                        children.wrapAll('<div style="max-width: 1400px; margin: 0 auto;"></div>');
+                        children.wrapAll('<div style="max-width: 1600px; margin: 0 auto;"></div>');
                         console.log('Wrapped bundle content in centered container');
                     }
                 }
