@@ -4,15 +4,15 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
-    max-width: 1800px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 16px;
     /* Prevent edge touching on small screens */
 }
 
 .pricing-grid > * {
-    flex: 0 0 calc(25% - 15px);
-    max-width: calc(25% - 15px);
+    flex: 0 0 calc(33.333% - 15px);
+    max-width: calc(33.333% - 15px);
 }
 
 /* Tablet / Medium Screens */
