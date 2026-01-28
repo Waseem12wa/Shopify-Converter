@@ -398,11 +398,23 @@ class Modifier {
                 const criticalStyles = 'display: block !important; visibility: visible !important; opacity: 1 !important; position: relative !important; z-index: 1 !important; width: 100% !important; overflow: visible !important; min-height: 100px !important;';
                 section.attr('style', existingStyle + ' ' + criticalStyles);
                 
+                // Wrap the content in a centered container div
+                // First check if there's already a wrapper div inside the section
+                const existingWrapper = section.find('> div[style*="max-width"]').first();
+                if (existingWrapper.length === 0) {
+                    // No wrapper exists, so wrap all direct children
+                    const children = section.children();
+                    if (children.length > 0) {
+                        children.wrapAll('<div style="max-width: 1400px; margin: 0 auto;"></div>');
+                        console.log('Wrapped bundle content in centered container');
+                    }
+                }
+                
                 // Also ensure the pricing-grid is visible
                 const grid = $bundle('.pricing-grid');
                 if (grid.length > 0) {
                     const gridStyle = grid.attr('style') || '';
-                    grid.attr('style', gridStyle + ' display: grid !important; visibility: visible !important; opacity: 1 !important;');
+                    grid.attr('style', gridStyle + ' display: flex !important; visibility: visible !important; opacity: 1 !important;');
                 }
                 
                 // Ensure all cards are visible
