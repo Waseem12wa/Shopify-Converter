@@ -79,11 +79,15 @@ class NetlifyDeployer {
     async createSite(siteName) {
         try {
             // Netlify subdomain limit is 63 characters
+            // Netlify adds a deployment hash prefix (e.g., "697a7695f9dbd3c7595054b5--") which is ~26 chars
+            // So we need to limit site name to 37 chars to stay under 63 total
+            const maxSiteNameLength = 37;
+            
             let sanitizedName = siteName.toLowerCase().replace(/[^a-z0-9-]/g, '-');
             
-            // Truncate if too long, keeping it under 63 chars
-            if (sanitizedName.length > 63) {
-                sanitizedName = sanitizedName.substring(0, 63);
+            // Truncate if too long
+            if (sanitizedName.length > maxSiteNameLength) {
+                sanitizedName = sanitizedName.substring(0, maxSiteNameLength);
                 // Remove trailing hyphens
                 sanitizedName = sanitizedName.replace(/-+$/, '');
             }
@@ -105,9 +109,10 @@ class NetlifyDeployer {
             // If site already exists, try to get it
             if (error.response?.status === 422) {
                 // Use the same truncation logic for searching
+                const maxSiteNameLength = 37;
                 let sanitizedName = siteName.toLowerCase().replace(/[^a-z0-9-]/g, '-');
-                if (sanitizedName.length > 63) {
-                    sanitizedName = sanitizedName.substring(0, 63).replace(/-+$/, '');
+                if (sanitizedName.length > maxSiteNameLength) {
+                    sanitizedName = sanitizedName.substring(0, maxSiteNameLength).replace(/-+$/, '');
                 }
                 
                 const sites = await this.getSites();
