@@ -78,10 +78,20 @@ class NetlifyDeployer {
      */
     async createSite(siteName) {
         try {
+            // Netlify subdomain limit is 63 characters
+            let sanitizedName = siteName.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+            
+            // Truncate if too long, keeping it under 63 chars
+            if (sanitizedName.length > 63) {
+                sanitizedName = sanitizedName.substring(0, 63);
+                // Remove trailing hyphens
+                sanitizedName = sanitizedName.replace(/-+$/, '');
+            }
+            
             const response = await axios.post(
                 `${this.apiUrl}/sites`,
                 {
-                    name: siteName.toLowerCase().replace(/[^a-z0-9-]/g, '-')
+                    name: sanitizedName
                 },
                 {
                     headers: {
@@ -94,9 +104,15 @@ class NetlifyDeployer {
         } catch (error) {
             // If site already exists, try to get it
             if (error.response?.status === 422) {
+                // Use the same truncation logic for searching
+                let sanitizedName = siteName.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+                if (sanitizedName.length > 63) {
+                    sanitizedName = sanitizedName.substring(0, 63).replace(/-+$/, '');
+                }
+                
                 const sites = await this.getSites();
                 const existingSite = sites.find(s => 
-                    s.name.includes(siteName.toLowerCase().replace(/[^a-z0-9-]/g, '-'))
+                    s.name.includes(sanitizedName)
                 );
                 if (existingSite) {
                     return existingSite;
