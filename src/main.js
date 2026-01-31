@@ -1,3 +1,43 @@
+// Home button for mobile view
+const homeBtn = document.getElementById('homeBtn');
+
+function showHomeBtn(show) {
+    if (homeBtn) homeBtn.style.display = show ? '' : 'none';
+}
+
+homeBtn.addEventListener('click', () => {
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('visible');
+    }
+});
+// --- Preview Mode Toggle ---
+const previewDesktopBtn = document.getElementById('previewDesktopBtn');
+const previewMobileBtn = document.getElementById('previewMobileBtn');
+const appRoot = document.getElementById('app');
+
+function setPreviewMode(mode) {
+    if (!appRoot) return;
+    if (mode === 'mobile') {
+        appRoot.classList.add('preview-mobile');
+        appRoot.classList.remove('preview-desktop');
+        previewMobileBtn.classList.add('active');
+        previewDesktopBtn.classList.remove('active');
+        showHomeBtn(true);
+    } else {
+        appRoot.classList.add('preview-desktop');
+        appRoot.classList.remove('preview-mobile');
+        previewDesktopBtn.classList.add('active');
+        previewMobileBtn.classList.remove('active');
+        showHomeBtn(false);
+    }
+}
+
+previewDesktopBtn.addEventListener('click', () => setPreviewMode('desktop'));
+previewMobileBtn.addEventListener('click', () => setPreviewMode('mobile'));
+
+// Default to desktop preview
+setPreviewMode('desktop');
 // State
 let currentWebsiteName = null;
 let currentDoc = null;
@@ -124,8 +164,8 @@ const THEME_STORAGE_KEY = 'shopifyforger-theme';
 
 // Backend API base URL
 // In development, Vite runs on 5173 but backend is on 3000
-const API_BASE = import.meta.env.DEV 
-    ? 'http://localhost:3000' 
+const API_BASE = import.meta.env.DEV
+    ? 'http://localhost:3000'
     : window.location.origin;
 
 /**
@@ -579,12 +619,12 @@ let elementRemoverStyle = null;
 function toggleElementRemoverMode(enabled) {
     elementRemoverActive = enabled;
     isElementRemoverActive = enabled;
-    
+
     if (enabled) {
         elementRemoverStatus.textContent = '📸 Click and drag to select area to delete';
         elementRemoverStatus.style.color = '#e74c3c';
         elementRemoverStatus.style.fontWeight = '600';
-        
+
         // Inject styles for selection mode
         if (!elementRemoverStyle) {
             elementRemoverStyle = document.createElement('style');
@@ -603,23 +643,23 @@ function toggleElementRemoverMode(enabled) {
             `;
             document.head.appendChild(elementRemoverStyle);
         }
-        
+
         // Add message listener for iframe interaction
         window.addEventListener('message', handleElementRemoverClick);
-        
+
         // Inject the selection script into iframe
         injectElementRemoverScript();
     } else {
         elementRemoverStatus.textContent = '';
         elementRemoverStatus.style.color = '';
         elementRemoverStatus.style.fontWeight = '';
-        
+
         // Remove event listener
         window.removeEventListener('message', handleElementRemoverClick);
-        
+
         // Remove script from iframe
         removeElementRemoverScript();
-        
+
         // Remove styles
         if (elementRemoverStyle) {
             elementRemoverStyle.remove();
@@ -663,7 +703,7 @@ function injectElementRemoverScript() {
             console.log('🧹 Removing existing overlay');
             existingOverlay.remove();
         }
-        
+
         const existingScript = iframe.contentDocument.getElementById('element-remover-script');
         if (existingScript) {
             console.log('🧹 Removing existing script');
@@ -1023,11 +1063,11 @@ function injectElementRemoverScript() {
                 console.log('✓ Element Remover: Screenshot mode ready');
             })();
         `;
-        
+
         iframe.contentDocument.body.appendChild(script);
         console.log('✅ Element remover script injected successfully!');
         console.log('📸 Screenshot overlay should now be visible in iframe');
-        
+
         // Verify overlay was created
         setTimeout(() => {
             const overlay = iframe.contentDocument.getElementById('screenshot-overlay');
@@ -1052,7 +1092,7 @@ function removeElementRemoverScript() {
     try {
         const iframe = previewFrame;
         if (!iframe || !iframe.contentWindow) return;
-        
+
         if (iframe.contentWindow.elementRemoverCleanup) {
             iframe.contentWindow.elementRemoverCleanup();
         }
@@ -1068,22 +1108,22 @@ async function handleElementRemoverClick(event) {
     if (event.data && event.data.type === 'deleteElements') {
         const selectors = event.data.selectors;
         const count = event.data.count;
-        
+
         console.log('📩 Received delete request for', count, 'elements');
         console.log('🎯 Selectors:', selectors);
         console.log('📝 Current website name:', currentWebsiteName);
-        
+
         if (!currentWebsiteName) {
             elementRemoverStatus.textContent = '❌ Error: No website loaded';
             elementRemoverStatus.style.color = '#e74c3c';
             console.error('❌ Cannot delete: currentWebsiteName is not set');
             return;
         }
-        
+
         try {
             elementRemoverStatus.textContent = `⏳ Deleting ${count} element(s)...`;
             console.log('🔄 Sending delete requests to server...');
-            
+
             // Delete all elements
             let deletedTotal = 0;
             for (const selector of selectors) {
@@ -1095,20 +1135,20 @@ async function handleElementRemoverClick(event) {
                         selector: selector
                     })
                 });
-                
+
                 const data = await parseJSON(res);
                 if (data.success) {
                     deletedTotal += data.deletedCount;
                 }
             }
-            
+
             console.log(`✓ Deleted ${deletedTotal} element(s) total`);
-            
+
             elementRemoverStatus.textContent = `✓ Deleted ${deletedTotal} element(s)!`;
             elementRemoverStatus.style.color = '#27ae60';
-            
+
             console.log('✓ Elements deleted, reloading preview...');
-            
+
             // Reload iframe
             setTimeout(() => {
                 previewFrame.src = `${API_BASE}/preview/${currentWebsiteName}/index.html?t=${Date.now()}`;
@@ -1117,7 +1157,7 @@ async function handleElementRemoverClick(event) {
                     elementRemoverStatus.style.color = '#e74c3c';
                 }, 1500);
             }, 300);
-            
+
         } catch (err) {
             console.error('❌ Delete error:', err);
             elementRemoverStatus.textContent = `❌ Error: ${err.message}`;
@@ -1149,7 +1189,7 @@ function applyBundleStyles() {
     bundlePreview.querySelectorAll('h1, h2').forEach((heading) => {
         heading.style.fontFamily = primaryFont;
         heading.style.fontSize = headingSize;
-        
+
         // Apply different colors based on content
         if (heading.textContent.includes('Save') || heading.textContent.includes('Protect') || heading.style.color === 'rgb(227, 45, 45)') {
             heading.style.color = accentColor;
@@ -1163,7 +1203,7 @@ function applyBundleStyles() {
         if (!p.closest('button')) {
             p.style.fontFamily = primaryFont;
             p.style.fontSize = bodySize;
-            
+
             // Keep accent color for specific elements
             if (p.style.color === 'rgb(227, 45, 45)' || p.textContent.includes('Limited') || p.textContent.includes('Only')) {
                 p.style.color = accentColor;
@@ -1409,7 +1449,7 @@ bundlePreview.addEventListener('click', (e) => {
             badge.style.color = '#fff';
         }
         selectedBundleCard = card;
-        
+
         // Load redirect URL if exists
         const redirectUrl = card.getAttribute('data-redirect-url') || '';
         cardRedirectUrl.value = redirectUrl;
@@ -1609,10 +1649,10 @@ async function deployToNetlify() {
 
         deployStatus.textContent = `✅ Deployed successfully!`;
         deployStatus.style.color = '#1EB13A';
-        
+
         // Open the deployed site in new tab
         window.open(data.url, '_blank');
-        
+
         console.log('Deployment successful:', data);
         alert(`Site deployed successfully!\n\nLive URL: ${data.url}\n\nOpening in new tab...`);
 
