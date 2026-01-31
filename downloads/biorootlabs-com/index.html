@@ -54,9 +54,9 @@
 <meta id="shopify-digital-wallet" name="shopify-digital-wallet" content="/94247059796/digital_wallets/dialog">
 <meta name="shopify-checkout-api-token" content="fabe887449f7f795d779335098a8c7c8">
 <meta id="in-context-paypal-metadata" data-shop-id="94247059796" data-venmo-supported="true" data-environment="production" data-locale="en_US" data-paypal-v4="true" data-currency="GBP">
-<script async="async" src="js/preloads_1.js"></script>
+<script async="async" src="js/preloads.js"></script>
 <link rel="preconnect" href="https://shop.app" crossorigin="anonymous">
-<script async="async" src="js/preloads.js" crossorigin="anonymous"></script>
+<script async="async" src="js/preloads_1.js" crossorigin="anonymous"></script>
 <script id="apple-pay-shop-capabilities" type="application/json">{"shopId":94247059796,"countryCode":"US","currencyCode":"GBP","merchantCapabilities":["supports3DS"],"merchantId":"gid:\/\/shopify\/Shop\/94247059796","merchantName":"Bioroot Labs","requiredBillingContactFields":["postalAddress","email"],"requiredShippingContactFields":["postalAddress","email"],"shippingType":"shipping","supportedNetworks":["visa","masterCard","amex","discover","elo","jcb"],"total":{"type":"pending","label":"Bioroot Labs","amount":"1.00"},"shopifyPaymentsEnabled":true,"supportsSubscriptions":true}</script>
 <script id="shopify-features" type="application/json">{"accessToken":"fabe887449f7f795d779335098a8c7c8","betas":["rich-media-storefront-analytics"],"domain":"biorootlabs.com","predictiveSearch":true,"shopId":94247059796,"locale":"en"}</script>
 <script>var Shopify = Shopify || {};
@@ -115,7 +115,7 @@ await import("//biorootlabs.com/cdn/shopifycloud/shop-js/modules/v2/chunk.modal_
     window.addEventListener('load', asyncLoad, false);
   }
 })();</script>
-<script id="__st">var __st={"a":94247059796,"offset":0,"reqid":"3aeb250c-9aeb-4dee-a294-a8efe89e409d-1769634617","pageurl":"biorootlabs.com\/","u":"53a70fa63dbf","p":"home"};</script>
+<script id="__st">var __st={"a":94247059796,"offset":0,"reqid":"b26ee752-8287-4feb-b629-3085713c4682-1769634959","pageurl":"biorootlabs.com\/","u":"b588241532d3","p":"home"};</script>
 <script>window.ShopifyPaypalV4VisibilityTracking = true;</script>
 <script id="captcha-bootstrap">!function(){'use strict';const t='contact',e='account',n='new_comment',o=[[t,t],['blogs',n],['comments',n],[t,'customer']],c=[[e,'customer_login'],[e,'guest_login'],[e,'recover_customer_password'],[e,'create_customer']],r=t=>t.map((([t,e])=>`form[action*='/${t}']:not([data-nocaptcha='true']) input[name='form_type'][value='${e}']`)).join(','),a=t=>()=>t?[...document.querySelectorAll(t)].map((t=>t.form)):[];function s(){const t=[...o],e=r(t);return a(e)}const i='password',u='form_key',d=['recaptcha-v3-token','g-recaptcha-response','h-captcha-response',i],f=()=>{try{return window.sessionStorage}catch{return}},m='__shopify_v',_=t=>t.elements[u];function p(t,e,n=!1){try{const o=window.sessionStorage,c=JSON.parse(o.getItem(e)),{data:r}=function(t){const{data:e,action:n}=t;return t[m]||n?{data:e,action:n}:{data:t,action:n}}(c);for(const[e,n]of Object.entries(r))t.elements[e]&&(t.elements[e].value=n);n&&o.removeItem(e)}catch(o){console.error('form repopulation failed',{error:o})}}const l='form_type',E='cptcha';function T(t){t.dataset[E]=!0}const w=window,h=w.document,L='Shopify',v='ce_forms',y='captcha';let A=!1;((t,e)=>{const n=(g='f06e6c50-85a8-45c8-87d0-21a2b65856fe',I='https://cdn.shopify.com/shopifycloud/storefront-forms-hcaptcha/ce_storefront_forms_captcha_hcaptcha.v1.5.2.iife.js',D={infoText:'Protected by hCaptcha',privacyText:'Privacy',termsText:'Terms'},(t,e,n)=>{const o=w[L][v],c=o.bindForm;if(c)return c(t,g,e,D).then(n);var r;o.q.push([[t,g,e,D],n]),r=I,A||(h.body.append(Object.assign(h.createElement('script'),{id:'captcha-provider',async:!0,src:r})),A=!0)});var g,I,D;w[L]=w[L]||{},w[L][v]=w[L][v]||{},w[L][v].q=[],w[L][y]=w[L][y]||{},w[L][y].protect=function(t,e){n(t,void 0,e),T(t)},Object.freeze(w[L][y]),function(t,e,n,w,h,L){const[v,y,A,g]=function(t,e,n){const i=e?o:[],u=t?c:[],d=[...i,...u],f=r(d),m=r(i),_=r(d.filter((([t,e])=>n.includes(e))));return[a(f),a(m),a(_),s()]}(w,h,L),I=t=>{const e=t.target;return e instanceof HTMLFormElement?e:e&&e.form},D=t=>v().includes(t);t.addEventListener('submit',(t=>{const e=I(t);if(!e)return;const n=D(e)&&!e.dataset.hcaptchaBound&&!e.dataset.recaptchaBound,o=_(e),c=g().includes(e)&&(!o||!o.value);(n||c)&&t.preventDefault(),c&&!n&&(function(t){try{if(!f())return;!function(t){const e=f();if(!e)return;const n=_(t);if(!n)return;const o=n.value;o&&e.removeItem(o)}(t);const e=Array.from(Array(32),(()=>Math.random().toString(36)[2])).join('');!function(t,e){_(t)||t.append(Object.assign(document.createElement('input'),{type:'hidden',name:u})),t.elements[u].value=e}(t,e),function(t,e){const n=f();if(!n)return;const o=[...t.querySelectorAll(`input[type='${i}']`)].map((({name:t})=>t)),c=[...d,...o],r={};for(const[a,s]of new FormData(t).entries())c.includes(a)||(r[a]=s);n.setItem(e,JSON.stringify({[m]:1,action:t.action,data:r}))}(t,e)}catch(e){console.error('failed to persist form',e)}}(e),e.submit())}));const S=(t,e)=>{t&&!t.dataset[E]&&(n(t,e.some((e=>e===t))),T(t))};for(const o of['focusin','change'])t.addEventListener(o,(t=>{const e=I(t);D(e)&&S(e,y())}));const B=e.get('form_key'),M=e.get(l),P=B&&M;t.addEventListener('DOMContentLoaded',(()=>{const t=y();if(P)for(const e of t)e.elements[l].value===M&&p(e,B);[...new Set([...A(),...v().filter((t=>'true'===t.dataset.shopifyCaptcha))])].forEach((e=>S(e,t)))}))}(h,new URLSearchParams(w.location.search),n,t,e,['guest_login'])})(!0,!0)}();</script>
 <script data-source-attribution="shopify.loadfeatures" defer="defer" src="js/load_feature-a0a9edcb.js" crossorigin="anonymous"></script>
@@ -542,7 +542,53 @@ shopify-payment-terms {
 }
 </style>
 
-<!-- BEGIN app block: shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8 --><!-- Start of Judge.me Core -->
+<!-- BEGIN app block: shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507 -->
+
+
+
+
+
+
+
+
+
+
+
+
+  <script async="" src="js/klaviyo.js"></script>
+  <script>!function(){if(!window.klaviyo){window._klOnsite=window._klOnsite||[];try{window.klaviyo=new Proxy({},{get:function(n,i){return"push"===i?function(){var n;(n=window._klOnsite).push.apply(n,arguments)}:function(){for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];var t="function"==typeof o[o.length-1]?o.pop():void 0,e=new Promise((function(n){window._klOnsite.push([i].concat(o,[function(i){t&&t(i),n(i)}]))}));return e}}})}catch(n){window.klaviyo=window.klaviyo||[],window.klaviyo.push=function(){var n;(n=window._klOnsite).push.apply(n,arguments)}}}}();</script>
+
+  
+
+
+
+
+  <script>
+    window.klaviyoReviewsProductDesignMode = false
+  </script>
+
+
+
+
+
+
+
+<!-- END app block --><!-- BEGIN app block: shopify://apps/gempages-builder/blocks/embed-gp-script-head/20b379d4-1b20-474c-a6ca-665c331919f3 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- END app block --><!-- BEGIN app block: shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8 --><!-- Start of Judge.me Core -->
 
 
 
@@ -622,6 +668,114 @@ jdgm.loadJS(jdgm.CDN_HOST+"loa"+"der.js"))}))}(document);
 <!-- END app snippet -->
 <!-- End of Judge.me Core -->
 
+
+
+<!-- END app block --><!-- BEGIN app block: shopify://apps/kaching-bundles/blocks/app-embed-block/6c637362-a106-4a32-94ac-94dcfd68cdb8 -->
+<!-- Kaching Bundles App Embed -->
+
+<!-- BEGIN app snippet: app-embed-content --><script>
+  // Prevent duplicate initialization if both app embeds are enabled
+  if (window.kachingBundlesAppEmbedLoaded) {
+    console.warn('[Kaching Bundles] Multiple app embed blocks detected. Please disable one of them. Skipping duplicate initialization.');
+  } else {
+    window.kachingBundlesAppEmbedLoaded = true;
+    window.kachingBundlesEnabled = true;
+    window.kachingBundlesInitialized = false;
+
+    // Allow calling kachingBundlesInitialize before the script is loaded
+    (() => {
+      let shouldInitialize = false;
+      let realInitialize = null;
+
+      window.kachingBundlesInitialize = () => {
+        if (realInitialize) {
+          realInitialize();
+        } else {
+          shouldInitialize = true;
+        }
+      };
+
+      Object.defineProperty(window, '__kachingBundlesInitializeInternal', {
+        set(fn) {
+          realInitialize = fn;
+          if (shouldInitialize) {
+            shouldInitialize = false;
+            fn();
+          }
+        },
+        get() {
+          return realInitialize;
+        }
+      });
+    })();
+  }
+</script>
+
+<script id="kaching-bundles-config" type="application/json">
+  
+
+  {
+    "shopifyDomain": "t1gavu-1d.myshopify.com",
+    "moneyFormat": "£{{amount}}",
+    "locale": "en",
+    "liquidLocale": "en",
+    "country": "GB",
+    "currencyRate": 1,
+    "marketId": 99906748756,
+    "productId": null,
+    "storefrontAccessToken": "a5ee3689bc4af98b966a9ab626338f7f",
+    "accessScopes": ["unauthenticated_read_product_inventory","unauthenticated_read_product_listings","unauthenticated_read_selling_plans"],
+    "customApiHost": null,
+    "keepQuantityInput": false,
+    "ignoreDeselect": false,
+    "ignoreUnitPrice": false,
+    "requireCustomerLogin": false,
+    "abTestsRunning": false,
+    "webPixel": true,
+    "b2bCustomer": false,
+    "isLoggedIn": false,
+    "isDeprecatedAppEmbed": false,
+    "preview": false,
+    "defaultTranslations": {
+      "system.out_of_stock": "There\u0026#39;s not enough items in our stock, please select smaller bundle.",
+      "system.invalid_variant": "Sorry, this is not currently available.",
+      "system.unavailable_option_value": "Unavailable"
+    },
+    "customSelectors": {
+      "quantity": null,
+      "addToCartButton": null,
+      "variantPicker": null,
+      "price": null,
+      "priceCompare": null
+    },
+    "shopCustomStyles": "",
+    "featureFlags": {"native_swatches_disabled":false,"remove_variant_change_delay":false,"legacy_saved_percentage":false,"initialize_with_form_variant":true,"disable_variant_option_sync":false,"observe_form_selling_plan":true,"price_rounding_v2":false,"variant_images":false,"hide_missing_variants":false,"intercept_cart_request":false,"reinitialize_morphed_placeholders":false}
+
+  }
+</script>
+
+
+
+<link rel="modulepreload" href="https://cdn.shopify.com/extensions/019c044f-ece7-7e59-8982-4732057c34dc/kaching-bundles-1572/assets/kaching-bundles.js" crossorigin="anonymous" fetchpriority="high">
+<script type="module" src="js/loader_1.js" crossorigin="anonymous" fetchpriority="high"></script>
+<link rel="stylesheet" href="css/kaching-bundles.css" media="print" onload="this.media='all'" fetchpriority="high">
+
+<style>
+  .kaching-bundles__block {
+    display: none;
+  }
+
+  .kaching-bundles-sticky-atc {
+    display: none;
+  }
+</style>
+
+
+
+
+<!-- END app snippet -->
+
+<!-- Kaching Bundles App Embed End -->
 
 
 <!-- END app block --><!-- BEGIN app block: shopify://apps/upstackified-universal-pixel/blocks/adtScript/2ef9f833-e251-4eed-af16-8dca98b27a2f --><script></script>
@@ -718,161 +872,7 @@ jdgm.loadJS(jdgm.CDN_HOST+"loa"+"der.js"))}))}(document);
     
 
 
-<!-- END app block --><!-- BEGIN app block: shopify://apps/kaching-bundles/blocks/app-embed-block/6c637362-a106-4a32-94ac-94dcfd68cdb8 -->
-<!-- Kaching Bundles App Embed -->
-
-<!-- BEGIN app snippet: app-embed-content --><script>
-  // Prevent duplicate initialization if both app embeds are enabled
-  if (window.kachingBundlesAppEmbedLoaded) {
-    console.warn('[Kaching Bundles] Multiple app embed blocks detected. Please disable one of them. Skipping duplicate initialization.');
-  } else {
-    window.kachingBundlesAppEmbedLoaded = true;
-    window.kachingBundlesEnabled = true;
-    window.kachingBundlesInitialized = false;
-
-    // Allow calling kachingBundlesInitialize before the script is loaded
-    (() => {
-      let shouldInitialize = false;
-      let realInitialize = null;
-
-      window.kachingBundlesInitialize = () => {
-        if (realInitialize) {
-          realInitialize();
-        } else {
-          shouldInitialize = true;
-        }
-      };
-
-      Object.defineProperty(window, '__kachingBundlesInitializeInternal', {
-        set(fn) {
-          realInitialize = fn;
-          if (shouldInitialize) {
-            shouldInitialize = false;
-            fn();
-          }
-        },
-        get() {
-          return realInitialize;
-        }
-      });
-    })();
-  }
-</script>
-
-<script id="kaching-bundles-config" type="application/json">
-  
-
-  {
-    "shopifyDomain": "t1gavu-1d.myshopify.com",
-    "moneyFormat": "£{{amount}}",
-    "locale": "en",
-    "liquidLocale": "en",
-    "country": "GB",
-    "currencyRate": 1,
-    "marketId": 99906748756,
-    "productId": null,
-    "storefrontAccessToken": "a5ee3689bc4af98b966a9ab626338f7f",
-    "accessScopes": ["unauthenticated_read_product_inventory","unauthenticated_read_product_listings","unauthenticated_read_selling_plans"],
-    "customApiHost": null,
-    "keepQuantityInput": false,
-    "ignoreDeselect": false,
-    "ignoreUnitPrice": false,
-    "requireCustomerLogin": false,
-    "abTestsRunning": false,
-    "webPixel": true,
-    "b2bCustomer": false,
-    "isLoggedIn": false,
-    "isDeprecatedAppEmbed": false,
-    "preview": false,
-    "defaultTranslations": {
-      "system.out_of_stock": "There\u0026#39;s not enough items in our stock, please select smaller bundle.",
-      "system.invalid_variant": "Sorry, this is not currently available.",
-      "system.unavailable_option_value": "Unavailable"
-    },
-    "customSelectors": {
-      "quantity": null,
-      "addToCartButton": null,
-      "variantPicker": null,
-      "price": null,
-      "priceCompare": null
-    },
-    "shopCustomStyles": "",
-    "featureFlags": {"native_swatches_disabled":false,"remove_variant_change_delay":false,"legacy_saved_percentage":false,"initialize_with_form_variant":true,"disable_variant_option_sync":false,"observe_form_selling_plan":true,"price_rounding_v2":false,"variant_images":false,"hide_missing_variants":false,"intercept_cart_request":false,"reinitialize_morphed_placeholders":false}
-
-  }
-</script>
-
-
-
-<link rel="modulepreload" href="https://cdn.shopify.com/extensions/019c044f-ece7-7e59-8982-4732057c34dc/kaching-bundles-1572/assets/kaching-bundles.js" crossorigin="anonymous" fetchpriority="high">
-<script type="module" src="js/loader.js" crossorigin="anonymous" fetchpriority="high"></script>
-<link rel="stylesheet" href="css/kaching-bundles.css" media="print" onload="this.media='all'" fetchpriority="high">
-
-<style>
-  .kaching-bundles__block {
-    display: none;
-  }
-
-  .kaching-bundles-sticky-atc {
-    display: none;
-  }
-</style>
-
-
-
-
-<!-- END app snippet -->
-
-<!-- Kaching Bundles App Embed End -->
-
-
-<!-- END app block --><!-- BEGIN app block: shopify://apps/gempages-builder/blocks/embed-gp-script-head/20b379d4-1b20-474c-a6ca-665c331919f3 -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- END app block --><!-- BEGIN app block: shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507 -->
-
-
-
-
-
-
-
-
-
-
-
-
-  <script async="" src="js/klaviyo.js"></script>
-  <script>!function(){if(!window.klaviyo){window._klOnsite=window._klOnsite||[];try{window.klaviyo=new Proxy({},{get:function(n,i){return"push"===i?function(){var n;(n=window._klOnsite).push.apply(n,arguments)}:function(){for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];var t="function"==typeof o[o.length-1]?o.pop():void 0,e=new Promise((function(n){window._klOnsite.push([i].concat(o,[function(i){t&&t(i),n(i)}]))}));return e}}})}catch(n){window.klaviyo=window.klaviyo||[],window.klaviyo.push=function(){var n;(n=window._klOnsite).push.apply(n,arguments)}}}}();</script>
-
-  
-
-
-
-
-  <script>
-    window.klaviyoReviewsProductDesignMode = false
-  </script>
-
-
-
-
-
-
-
-<!-- END app block --><script src="js/loader_2.js" type="text/javascript" defer="defer"></script>
+<!-- END app block --><script src="js/loader.js" type="text/javascript" defer="defer"></script>
 <script src="js/app-embed.js" type="text/javascript" defer="defer"></script>
 <link href="https://monorail-edge.shopifysvc.com" rel="dns-prefetch">
 <script>(function(){if ("sendBeacon" in navigator && "performance" in window) {try {var session_token_from_headers = performance.getEntriesByType('navigation')[0].serverTiming.find(x => x.name == '_s').description;} catch {var session_token_from_headers = undefined;}var session_cookie_matches = document.cookie.match(/_shopify_s=([^;]*)/);var session_token_from_cookie = session_cookie_matches && session_cookie_matches.length === 2 ? session_cookie_matches[1] : "";var session_token = session_token_from_headers || session_token_from_cookie || "";function handle_abandonment_event(e) {var entries = performance.getEntries().filter(function(entry) {return /monorail-edge.shopifysvc.com/.test(entry.name);});if (!window.abandonment_tracked && entries.length === 0) {window.abandonment_tracked = true;var currentMs = Date.now();var navigation_start = performance.timing.navigationStart;var payload = {shop_id: 94247059796,url: window.location.href,navigation_start,duration: currentMs - navigation_start,session_token,page_type: "index"};window.navigator.sendBeacon("https://monorail-edge.shopifysvc.com/v1/produce", JSON.stringify({schema_id: "online_store_buyer_site_abandonment/1.1",payload: payload,metadata: {event_created_at_ms: currentMs,event_sent_at_ms: currentMs}}));}}window.addEventListener('pagehide', handle_abandonment_event);}}());</script>
@@ -880,7 +880,7 @@ jdgm.loadJS(jdgm.CDN_HOST+"loa"+"der.js"))}))}(document);
   window.ShopifyAnalytics = window.ShopifyAnalytics || {};
   window.ShopifyAnalytics.meta = window.ShopifyAnalytics.meta || {};
   window.ShopifyAnalytics.meta.currency = 'GBP';
-  var meta = {"page":{"pageType":"home","requestId":"3aeb250c-9aeb-4dee-a294-a8efe89e409d-1769634617"}};
+  var meta = {"page":{"pageType":"home","requestId":"b26ee752-8287-4feb-b629-3085713c4682-1769634959"}};
   for (var attr in meta) {
     window.ShopifyAnalytics.meta[attr] = meta[attr];
   }
@@ -1011,7 +1011,7 @@ jdgm.loadJS(jdgm.CDN_HOST+"loa"+"der.js"))}))}(document);
       first.parentNode.insertBefore(script, first);
     };
     trekkie.load(
-      {"Trekkie":{"appName":"storefront","development":false,"defaultAttributes":{"shopId":94247059796,"isMerchantRequest":null,"themeId":184820203860,"themeCityHash":"1807579404783865660","contentLanguage":"en","currency":"GBP","eventMetadataId":"3907de29-e0fe-4122-9794-f6d7bb04989b"},"isServerSideCookieWritingEnabled":true,"monorailRegion":"shop_domain","enabledBetaFlags":["65f19447","b5387b81"]},"Session Attribution":{},"S2S":{"facebookCapiEnabled":false,"source":"trekkie-storefront-renderer","apiClientId":580111}}
+      {"Trekkie":{"appName":"storefront","development":false,"defaultAttributes":{"shopId":94247059796,"isMerchantRequest":null,"themeId":184820203860,"themeCityHash":"1807579404783865660","contentLanguage":"en","currency":"GBP","eventMetadataId":"f30e2426-582a-4f9a-adce-dbab51a94605"},"isServerSideCookieWritingEnabled":true,"monorailRegion":"shop_domain","enabledBetaFlags":["65f19447","b5387b81"]},"Session Attribution":{},"S2S":{"facebookCapiEnabled":false,"source":"trekkie-storefront-renderer","apiClientId":580111}}
     );
 
     var loaded = false;
@@ -1026,7 +1026,7 @@ jdgm.loadJS(jdgm.CDN_HOST+"loa"+"der.js"))}))}(document);
       try { window.ShopifyAnalytics.merchantGoogleAnalytics.call(this); } catch(error) {};
       document.write = originalDocumentWrite;
 
-      window.ShopifyAnalytics.lib.page(null,{"pageType":"home","requestId":"3aeb250c-9aeb-4dee-a294-a8efe89e409d-1769634617","shopifyEmitted":true});
+      window.ShopifyAnalytics.lib.page(null,{"pageType":"home","requestId":"b26ee752-8287-4feb-b629-3085713c4682-1769634959","shopifyEmitted":true});
 
       var match = window.location.pathname.match(/checkouts\/(.+)\/(thank_you|post_purchase)/)
       var token = match? match[1]: undefined;
@@ -2729,7 +2729,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
           <div class="ingredients-card-template--25802406723924__ss_product_ingredients_6_PqAegd">
             <div class="ingredients-card-image-template--25802406723924__ss_product_ingredients_6_PqAegd">
               
-                <img src="images/1_f1857d30-154b-4419-abd1-7bf43cefe927.jpg" srcset="images/1_f1857d30-154b-4419-abd1-7bf43cefe927_2.jpg 375w, images/1_f1857d30-154b-4419-abd1-7bf43cefe927_3.jpg 550w, images/1_f1857d30-154b-4419-abd1-7bf43cefe927_1.jpg 750w" width="1000" height="1000" loading="lazy" sizes="(min-width: 1024px) 100vw, 100vw">
+                <img src="images/1_f1857d30-154b-4419-abd1-7bf43cefe927.jpg" srcset="images/1_f1857d30-154b-4419-abd1-7bf43cefe927_3.jpg 375w, images/1_f1857d30-154b-4419-abd1-7bf43cefe927_2.jpg 550w, images/1_f1857d30-154b-4419-abd1-7bf43cefe927_1.jpg 750w" width="1000" height="1000" loading="lazy" sizes="(min-width: 1024px) 100vw, 100vw">
               
             </div>
             
@@ -2849,7 +2849,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
           <div class="ingredients-card-template--25802406723924__ss_product_ingredients_6_PqAegd">
             <div class="ingredients-card-image-template--25802406723924__ss_product_ingredients_6_PqAegd">
               
-                <img src="images/6.jpg" srcset="images/6_1.jpg 375w, images/6_3.jpg 550w, images/6_2.jpg 750w" width="1000" height="1000" loading="lazy" sizes="(min-width: 1024px) 100vw, 100vw">
+                <img src="images/6.jpg" srcset="images/6_1.jpg 375w, images/6_2.jpg 550w, images/6_3.jpg 750w" width="1000" height="1000" loading="lazy" sizes="(min-width: 1024px) 100vw, 100vw">
               
             </div>
             
@@ -3200,7 +3200,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
   <div class="image-with-text image-with-text--no-overlap image-with-text--mobile-normal page-width isolate collapse-corners same-colors collapse-padding section-template--25802406723924__image_with_text_jC9TLz-padding">
     <div class="image-with-text__grid grid grid--gapless grid--1-col grid--2-col-tablet animate-item">
       <div class="image-with-text__media-item image-with-text__media-item--medium image-with-text__media-item--middle grid__item">
-        <div class="image-with-text__media image-with-text__media--adapt gradient color-background-1 global-media-settings media" style="padding-bottom: 100.0%;"><img src="images/im.png" alt="" srcset="images/im_1.png 165w, images/im_4.png 360w, images/im_5.png 535w, images/im_2.png 750w, images/im_3.png 1070w, images/im.png 1500w" width="1500" height="1500" loading="lazy" sizes="(min-width: 1200px) 550px,
+        <div class="image-with-text__media image-with-text__media--adapt gradient color-background-1 global-media-settings media" style="padding-bottom: 100.0%;"><img src="images/im.png" alt="" srcset="images/im_2.png 165w, images/im_4.png 360w, images/im_5.png 535w, images/im_3.png 750w, images/im_1.png 1070w, images/im.png 1500w" width="1500" height="1500" loading="lazy" sizes="(min-width: 1200px) 550px,
               (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)">
 </div>
       </div>
@@ -6700,7 +6700,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
 </svg>
 </span>
     <div class="product__media media media--transparent">
-      <img src="images/Bioroot_PDP_Images_2000px_1.jpg" alt="" srcset="images/Bioroot_PDP_Images_2000px_4.jpg 246w, images/Bioroot_PDP_Images_2000px_5.jpg 493w, images/Bioroot_PDP_Images_2000px_3.jpg 600w, images/Bioroot_PDP_Images_2000px_2.jpg 713w, images/Bioroot_PDP_Images_2000px_8.jpg 823w, images/Bioroot_PDP_Images_2000px_7.jpg 990w, images/Bioroot_PDP_Images_2000px_6.jpg 1100w, images/Bioroot_PDP_Images_2000px_9.jpg 1206w, images/Bioroot_PDP_Images_2000px_12.jpg 1346w, images/Bioroot_PDP_Images_2000px_14.jpg 1426w, images/Bioroot_PDP_Images_2000px_10.jpg 1646w, images/Bioroot_PDP_Images_2000px_1.jpg 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+      <img src="images/Bioroot_PDP_Images_2000px_1.jpg" alt="" srcset="images/Bioroot_PDP_Images_2000px_3.jpg 246w, images/Bioroot_PDP_Images_2000px_2.jpg 493w, images/Bioroot_PDP_Images_2000px_4.jpg 600w, images/Bioroot_PDP_Images_2000px_5.jpg 713w, images/Bioroot_PDP_Images_2000px_7.jpg 823w, images/Bioroot_PDP_Images_2000px_9.jpg 990w, images/Bioroot_PDP_Images_2000px_8.jpg 1100w, images/Bioroot_PDP_Images_2000px_6.jpg 1206w, images/Bioroot_PDP_Images_2000px_16.jpg 1346w, images/Bioroot_PDP_Images_2000px_12.jpg 1426w, images/Bioroot_PDP_Images_2000px_13.jpg 1646w, images/Bioroot_PDP_Images_2000px_1.jpg 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="62553109168468">
       <span class="visually-hidden">
@@ -6725,7 +6725,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
 </svg>
 </span>
     <div class="product__media media media--transparent">
-      <img src="images/Bioroot_WEBP_V2_1.webp" alt="" srcset="images/Bioroot_WEBP_V2_3.webp 246w, images/Bioroot_WEBP_V2_2.webp 493w, images/Bioroot_WEBP_V2_4.webp 600w, images/Bioroot_WEBP_V2_5.webp 713w, images/Bioroot_WEBP_V2_18.webp 823w, images/Bioroot_WEBP_V2_15.webp 990w, images/Bioroot_WEBP_V2_13.webp 1100w, images/Bioroot_WEBP_V2_11.webp 1206w, images/Bioroot_WEBP_V2_12.webp 1346w, images/Bioroot_WEBP_V2_17.webp 1426w, images/Bioroot_WEBP_V2_16.webp 1646w, images/Bioroot_WEBP_V2_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+      <img src="images/Bioroot_WEBP_V2_1.webp" alt="" srcset="images/Bioroot_WEBP_V2_3.webp 246w, images/Bioroot_WEBP_V2_4.webp 493w, images/Bioroot_WEBP_V2_5.webp 600w, images/Bioroot_WEBP_V2_2.webp 713w, images/Bioroot_WEBP_V2_17.webp 823w, images/Bioroot_WEBP_V2_15.webp 990w, images/Bioroot_WEBP_V2_13.webp 1100w, images/Bioroot_WEBP_V2_16.webp 1206w, images/Bioroot_WEBP_V2_12.webp 1346w, images/Bioroot_WEBP_V2_10.webp 1426w, images/Bioroot_WEBP_V2_11.webp 1646w, images/Bioroot_WEBP_V2_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="59762166464852">
       <span class="visually-hidden">
@@ -6750,7 +6750,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
 </svg>
 </span>
     <div class="product__media media media--transparent">
-      <img src="images/Bioroot_PDP_003_1.webp" alt="" srcset="images/Bioroot_PDP_003_2.webp 246w, images/Bioroot_PDP_003_5.webp 493w, images/Bioroot_PDP_003_3.webp 600w, images/Bioroot_PDP_003_4.webp 713w, images/Bioroot_PDP_003_14.webp 823w, images/Bioroot_PDP_003_13.webp 990w, images/Bioroot_PDP_003_18.webp 1100w, images/Bioroot_PDP_003_17.webp 1206w, images/Bioroot_PDP_003_9.webp 1346w, images/Bioroot_PDP_003_16.webp 1426w, images/Bioroot_PDP_003_8.webp 1646w, images/Bioroot_PDP_003_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+      <img src="images/Bioroot_PDP_003_1.webp" alt="" srcset="images/Bioroot_PDP_003_5.webp 246w, images/Bioroot_PDP_003_4.webp 493w, images/Bioroot_PDP_003_2.webp 600w, images/Bioroot_PDP_003_3.webp 713w, images/Bioroot_PDP_003_11.webp 823w, images/Bioroot_PDP_003_8.webp 990w, images/Bioroot_PDP_003_18.webp 1100w, images/Bioroot_PDP_003_16.webp 1206w, images/Bioroot_PDP_003_9.webp 1346w, images/Bioroot_PDP_003_12.webp 1426w, images/Bioroot_PDP_003_10.webp 1646w, images/Bioroot_PDP_003_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="59762166399316">
       <span class="visually-hidden">
@@ -6775,7 +6775,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
 </svg>
 </span>
     <div class="product__media media media--transparent">
-      <img src="images/Bioroot_PDP_004_V3_1.webp" alt="" srcset="images/Bioroot_PDP_004_V3_3.webp 246w, images/Bioroot_PDP_004_V3_4.webp 493w, images/Bioroot_PDP_004_V3_6.webp 600w, images/Bioroot_PDP_004_V3_2.webp 713w, images/Bioroot_PDP_004_V3_5.webp 823w, images/Bioroot_PDP_004_V3_11.webp 990w, images/Bioroot_PDP_004_V3_16.webp 1100w, images/Bioroot_PDP_004_V3_10.webp 1206w, images/Bioroot_PDP_004_V3_17.webp 1346w, images/Bioroot_PDP_004_V3_18.webp 1426w, images/Bioroot_PDP_004_V3_15.webp 1646w, images/Bioroot_PDP_004_V3_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+      <img src="images/Bioroot_PDP_004_V3_1.webp" alt="" srcset="images/Bioroot_PDP_004_V3_2.webp 246w, images/Bioroot_PDP_004_V3_5.webp 493w, images/Bioroot_PDP_004_V3_3.webp 600w, images/Bioroot_PDP_004_V3_6.webp 713w, images/Bioroot_PDP_004_V3_4.webp 823w, images/Bioroot_PDP_004_V3_10.webp 990w, images/Bioroot_PDP_004_V3_9.webp 1100w, images/Bioroot_PDP_004_V3_16.webp 1206w, images/Bioroot_PDP_004_V3_13.webp 1346w, images/Bioroot_PDP_004_V3_15.webp 1426w, images/Bioroot_PDP_004_V3_18.webp 1646w, images/Bioroot_PDP_004_V3_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="59762166432084">
       <span class="visually-hidden">
@@ -6800,7 +6800,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
 </svg>
 </span>
     <div class="product__media media media--transparent">
-      <img src="images/Bioroot_WEBP_006_1.webp" alt="" srcset="images/Bioroot_WEBP_006_2.webp 246w, images/Bioroot_WEBP_006_3.webp 493w, images/Bioroot_WEBP_006_4.webp 600w, images/Bioroot_WEBP_006_6.webp 713w, images/Bioroot_WEBP_006_5.webp 823w, images/Bioroot_WEBP_006_14.webp 990w, images/Bioroot_WEBP_006_7.webp 1100w, images/Bioroot_WEBP_006_13.webp 1206w, images/Bioroot_WEBP_006_8.webp 1346w, images/Bioroot_WEBP_006_18.webp 1426w, images/Bioroot_WEBP_006_16.webp 1646w, images/Bioroot_WEBP_006_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+      <img src="images/Bioroot_WEBP_006_1.webp" alt="" srcset="images/Bioroot_WEBP_006_5.webp 246w, images/Bioroot_WEBP_006_2.webp 493w, images/Bioroot_WEBP_006_10.webp 600w, images/Bioroot_WEBP_006_3.webp 713w, images/Bioroot_WEBP_006_4.webp 823w, images/Bioroot_WEBP_006_8.webp 990w, images/Bioroot_WEBP_006_9.webp 1100w, images/Bioroot_WEBP_006_12.webp 1206w, images/Bioroot_WEBP_006_18.webp 1346w, images/Bioroot_WEBP_006_15.webp 1426w, images/Bioroot_WEBP_006_17.webp 1646w, images/Bioroot_WEBP_006_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="59762166333780">
       <span class="visually-hidden">
@@ -6825,7 +6825,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
 </svg>
 </span>
     <div class="product__media media media--transparent">
-      <img src="images/Bioroot_WEBP_007_1.webp" alt="" srcset="images/Bioroot_WEBP_007_4.webp 246w, images/Bioroot_WEBP_007_2.webp 493w, images/Bioroot_WEBP_007_6.webp 600w, images/Bioroot_WEBP_007_13.webp 713w, images/Bioroot_WEBP_007_5.webp 823w, images/Bioroot_WEBP_007_3.webp 990w, images/Bioroot_WEBP_007_12.webp 1100w, images/Bioroot_WEBP_007_17.webp 1206w, images/Bioroot_WEBP_007_11.webp 1346w, images/Bioroot_WEBP_007_10.webp 1426w, images/Bioroot_WEBP_007_18.webp 1646w, images/Bioroot_WEBP_007_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+      <img src="images/Bioroot_WEBP_007_1.webp" alt="" srcset="images/Bioroot_WEBP_007_4.webp 246w, images/Bioroot_WEBP_007_5.webp 493w, images/Bioroot_WEBP_007_6.webp 600w, images/Bioroot_WEBP_007_2.webp 713w, images/Bioroot_WEBP_007_3.webp 823w, images/Bioroot_WEBP_007_11.webp 990w, images/Bioroot_WEBP_007_18.webp 1100w, images/Bioroot_WEBP_007_17.webp 1206w, images/Bioroot_WEBP_007_15.webp 1346w, images/Bioroot_WEBP_007_14.webp 1426w, images/Bioroot_WEBP_007_13.webp 1646w, images/Bioroot_WEBP_007_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="59762166366548">
       <span class="visually-hidden">
@@ -6850,7 +6850,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
 </svg>
 </span>
     <div class="product__media media media--transparent">
-      <img src="images/4_1.jpg" alt="" srcset="images/4_15.jpg 246w, images/4_4.jpg 493w, images/4_11.jpg 600w, images/4_2.jpg 713w, images/4_7.jpg 823w, images/4_3.jpg 990w, images/4_10.jpg 1100w, images/4_12.jpg 1206w, images/4_18.jpg 1346w, images/4_14.jpg 1426w, images/4_13.jpg 1646w, images/4_1.jpg 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+      <img src="images/4_1.jpg" alt="" srcset="images/4_12.jpg 246w, images/4_10.jpg 493w, images/4_2.jpg 600w, images/4_16.jpg 713w, images/4_18.jpg 823w, images/4_7.jpg 990w, images/4_13.jpg 1100w, images/4_9.jpg 1206w, images/4_8.jpg 1346w, images/4_17.jpg 1426w, images/4_14.jpg 1646w, images/4_1.jpg 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="57767230767444">
       <span class="visually-hidden">
@@ -6875,7 +6875,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
 </svg>
 </span>
     <div class="product__media media media--transparent">
-      <img src="images/Bioroot_WEBP_008_1.webp" alt="" srcset="images/Bioroot_WEBP_008_11.webp 246w, images/Bioroot_WEBP_008_15.webp 493w, images/Bioroot_WEBP_008_14.webp 600w, images/Bioroot_WEBP_008_13.webp 713w, images/Bioroot_WEBP_008_8.webp 823w, images/Bioroot_WEBP_008_18.webp 990w, images/Bioroot_WEBP_008_9.webp 1100w, images/Bioroot_WEBP_008_10.webp 1206w, images/Bioroot_WEBP_008_17.webp 1346w, images/Bioroot_WEBP_008_5.webp 1426w, images/Bioroot_WEBP_008_4.webp 1646w, images/Bioroot_WEBP_008_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+      <img src="images/Bioroot_WEBP_008_1.webp" alt="" srcset="images/Bioroot_WEBP_008_2.webp 246w, images/Bioroot_WEBP_008_3.webp 493w, images/Bioroot_WEBP_008_4.webp 600w, images/Bioroot_WEBP_008_7.webp 713w, images/Bioroot_WEBP_008_15.webp 823w, images/Bioroot_WEBP_008_16.webp 990w, images/Bioroot_WEBP_008_8.webp 1100w, images/Bioroot_WEBP_008_17.webp 1206w, images/Bioroot_WEBP_008_5.webp 1346w, images/Bioroot_WEBP_008_18.webp 1426w, images/Bioroot_WEBP_008_12.webp 1646w, images/Bioroot_WEBP_008_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="59762166301012">
       <span class="visually-hidden">
@@ -6900,7 +6900,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
 </svg>
 </span>
     <div class="product__media media media--transparent">
-      <img src="images/Bioroot_WEBP_005_1.webp" alt="" srcset="images/Bioroot_WEBP_005_13.webp 246w, images/Bioroot_WEBP_005_16.webp 493w, images/Bioroot_WEBP_005_3.webp 600w, images/Bioroot_WEBP_005_12.webp 713w, images/Bioroot_WEBP_005_2.webp 823w, images/Bioroot_WEBP_005_8.webp 990w, images/Bioroot_WEBP_005_5.webp 1100w, images/Bioroot_WEBP_005_4.webp 1206w, images/Bioroot_WEBP_005_9.webp 1346w, images/Bioroot_WEBP_005_6.webp 1426w, images/Bioroot_WEBP_005_11.webp 1646w, images/Bioroot_WEBP_005_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+      <img src="images/Bioroot_WEBP_005_1.webp" alt="" srcset="images/Bioroot_WEBP_005_9.webp 246w, images/Bioroot_WEBP_005_14.webp 493w, images/Bioroot_WEBP_005_13.webp 600w, images/Bioroot_WEBP_005_2.webp 713w, images/Bioroot_WEBP_005_11.webp 823w, images/Bioroot_WEBP_005_4.webp 990w, images/Bioroot_WEBP_005_5.webp 1100w, images/Bioroot_WEBP_005_3.webp 1206w, images/Bioroot_WEBP_005_18.webp 1346w, images/Bioroot_WEBP_005_17.webp 1426w, images/Bioroot_WEBP_005_15.webp 1646w, images/Bioroot_WEBP_005_1.webp 1946w" width="1946" height="1946" loading="lazy" class="image-magnify-none" sizes="(min-width: 1200px) 605px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="59762208014676">
       <span class="visually-hidden">
@@ -6973,7 +6973,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
       <ul id="Slider-Thumbnails-template--25802406723924__featured_product_9Mrbaa" class="thumbnail-list list-unstyled slider slider--mobile slider--tablet-up"><li id="Slide-Thumbnails-template--25802406723924__featured_product_9Mrbaa-1" class="thumbnail-list__item slider__slide" data-target="template--25802406723924__featured_product_9Mrbaa-62553109168468" data-media-position="1">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 1 in gallery view" aria-current="true" aria-controls="GalleryViewer-template--25802406723924__featured_product_9Mrbaa" aria-describedby="Thumbnail-template--25802406723924__featured_product_9Mrbaa-1
 ">
-                <img src="images/Bioroot_PDP_Images_2000px.jpg" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_PDP_Images_2000px_15.jpg 54w, images/Bioroot_PDP_Images_2000px_11.jpg 74w, images/Bioroot_PDP_Images_2000px_18.jpg 104w, images/Bioroot_PDP_Images_2000px_13.jpg 162w, images/Bioroot_PDP_Images_2000px_17.jpg 208w, images/Bioroot_PDP_Images_2000px_16.jpg 324w, images/Bioroot_PDP_Images_2000px.jpg 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
+                <img src="images/Bioroot_PDP_Images_2000px.jpg" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_PDP_Images_2000px_14.jpg 54w, images/Bioroot_PDP_Images_2000px_15.jpg 74w, images/Bioroot_PDP_Images_2000px_10.jpg 104w, images/Bioroot_PDP_Images_2000px_17.jpg 162w, images/Bioroot_PDP_Images_2000px_18.jpg 208w, images/Bioroot_PDP_Images_2000px_11.jpg 324w, images/Bioroot_PDP_Images_2000px.jpg 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--25802406723924__featured_product_9Mrbaa-1
@@ -6982,7 +6982,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
             </li><li id="Slide-Thumbnails-template--25802406723924__featured_product_9Mrbaa-2" class="thumbnail-list__item slider__slide" data-target="template--25802406723924__featured_product_9Mrbaa-59762166464852" data-media-position="2">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 2 in gallery view" aria-controls="GalleryViewer-template--25802406723924__featured_product_9Mrbaa" aria-describedby="Thumbnail-template--25802406723924__featured_product_9Mrbaa-2
 ">
-                <img src="images/Bioroot_WEBP_V2.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_WEBP_V2_9.webp 54w, images/Bioroot_WEBP_V2_10.webp 74w, images/Bioroot_WEBP_V2_8.webp 104w, images/Bioroot_WEBP_V2_7.webp 162w, images/Bioroot_WEBP_V2_6.webp 208w, images/Bioroot_WEBP_V2_14.webp 324w, images/Bioroot_WEBP_V2.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
+                <img src="images/Bioroot_WEBP_V2.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_WEBP_V2_7.webp 54w, images/Bioroot_WEBP_V2_6.webp 74w, images/Bioroot_WEBP_V2_9.webp 104w, images/Bioroot_WEBP_V2_14.webp 162w, images/Bioroot_WEBP_V2_18.webp 208w, images/Bioroot_WEBP_V2_8.webp 324w, images/Bioroot_WEBP_V2.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--25802406723924__featured_product_9Mrbaa-2
@@ -6991,7 +6991,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
             </li><li id="Slide-Thumbnails-template--25802406723924__featured_product_9Mrbaa-3" class="thumbnail-list__item slider__slide" data-target="template--25802406723924__featured_product_9Mrbaa-59762166399316" data-media-position="3">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 3 in gallery view" aria-controls="GalleryViewer-template--25802406723924__featured_product_9Mrbaa" aria-describedby="Thumbnail-template--25802406723924__featured_product_9Mrbaa-3
 ">
-                <img src="images/Bioroot_PDP_003.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_PDP_003_11.webp 54w, images/Bioroot_PDP_003_15.webp 74w, images/Bioroot_PDP_003_6.webp 104w, images/Bioroot_PDP_003_10.webp 162w, images/Bioroot_PDP_003_7.webp 208w, images/Bioroot_PDP_003_12.webp 324w, images/Bioroot_PDP_003.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
+                <img src="images/Bioroot_PDP_003.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_PDP_003_6.webp 54w, images/Bioroot_PDP_003_13.webp 74w, images/Bioroot_PDP_003_7.webp 104w, images/Bioroot_PDP_003_15.webp 162w, images/Bioroot_PDP_003_14.webp 208w, images/Bioroot_PDP_003_17.webp 324w, images/Bioroot_PDP_003.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--25802406723924__featured_product_9Mrbaa-3
@@ -7000,7 +7000,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
             </li><li id="Slide-Thumbnails-template--25802406723924__featured_product_9Mrbaa-4" class="thumbnail-list__item slider__slide" data-target="template--25802406723924__featured_product_9Mrbaa-59762166432084" data-media-position="4">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 4 in gallery view" aria-controls="GalleryViewer-template--25802406723924__featured_product_9Mrbaa" aria-describedby="Thumbnail-template--25802406723924__featured_product_9Mrbaa-4
 ">
-                <img src="images/Bioroot_PDP_004_V3.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_PDP_004_V3_8.webp 54w, images/Bioroot_PDP_004_V3_14.webp 74w, images/Bioroot_PDP_004_V3_7.webp 104w, images/Bioroot_PDP_004_V3_9.webp 162w, images/Bioroot_PDP_004_V3_13.webp 208w, images/Bioroot_PDP_004_V3_12.webp 324w, images/Bioroot_PDP_004_V3.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
+                <img src="images/Bioroot_PDP_004_V3.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_PDP_004_V3_14.webp 54w, images/Bioroot_PDP_004_V3_8.webp 74w, images/Bioroot_PDP_004_V3_7.webp 104w, images/Bioroot_PDP_004_V3_11.webp 162w, images/Bioroot_PDP_004_V3_12.webp 208w, images/Bioroot_PDP_004_V3_17.webp 324w, images/Bioroot_PDP_004_V3.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--25802406723924__featured_product_9Mrbaa-4
@@ -7009,7 +7009,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
             </li><li id="Slide-Thumbnails-template--25802406723924__featured_product_9Mrbaa-5" class="thumbnail-list__item slider__slide" data-target="template--25802406723924__featured_product_9Mrbaa-59762166333780" data-media-position="5">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 5 in gallery view" aria-controls="GalleryViewer-template--25802406723924__featured_product_9Mrbaa" aria-describedby="Thumbnail-template--25802406723924__featured_product_9Mrbaa-5
 ">
-                <img src="images/Bioroot_WEBP_006.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_WEBP_006_15.webp 54w, images/Bioroot_WEBP_006_11.webp 74w, images/Bioroot_WEBP_006_12.webp 104w, images/Bioroot_WEBP_006_10.webp 162w, images/Bioroot_WEBP_006_17.webp 208w, images/Bioroot_WEBP_006_9.webp 324w, images/Bioroot_WEBP_006.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
+                <img src="images/Bioroot_WEBP_006.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_WEBP_006_11.webp 54w, images/Bioroot_WEBP_006_14.webp 74w, images/Bioroot_WEBP_006_16.webp 104w, images/Bioroot_WEBP_006_6.webp 162w, images/Bioroot_WEBP_006_13.webp 208w, images/Bioroot_WEBP_006_7.webp 324w, images/Bioroot_WEBP_006.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--25802406723924__featured_product_9Mrbaa-5
@@ -7018,7 +7018,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
             </li><li id="Slide-Thumbnails-template--25802406723924__featured_product_9Mrbaa-6" class="thumbnail-list__item slider__slide" data-target="template--25802406723924__featured_product_9Mrbaa-59762166366548" data-media-position="6">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 6 in gallery view" aria-controls="GalleryViewer-template--25802406723924__featured_product_9Mrbaa" aria-describedby="Thumbnail-template--25802406723924__featured_product_9Mrbaa-6
 ">
-                <img src="images/Bioroot_WEBP_007.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_WEBP_007_14.webp 54w, images/Bioroot_WEBP_007_15.webp 74w, images/Bioroot_WEBP_007_7.webp 104w, images/Bioroot_WEBP_007_16.webp 162w, images/Bioroot_WEBP_007_9.webp 208w, images/Bioroot_WEBP_007_8.webp 324w, images/Bioroot_WEBP_007.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
+                <img src="images/Bioroot_WEBP_007.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_WEBP_007_16.webp 54w, images/Bioroot_WEBP_007_7.webp 74w, images/Bioroot_WEBP_007_8.webp 104w, images/Bioroot_WEBP_007_10.webp 162w, images/Bioroot_WEBP_007_12.webp 208w, images/Bioroot_WEBP_007_9.webp 324w, images/Bioroot_WEBP_007.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--25802406723924__featured_product_9Mrbaa-6
@@ -7027,7 +7027,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
             </li><li id="Slide-Thumbnails-template--25802406723924__featured_product_9Mrbaa-7" class="thumbnail-list__item slider__slide" data-target="template--25802406723924__featured_product_9Mrbaa-57767230767444" data-media-position="7">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 7 in gallery view" aria-controls="GalleryViewer-template--25802406723924__featured_product_9Mrbaa" aria-describedby="Thumbnail-template--25802406723924__featured_product_9Mrbaa-7
 ">
-                <img src="images/4.jpg" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/4_16.jpg 54w, images/4_6.jpg 74w, images/4_8.jpg 104w, images/4_17.jpg 162w, images/4_5.jpg 208w, images/4_9.jpg 324w, images/4.jpg 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
+                <img src="images/4.jpg" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/4_4.jpg 54w, images/4_3.jpg 74w, images/4_15.jpg 104w, images/4_11.jpg 162w, images/4_5.jpg 208w, images/4_6.jpg 324w, images/4.jpg 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--25802406723924__featured_product_9Mrbaa-7
@@ -7036,7 +7036,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
             </li><li id="Slide-Thumbnails-template--25802406723924__featured_product_9Mrbaa-8" class="thumbnail-list__item slider__slide" data-target="template--25802406723924__featured_product_9Mrbaa-59762166301012" data-media-position="8">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 8 in gallery view" aria-controls="GalleryViewer-template--25802406723924__featured_product_9Mrbaa" aria-describedby="Thumbnail-template--25802406723924__featured_product_9Mrbaa-8
 ">
-                <img src="images/Bioroot_WEBP_008.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_WEBP_008_6.webp 54w, images/Bioroot_WEBP_008_3.webp 74w, images/Bioroot_WEBP_008_12.webp 104w, images/Bioroot_WEBP_008_7.webp 162w, images/Bioroot_WEBP_008_16.webp 208w, images/Bioroot_WEBP_008_2.webp 324w, images/Bioroot_WEBP_008.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
+                <img src="images/Bioroot_WEBP_008.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_WEBP_008_10.webp 54w, images/Bioroot_WEBP_008_13.webp 74w, images/Bioroot_WEBP_008_14.webp 104w, images/Bioroot_WEBP_008_6.webp 162w, images/Bioroot_WEBP_008_9.webp 208w, images/Bioroot_WEBP_008_11.webp 324w, images/Bioroot_WEBP_008.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--25802406723924__featured_product_9Mrbaa-8
@@ -7045,7 +7045,7 @@ document.addEventListener("kaching-bundles-block-loaded", (event) => {
             </li><li id="Slide-Thumbnails-template--25802406723924__featured_product_9Mrbaa-9" class="thumbnail-list__item slider__slide" data-target="template--25802406723924__featured_product_9Mrbaa-59762208014676" data-media-position="9">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 9 in gallery view" aria-controls="GalleryViewer-template--25802406723924__featured_product_9Mrbaa" aria-describedby="Thumbnail-template--25802406723924__featured_product_9Mrbaa-9
 ">
-                <img src="images/Bioroot_WEBP_005.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_WEBP_005_7.webp 54w, images/Bioroot_WEBP_005_14.webp 74w, images/Bioroot_WEBP_005_15.webp 104w, images/Bioroot_WEBP_005_10.webp 162w, images/Bioroot_WEBP_005_17.webp 208w, images/Bioroot_WEBP_005_18.webp 324w, images/Bioroot_WEBP_005.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
+                <img src="images/Bioroot_WEBP_005.webp" alt="Turmeric Curcumin Capsules (1,000mg)" srcset="images/Bioroot_WEBP_005_8.webp 54w, images/Bioroot_WEBP_005_6.webp 74w, images/Bioroot_WEBP_005_7.webp 104w, images/Bioroot_WEBP_005_12.webp 162w, images/Bioroot_WEBP_005_10.webp 208w, images/Bioroot_WEBP_005_16.webp 324w, images/Bioroot_WEBP_005.webp 416w" width="416" height="416" loading="lazy" sizes="(min-width: 1200px) calc((605 - 4rem) / 4),
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--25802406723924__featured_product_9Mrbaa-9
@@ -7586,7 +7586,7 @@ if (!customElements.get('media-gallery')) {
     }
 </script>
 
- <script type="text/javascript" async="true" src="js/loader_1.js"></script>
+ <script type="text/javascript" async="true" src="js/loader_2.js"></script>
 
 
 
@@ -7646,7 +7646,7 @@ if (!customElements.get('media-gallery')) {
             "image": null,
             "inventoryManagement": "shopify",
             "inventoryPolicy": "continue",
-            "inventoryQuantity": 33800,
+            "inventoryQuantity": 33799,
             "unitPriceQuantityValue": null,
             "unitPriceQuantityUnit": null,
             "unitPriceReferenceValue": null,
@@ -7974,8 +7974,8 @@ if (!customElements.get('media-gallery')) {
     });
   });
 </script><script src="js/product-modal.js" defer="defer"></script>
-</section><section id="bundle-section" class="offer-container" style="background-color: #FFF7F6; padding: 64px 16px; width: 100%; display: block !important; visibility: visible !important; opacity: 1 !important; position: relative !important; z-index: 1 !important; width: 100% !important; overflow: visible !important; min-height: 100px !important;">
-                        <div style="max-width: 1600px; margin: 0 auto;"><header class="offer-header" style="text-align: center; margin-bottom: 32px;">
+</section><section id="bundle-section" class="offer-container" style="display: block !important; visibility: visible !important; opacity: 1 !important; position: relative !important; z-index: 1 !important; width: 100% !important; max-width: 100% !important; overflow: visible !important; min-height: 100px !important; padding: 64px 16px !important; box-sizing: border-box !important; background-color: #FFF7F6 !important;">
+                        <div class="bundle-wrapper" style="max-width: 1200px !important; margin: 0 auto !important; width: 100% !important; display: block !important;"><header class="offer-header" style="text-align: center; margin-bottom: 32px;">
                             <h1 class="editable" style="font-family: 'Poppins', sans-serif; font-size: 34px; font-weight: 700; color: #000; margin: 0 0 8px 0; line-height: 1.2;">
                                 Bundle &amp; Save</h1>
                             <h2 class="editable" style="font-family: 'Poppins', sans-serif; font-size: 34px; font-weight: 700; color: #E32D2D; margin: 0 0 12px 0; line-height: 1.2;">
@@ -8006,8 +8006,8 @@ if (!customElements.get('media-gallery')) {
                                 <span class="editable" style="font-family: 'Montserrat', sans-serif; font-size: 14px; color: #000;">Warning: Low on
                                     stock</span>
                             </div>
-                        </header><div class="pricing-grid" style=" display: flex !important; visibility: visible !important; opacity: 1 !important;">
-                            <div class="card recommended" data-card="1" style="background: #FFFFFF; border: 2px solid #FC0000; border-radius: 10px; padding: 16px 10px; position: relative; box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px; display: flex; flex-direction: column; display: flex !important; visibility: visible !important; opacity: 1 !important;">
+                        </header><div class="pricing-grid" style="display: flex !important; flex-wrap: wrap !important; justify-content: center !important; align-items: stretch !important; gap: 25px !important; max-width: 100% !important; margin: 0 auto !important; padding: 0 !important; visibility: visible !important; opacity: 1 !important;">
+                            <div class="card recommended" data-card="1" style="background: #FFFFFF; border: 2px solid #FC0000; border-radius: 10px; padding: 16px 10px; position: relative; box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px; display: flex; flex-direction: column; width: 320px !important; min-width: 280px !important; max-width: 350px !important; flex: 0 0 auto !important; display: flex !important; visibility: visible !important; opacity: 1 !important;">
                                 
                                 <div class="badge-red editable" style="position: absolute; top: 0; left: 0; padding: 4px 12px; border-radius: 10px 0px 10px 0px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; background: #FC0000; color: white;">
                                     Recommended Deal</div>
@@ -8040,7 +8040,7 @@ if (!customElements.get('media-gallery')) {
                                     180 Day Money Back Guarantee</p>
                             </div>
 
-                            <div class="card" data-card="2" style="background: #FFFFFF; border: 1px solid #E0E0E0; border-radius: 10px; padding: 16px 10px; position: relative; box-shadow: rgba(90, 89, 89, 0.08) 0px 2px 8px; display: flex; flex-direction: column; display: flex !important; visibility: visible !important; opacity: 1 !important;">
+                            <div class="card" data-card="2" style="background: #FFFFFF; border: 1px solid #E0E0E0; border-radius: 10px; padding: 16px 10px; position: relative; box-shadow: rgba(90, 89, 89, 0.08) 0px 2px 8px; display: flex; flex-direction: column; width: 320px !important; min-width: 280px !important; max-width: 350px !important; flex: 0 0 auto !important; display: flex !important; visibility: visible !important; opacity: 1 !important;">
                                 
                                 <div class="badge-gray editable" style="position: absolute; top: 0; left: 0; padding: 4px 12px; border-radius: 10px 0px 10px 0px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; background: #EBEBEB; color: #000;">
                                     PROMO</div>
@@ -8072,7 +8072,7 @@ if (!customElements.get('media-gallery')) {
                                     180 Day Money Back Guarantee</p>
                             </div>
 
-                            <div class="card" data-card="3" style="background: #FFFFFF; border: 1px solid #E0E0E0; border-radius: 10px; padding: 16px 10px; position: relative; box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px; display: flex; flex-direction: column; display: flex !important; visibility: visible !important; opacity: 1 !important;">
+                            <div class="card" data-card="3" style="background: #FFFFFF; border: 1px solid #E0E0E0; border-radius: 10px; padding: 16px 10px; position: relative; box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px; display: flex; flex-direction: column; width: 320px !important; min-width: 280px !important; max-width: 350px !important; flex: 0 0 auto !important; display: flex !important; visibility: visible !important; opacity: 1 !important;">
                                 
                                 <div class="badge-gray editable" style="position: absolute; top: 0; left: 0; padding: 4px 12px; border-radius: 10px 0px 10px 0px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; background: #EBEBEB; color: #000;">
                                     PROMO</div>
@@ -9286,24 +9286,6 @@ if (!customElements.get('media-gallery')) {
     
   
 
-<script id="bundle-timer-script">
-(function () {
-  const end = new Date().getTime() + (24 * 60 * 60 * 1000);
-  setInterval(() => {
-    const now = new Date().getTime();
-    const dist = end - now;
-    const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
-    const s = Math.floor((dist % (1000 * 60)) / 1000);
-    const hEl = document.getElementById('hours');
-    const mEl = document.getElementById('minutes');
-    const sEl = document.getElementById('seconds');
-    if (hEl) hEl.textContent = String(h).padStart(2, '0');
-    if (mEl) mEl.textContent = String(m).padStart(2, '0');
-    if (sEl) sEl.textContent = String(s).padStart(2, '0');
-  }, 1000);
-})();
-</script>
 <script id="button-redirect-script">
 (function() {
     'use strict';
@@ -9444,5 +9426,23 @@ if (!customElements.get('media-gallery')) {
     // Also run after a delay to catch dynamically added buttons
     setTimeout(setupRedirects, 1000);
     setTimeout(setupRedirects, 3000);
+})();
+</script>
+<script id="bundle-timer-script">
+(function () {
+  const end = new Date().getTime() + (24 * 60 * 60 * 1000);
+  setInterval(() => {
+    const now = new Date().getTime();
+    const dist = end - now;
+    const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((dist % (1000 * 60)) / 1000);
+    const hEl = document.getElementById('hours');
+    const mEl = document.getElementById('minutes');
+    const sEl = document.getElementById('seconds');
+    if (hEl) hEl.textContent = String(h).padStart(2, '0');
+    if (mEl) mEl.textContent = String(m).padStart(2, '0');
+    if (sEl) sEl.textContent = String(s).padStart(2, '0');
+  }, 1000);
 })();
 </script></body></html>

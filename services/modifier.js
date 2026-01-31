@@ -491,179 +491,49 @@ class Modifier {
             const indexPath = path.join(websitePath, 'index.html');
             const $ = await this.loadHTML(indexPath);
 
-            // Find logo image in header
-            const logoSelectors = [
-                'header img[class*="logo" i]',
-                'header img[alt*="logo" i]',
-                'header img[id*="logo" i]',
-                '.header__logo img',
-                '.site-header__logo img',
-                '.logo img',
-                'header .logo img',
-                'header img:first'
-            ];
+            // Find the announcement bar section (the pink save line)
+            // Shopify Dawn theme: announcement bar is usually .announcement-bar-section or .utility-bar
+            let announcementBar = $('.announcement-bar-section').first();
+            if (announcementBar.length === 0) {
+                announcementBar = $('.utility-bar').first();
+            }
 
-            let logoFound = false;
-            for (const selector of logoSelectors) {
-                const logo = $(selector).first();
-                if (logo.length > 0) {
-                    // Get current dimensions
-                    const currentWidth = logo.attr('width') || logo.css('width') || 'auto';
-                    const currentHeight = logo.attr('height') || logo.css('height') || 'auto';
-                    
-                    // Parse and increase dimensions by 2pt
-                    let newWidth = currentWidth;
-                    let newHeight = currentHeight;
-                    
-                    if (currentWidth && currentWidth !== 'auto') {
-                        const widthNum = parseFloat(currentWidth);
-                        if (!isNaN(widthNum)) {
-                            newWidth = `${widthNum + 2}px`;
-                        }
-                    }
-                    
-                    if (currentHeight && currentHeight !== 'auto') {
-                        const heightNum = parseFloat(currentHeight);
-                        if (!isNaN(heightNum)) {
-                            newHeight = `${heightNum + 2}px`;
-                        }
-                    }
-                    
-                    // Update src to point to new logo
-                    logo.attr('src', logoFileName);
-                    logo.attr('srcset', ''); // Clear srcset
-                    
-                    // Center the logo
-                    logo.attr('style', `display:block;margin:0 auto;width:${newWidth};height:${newHeight};`);
-                    
-                    // Center the header element
-                    const header = $('header').first();
-                    if (header.length > 0) {
-                        const headerStyle = header.attr('style') || '';
-                        header.attr('style', `${headerStyle};text-align:center;`);
-                    }
-                    
-                    logoFound = true;
-                    console.log(`Logo replaced using selector: ${selector}`);
-                    break;
+            // Remove any existing <header> that was injected at the top (from previous runs)
+            // Only if it's not followed by the announcement bar
+            const bodyChildren = $('body').children();
+            if (bodyChildren.length > 0 && bodyChildren.first().is('header')) {
+                // If the next sibling is .announcement-bar-section, remove the header
+                if (bodyChildren.eq(1).is('.announcement-bar-section, .utility-bar')) {
+                    bodyChildren.first().remove();
                 }
             }
 
-            if (!logoFound) {
-                console.log('Searching for brand text to replace...');
-                
-                const textLogoSelectors = [
-                    // Prioritize header-specific selectors FIRST
-                    'header h1',
-                    'header h2',
-                    'header h3',
-                    'header h3 strong',
-                    'header .logo',
-                    'header .site-title',
-                    'header .brand',
-                    'header [class*="logo" i]',
-                    'header [class*="brand" i]',
-                    'header strong',
-                    'header a[href="/"]',
-                    'header a[href="./"]',
-                    'header span[class*="title" i]',
-                    // Landing page builders - check SECOND section (first section is usually banner)
-                    'section:nth-of-type(2) .headline-inner h3 strong',
-                    'section:nth-of-type(2) .headline-inner h3',
-                    'section:nth-of-type(2) .headline-inner h2 strong',
-                    'section:nth-of-type(2) .headline-inner strong',
-                    'section:nth-of-type(2) .el-612877 strong',
-                    'section:nth-of-type(2) h3 strong',
-                    // Generic landing page structures
-                    '.scraped-container-box:has(h3) h3 strong',
-                    '.cbox-246567-1 strong',
-                    '#i7xif strong',
-                    '.headline.el-612877 strong'
-                ];
-
-                for (const selector of textLogoSelectors) {
-                    const elements = $(selector);
-                    console.log(`Checking selector "${selector}": found ${elements.length} elements`);
-                    
-                    // Find FIRST element with short brand-like text (header/top of page)
-                    for (let i = 0; i < elements.length; i++) {
-                        const $el = $(elements[i]);
-                        const text = $el.text().trim();
-                        console.log(`  Element ${i}: text="${text}" (length: ${text.length})`);
-                        
-                        // Generic: find short text (likely brand name) - prioritize first match
-                        // Exclude empty, very long text, or navigation items
-                        const isLikelyBrand = text.length > 0 && text.length <= 35 && 
-                                            !/^(home|about|contact|shop|products|services|menu|cart|search|account|login|signup|sale|off|today|only|trustscore|customer|reviews?|charge|all|your|devices?|faster|with)$/i.test(text);
-                        
-                        if (isLikelyBrand) {
-                            $el.empty();
-                            // Increase base size by 2pt (1.1em becomes ~1.25em)
-                            $el.append(`<img src="${logoFileName}" alt="Logo" style="height:calc(1.1em + 2pt);width:auto;display:block;margin:0 auto;">`);
-                            
-                            // Center the header element
-                            const header = $('header').first();
-                            if (header.length > 0) {
-                                const headerStyle = header.attr('style') || '';
-                                header.attr('style', `${headerStyle};text-align:center;`);
-                            }
-                            
-                            logoFound = true;
-                            console.log(`✓ Text logo replaced using selector: ${selector}, text was: "${text}"`);
-                            break;
-                        }
-                    }
-                    if (logoFound) break;
-                }
-                
-                if (!logoFound) {
-                    console.log('WARNING: No brand text found with standard selectors');
+            // Remove any header before the announcement bar (if present)
+            if (announcementBar.length > 0) {
+                const prev = announcementBar.prev();
+                if (prev.is('header')) {
+                    prev.remove();
                 }
             }
 
-            if (!logoFound) {
-                const header = $('header').first();
-                if (header.length > 0) {
-                    const titleFallback = header.find('h1, h2, h3, .site-title, .logo, .brand, strong, [class*="logo" i], [class*="brand" i]').first();
-                    if (titleFallback.length > 0) {
-                        titleFallback.empty();
-                        titleFallback.append(`<img src="${logoFileName}" alt="Logo" style="height:calc(1.1em + 2pt);width:auto;display:block;margin:0 auto;">`);
-                    } else {
-                        header.prepend(`<div style="text-align:center;padding:10px;"><img src="${logoFileName}" alt="Logo" style="height:calc(1.1em + 2pt);width:auto;display:block;margin:0 auto;"></div>`);
-                    }
-                    // Center header
-                    const headerStyle = header.attr('style') || '';
-                    header.attr('style', `${headerStyle};text-align:center;`);
-                    logoFound = true;
-                } else {
-                    // Look for brand text in page top area (not in body content)
-                    const brandTargets = $('h1, h2, h3, strong, a').filter((_, el) => {
-                        const $el = $(el);
-                        const text = $el.text().trim();
-                        // Find short brand-like text near top of page
-                        const isShortText = text.length > 0 && text.length <= 25;
-                        const notNavigation = !/^(home|about|contact|shop|products|services|menu|cart|search|account|login|signup)$/i.test(text);
-                        return isShortText && notNavigation;
-                    }).first();
+            // Now, inject the header with logo *after* the announcement bar
+            let header = $('<header></header>');
+            header.append(`<img src="${logoFileName}" alt="Logo" style="display:block;margin:0 auto;max-width:220px;width:auto;height:auto;">`);
+            header.attr('style', 'width:100%;text-align:center;padding:16px 0;background:none;');
 
-                    if (brandTargets.length > 0) {
-                        brandTargets.empty();
-                        brandTargets.append(`<img src="${logoFileName}" alt="Logo" style="height:calc(1.1em + 2pt);width:auto;display:block;margin:0 auto;">`);
-                        logoFound = true;
-                    } else {
-                        throw new Error('Logo not found in header');
-                    }
-                }
+            if (announcementBar.length > 0) {
+                announcementBar.after(header);
+            } else {
+                // Fallback: inject at top if announcement bar not found
+                $('body').prepend(header);
             }
-
-            // Do not force layout changes; only replace the brand text element.
 
             // Save modified HTML
             await this.saveHTML($, indexPath);
 
             return {
                 success: true,
-                message: 'Logo replaced successfully'
+                message: 'Logo replaced successfully below announcement bar'
             };
 
         } catch (error) {

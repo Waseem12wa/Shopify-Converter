@@ -1,3 +1,67 @@
+/* --- Bundle Builder Light Mode Button Fixes --- */
+body[data-theme="light"] .bundle-actions button,
+body[data-theme="light"] .btn-secondary,
+body[data-theme="light"] .btn-small {
+    background: linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #ec4899 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: 0 2px 8px 0 rgba(99,102,241,0.10);
+    transition: background 0.2s;
+}
+body[data-theme="light"] .bundle-actions button:hover,
+body[data-theme="light"] .btn-secondary:hover,
+body[data-theme="light"] .btn-small:hover {
+    filter: brightness(1.1);
+}
+/* --- Bundle Builder Dark Mode Fixes --- */
+body:not([data-theme="light"]) .bundle-panel,
+body:not([data-theme="light"]) .bundle-header,
+body:not([data-theme="light"]) .bundle-title h2,
+body:not([data-theme="light"]) .bundle-title p,
+body:not([data-theme="light"]) .bundle-actions button,
+body:not([data-theme="light"]) .input-group label,
+body:not([data-theme="light"]) .input-group input,
+body:not([data-theme="light"]) .input-group {
+    color: #fff !important;
+}
+body:not([data-theme="light"]) .bundle-panel,
+body:not([data-theme="light"]) .bundle-header {
+    background: rgba(30, 27, 75, 0.85) !important;
+    border-radius: 18px;
+}
+body:not([data-theme="light"]) .bundle-title h2,
+body:not([data-theme="light"]) .bundle-title p,
+body:not([data-theme="light"]) .input-group label {
+    color: #fff !important;
+}
+body:not([data-theme="light"]) .input-group input[type="text"] {
+    background: rgba(40, 40, 60, 0.95) !important;
+    color: #fff !important;
+    border: 1px solid #6366f1 !important;
+}
+body:not([data-theme="light"]) .input-group input[type="text"]::placeholder {
+    color: #a5b4fc !important;
+}
+body:not([data-theme="light"]) .bundle-actions button,
+body:not([data-theme="light"]) .btn-secondary,
+body:not([data-theme="light"]) .btn-small {
+    background: linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #ec4899 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: 0 2px 8px 0 rgba(99,102,241,0.15);
+    transition: background 0.2s;
+}
+body:not([data-theme="light"]) .bundle-actions button:hover,
+body:not([data-theme="light"]) .btn-secondary:hover,
+body:not([data-theme="light"]) .btn-small:hover {
+    filter: brightness(1.1);
+}
+body:not([data-theme="light"]) .bundle-panel {
+    box-shadow: 0 4px 24px 0 rgba(99,102,241,0.12);
+}
+body:not([data-theme="light"]) .bundle-header {
+    box-shadow: 0 2px 12px 0 rgba(99,102,241,0.10);
+}
 :root {
     --bg-main: #000000;
     --bg-secondary: #0a0a0a;
