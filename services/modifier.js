@@ -1024,11 +1024,57 @@ class Modifier {
             console.log(`🗑️ Attempting to delete element(s) matching: ${selector}`);
 
             // Find and count matching elements
-            const elements = $(selector);
-            const count = elements.length;
+            // Find and count matching elements
+            let elements = $(selector);
+            let count = elements.length;
+
+            // Retry strategies if no elements found
+            if (count === 0) {
+                console.log('⚠️ Direct selector match failed, trying variations...');
+
+                // Strategy 1: Remove potentially implicit 'tbody' from selector
+                // Browser DOM often adds tbody, but static HTML might not have it
+                if (selector.includes('tbody')) {
+                    const tbodySelector = selector.split(' > ').filter(s => !s.includes('tbody')).join(' > ');
+                    console.log(`Trying selector without tbody: ${tbodySelector}`);
+                    elements = $(tbodySelector);
+                    count = elements.length;
+                }
+
+                // Strategy 2: Try removing 'html > body >' prefix if present
+                if (count === 0 && selector.includes('html > body')) {
+                    const bodySelector = selector.replace('html > body > ', '');
+                    console.log(`Trying selector without root prefix: ${bodySelector}`);
+                    elements = $(bodySelector);
+                    count = elements.length;
+                }
+
+                // Strategy 3: Loose match on the last part of valid selector
+                if (count === 0 && selector.includes('>')) {
+                    // This is risky but effective for "relive" issue - try to match the last specific part
+                    // Ensure we don't just match 'div' or 'p' globally
+                    const parts = selector.split(' > ');
+                    if (parts.length > 2) {
+                        const lastTwo = parts.slice(-2).join(' > ');
+                        if (lastTwo.includes('id') || lastTwo.includes(':nth-of-type') || lastTwo.includes('.')) {
+                            // Only use if it looks specific enough
+                            console.log(`Trying suffix match: ${lastTwo}`);
+                            // Iterate to find a match that contextually makes sense? 
+                            // Cheerio doesn't implement querySelectorAll on subsets easily without context
+                            // Let's just try matching it, but log warning
+                            const looseElements = $(lastTwo);
+                            if (looseElements.length === 1) { // Only if unique
+                                console.log('Found unique match by suffix!');
+                                elements = looseElements;
+                                count = elements.length;
+                            }
+                        }
+                    }
+                }
+            }
 
             if (count === 0) {
-                console.log('⚠️ No elements found matching selector');
+                console.log('⚠️ No elements found matching selector or variations');
                 return {
                     success: false,
                     message: `No elements found matching selector: ${selector}`,
