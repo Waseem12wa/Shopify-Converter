@@ -82,8 +82,12 @@ const redirectDestinationSelect = document.getElementById('redirectDestinationSe
 const applyRedirectBtn = document.getElementById('applyRedirectBtn');
 const redirectStatus = document.getElementById('redirectStatus');
 
-// Card Redirect URL (in bundle builder)
-const cardRedirectUrl = document.getElementById('cardRedirectUrl');
+// Link Modal
+const linkModal = document.getElementById('linkModal');
+const modalUrlInput = document.getElementById('modalUrlInput');
+const modalSaveBtn = document.getElementById('modalSaveBtn');
+const modalCancelBtn = document.getElementById('modalCancelBtn');
+let currentEditingCard = null;
 
 // Button Text Editor
 const buttonSelectorInput = document.getElementById('buttonSelectorInput');
@@ -367,6 +371,7 @@ function getCardTemplate(cardIndex) {
         badge.style.color = '#000';
         badge.textContent = 'PROMO';
     }
+    clone.removeAttribute('data-redirect-url');
     const editableItems = Array.from(clone.querySelectorAll('[contenteditable="true"]'));
     editableItems.forEach((el) => {
         el.textContent = '';
@@ -389,8 +394,18 @@ function getCardTemplate(cardIndex) {
     if (shipping.length >= 5) {
         shipping[4].textContent = '+ Free Shipping';
     }
-    const cta = clone.querySelector('button[contenteditable="true"]');
+    let cta = clone.querySelector('.cta-btn');
     if (cta) {
+        if (cta.tagName.toLowerCase() === 'a') {
+            const btn = document.createElement('button');
+            btn.className = cta.className;
+            btn.style.cssText = cta.style.cssText;
+            btn.style.textDecoration = '';
+            btn.style.display = '';
+            btn.setAttribute('contenteditable', 'true');
+            cta.replaceWith(btn);
+            cta = btn; // Update reference
+        }
         cta.textContent = 'GET 0% OFF';
     }
     const footer = clone.querySelector('p[contenteditable="true"]');
@@ -1425,62 +1440,94 @@ bundlePreview.addEventListener('click', (e) => {
         removeBundleCard(card);
         return;
     }
+
+    // Check for CTA button click (Link Setting)
+    const ctaBtn = e.target.closest('.cta-btn');
     const card = e.target.closest('.card');
+
+    if (ctaBtn && card) {
+        e.preventDefault();
+        e.stopPropagation();
+        openLinkModal(card);
+        // Also select the card behind it
+        selectCard(card);
+        return;
+    }
+
     if (card && card.closest('#bundlePreview')) {
-        bundlePreview.querySelectorAll('.card').forEach((item) => {
-            item.classList.remove('recommended');
-            item.style.border = '1px solid #E0E0E0';
-            const badge = item.querySelector('.badge-red, .badge-gray');
-            if (badge) {
-                badge.classList.remove('badge-red');
-                badge.classList.add('badge-gray');
-                badge.style.background = '#EBEBEB';
-                badge.style.color = '#000';
-            }
-        });
-
-        card.classList.add('recommended');
-        card.style.border = '2px solid #FC0000';
-        const badge = card.querySelector('.badge-gray, .badge-red');
-        if (badge) {
-            badge.classList.remove('badge-gray');
-            badge.classList.add('badge-red');
-            badge.style.background = '#FC0000';
-            badge.style.color = '#fff';
-        }
-        selectedBundleCard = card;
-
-        // Load redirect URL if exists
-        const redirectUrl = card.getAttribute('data-redirect-url') || '';
-        cardRedirectUrl.value = redirectUrl;
+        selectCard(card);
     }
 });
 
-// Save redirect URL to selected card when input changes
-cardRedirectUrl.addEventListener('input', (e) => {
-    if (selectedBundleCard) {
-        const url = e.target.value.trim();
+function selectCard(card) {
+    bundlePreview.querySelectorAll('.card').forEach((item) => {
+        item.classList.remove('recommended');
+        item.style.border = '1px solid #E0E0E0';
+        const badge = item.querySelector('.badge-red, .badge-gray');
+        if (badge) {
+            badge.classList.remove('badge-red');
+            badge.classList.add('badge-gray');
+            badge.style.background = '#EBEBEB';
+            badge.style.color = '#000';
+        }
+    });
+
+    card.classList.add('recommended');
+    card.style.border = '2px solid #FC0000';
+    const badge = card.querySelector('.badge-gray, .badge-red');
+    if (badge) {
+        badge.classList.remove('badge-gray');
+        badge.classList.add('badge-red');
+        badge.style.background = '#FC0000';
+        badge.style.color = '#fff';
+    }
+    selectedBundleCard = card;
+}
+
+function openLinkModal(card) {
+    currentEditingCard = card;
+    const url = card.getAttribute('data-redirect-url') || '';
+    modalUrlInput.value = url;
+    linkModal.classList.remove('hidden');
+    modalUrlInput.focus();
+}
+
+function closeLinkModal() {
+    linkModal.classList.add('hidden');
+    currentEditingCard = null;
+}
+
+modalCancelBtn.addEventListener('click', closeLinkModal);
+
+modalSaveBtn.addEventListener('click', () => {
+    if (currentEditingCard) {
+        const url = modalUrlInput.value.trim();
         if (url) {
-            selectedBundleCard.setAttribute('data-redirect-url', url);
-            // Apply to button immediately for preview
-            const button = selectedBundleCard.querySelector('.cta-btn');
+            currentEditingCard.setAttribute('data-redirect-url', url);
+            const button = currentEditingCard.querySelector('.cta-btn');
             if (button) {
-                // If button exists, convert to anchor or update href
                 if (button.tagName.toLowerCase() === 'button') {
                     const a = document.createElement('a');
                     a.href = url;
                     a.className = button.className;
-                    a.textContent = button.textContent;
-                    a.style.cssText = button.style.cssText + '; text-decoration: none; display: inline-block;';
+                    a.innerHTML = button.innerHTML;
+                    a.setAttribute('contenteditable', 'true');
+                    a.style.cssText = button.style.cssText + '; text-decoration: none; display: inline-block; text-align: center;';
                     button.replaceWith(a);
                 } else if (button.tagName.toLowerCase() === 'a') {
                     button.href = url;
                 }
             }
         } else {
-            selectedBundleCard.removeAttribute('data-redirect-url');
+            currentEditingCard.removeAttribute('data-redirect-url');
         }
     }
+    closeLinkModal();
+});
+
+// Allow Enter key in modal
+modalUrlInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') modalSaveBtn.click();
 });
 
 bundleAddImageBtn.addEventListener('click', () => {

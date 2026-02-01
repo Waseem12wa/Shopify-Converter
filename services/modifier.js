@@ -90,8 +90,8 @@ class Modifier {
             const text = heading.text().toLowerCase();
             if (text.includes('faq') || text.includes('frequently asked') || text.includes('questions')) {
                 console.log(`✓ Found FAQ heading: "${heading.text()}"`);
-                return heading.closest('section, div[class], div[id]').length > 0 
-                    ? heading.closest('section, div[class], div[id]') 
+                return heading.closest('section, div[class], div[id]').length > 0
+                    ? heading.closest('section, div[class], div[id]')
                     : heading.parent();
             }
         }
@@ -103,12 +103,12 @@ class Modifier {
             const text = $section.text().toLowerCase();
             const id = ($section.attr('id') || '').toLowerCase();
             const className = ($section.attr('class') || '').toLowerCase();
-            
+
             // Check if this looks like an FAQ section
             const hasFAQText = text.includes('frequently asked') || text.includes('common question');
-            const hasFAQInAttributes = id.includes('faq') || className.includes('faq') || 
-                                      id.includes('question') || className.includes('question');
-            
+            const hasFAQInAttributes = id.includes('faq') || className.includes('faq') ||
+                id.includes('question') || className.includes('question');
+
             if (hasFAQText || hasFAQInAttributes) {
                 console.log(`Found FAQ section by content search:`, id || className || 'unnamed');
                 return $section;
@@ -218,11 +218,11 @@ class Modifier {
             $('#bundle-section').remove();
             $('.injected-bundle-wrapper').remove();
             $('.offer-container').remove();
-            
+
             // STEP 1: Search for FAQ text and inject above it
             console.log('📍 STEP 1: Searching for FAQ section...');
             const faqElement = this.findFAQSection($);
-            
+
             if (faqElement && faqElement.length > 0) {
                 console.log('✅ FAQ found! Injecting bundle RIGHT BEFORE the FAQ element...');
                 faqElement.before(bundleSection);
@@ -230,7 +230,7 @@ class Modifier {
             } else {
                 // STEP 2: No FAQ found, look for existing product cards/bundles to replace
                 console.log('📍 STEP 2: FAQ not found. Searching for existing product cards/bundles...');
-                
+
                 const cardSection = this.findCardSection($);
                 if (cardSection && cardSection.length > 0) {
                     console.log('✅ Found existing cards! Replacing them with new bundle...');
@@ -294,19 +294,19 @@ class Modifier {
     async getBundleSectionHtml(bundleHtml) {
         if (bundleHtml) {
             const $bundle = cheerio.load(bundleHtml);
-            
+
             console.log('Processing bundle HTML for injection...');
-            
+
             // Remove contenteditable attributes
             const editableCount = $bundle('[contenteditable]').length;
             $bundle('[contenteditable]').each((_, el) => {
                 $bundle(el).removeAttr('contenteditable');
             });
             console.log(`Removed contenteditable from ${editableCount} elements`);
-            
+
             // AGGRESSIVE removal of ALL close/remove buttons
             let removedButtons = 0;
-            
+
             // 1. Direct removal by class
             removedButtons += $bundle('.card-remove').length;
             $bundle('.card-remove').remove();
@@ -318,7 +318,7 @@ class Modifier {
             $bundle('.dismiss-btn').remove();
             removedButtons += $bundle('.remove-btn').length;
             $bundle('.remove-btn').remove();
-            
+
             // 2. Remove ANY button with × character
             $bundle('button').each((_, el) => {
                 const $btn = $bundle(el);
@@ -328,11 +328,11 @@ class Modifier {
                     removedButtons++;
                 }
             });
-            
+
             // 3. Remove any element with title="Remove bundle" or similar
             removedButtons += $bundle('[title*="Remove" i], [title*="Close" i], [title*="Delete" i]').length;
             $bundle('[title*="Remove" i], [title*="Close" i], [title*="Delete" i]').remove();
-            
+
             // 4. Remove any element that looks like a close button (× text only)
             $bundle('*').each((_, el) => {
                 const $el = $bundle(el);
@@ -344,25 +344,25 @@ class Modifier {
                     removedButtons++;
                 }
             });
-            
+
             console.log(`Removed ${removedButtons} close/remove buttons from bundle`);
-            
+
             // 6. Apply redirect URLs from data-redirect-url attributes on each card
             let redirectedCount = 0;
             $bundle('.card').each((_, card) => {
                 const $card = $bundle(card);
                 const redirectUrl = $card.attr('data-redirect-url');
-                
+
                 if (redirectUrl && redirectUrl.trim()) {
                     // Find CTA button in this card
-                    const button = $card.find('button.cta-btn, a.cta-btn, button, a').filter(function() {
+                    const button = $card.find('button.cta-btn, a.cta-btn, button, a').filter(function () {
                         const $el = $bundle(this);
                         const text = $el.text();
                         const hasCtaClass = $el.attr('class') && $el.attr('class').includes('cta');
                         const hasGetOff = text && (text.includes('GET') || text.includes('OFF') || text.includes('Off') || text.includes('Get'));
                         return hasCtaClass || hasGetOff;
                     }).first();
-                    
+
                     if (button.length > 0) {
                         const $btn = $bundle(button);
                         if ($btn[0].tagName.toLowerCase() === 'button') {
@@ -370,7 +370,7 @@ class Modifier {
                             const classes = $btn.attr('class') || '';
                             const style = $btn.attr('style') || '';
                             const innerHTML = $btn.html();
-                            $btn.replaceWith(`<a href="${redirectUrl}" class="${classes}" style="${style}; text-decoration: none; display: inline-block;">${innerHTML}</a>`);
+                            $btn.replaceWith(`<a href="${redirectUrl}" class="${classes}" style="${style}; text-decoration: none; display: inline-block; text-align: center;">${innerHTML}</a>`);
                         } else {
                             // Update anchor href
                             $btn.attr('href', redirectUrl);
@@ -379,11 +379,11 @@ class Modifier {
                     }
                 }
             });
-            
+
             if (redirectedCount > 0) {
                 console.log(`Applied ${redirectedCount} redirect URLs to cards`);
             }
-            
+
             // 7. Ensure the section has the correct ID and visibility styles
             const section = $bundle('#bundle-section, section, .offer-container').first();
             if (section.length > 0) {
@@ -392,10 +392,10 @@ class Modifier {
                     section.attr('id', 'bundle-section');
                     console.log('Set bundle section ID to: bundle-section');
                 }
-                
+
                 // Add critical inline styles for FULL WIDTH section
                 section.attr('style', 'display: block !important; visibility: visible !important; opacity: 1 !important; position: relative !important; z-index: 1 !important; width: 100% !important; max-width: 100% !important; overflow: visible !important; min-height: 100px !important; padding: 64px 16px !important; box-sizing: border-box !important; background-color: #FFF7F6 !important;');
-                
+
                 // Wrap the content in a centered container div
                 // First check if there's already a wrapper div inside the section
                 const existingWrapper = section.find('> div.bundle-wrapper, > div[style*="max-width"]').first();
@@ -411,23 +411,23 @@ class Modifier {
                     existingWrapper.attr('style', 'max-width: 1200px !important; margin: 0 auto !important; width: 100% !important; display: block !important;');
                     existingWrapper.addClass('bundle-wrapper');
                 }
-                
+
                 // Fix the pricing-grid with centered flexbox
                 const grid = $bundle('.pricing-grid');
                 if (grid.length > 0) {
                     grid.attr('style', 'display: flex !important; flex-wrap: wrap !important; justify-content: center !important; align-items: stretch !important; gap: 25px !important; max-width: 100% !important; margin: 0 auto !important; padding: 0 !important; visibility: visible !important; opacity: 1 !important;');
                 }
-                
+
                 // Fix all cards with fixed width for consistent sizing
                 $bundle('.card').each((_, card) => {
                     const $card = $bundle(card);
                     const existingCardStyle = $card.attr('style') || '';
                     // Add fixed width while preserving other styles
-                    const newCardStyle = existingCardStyle.replace(/width:[^;]+;?/g, '').replace(/flex:[^;]+;?/g, '') + 
+                    const newCardStyle = existingCardStyle.replace(/width:[^;]+;?/g, '').replace(/flex:[^;]+;?/g, '') +
                         ' width: 320px !important; min-width: 280px !important; max-width: 350px !important; flex: 0 0 auto !important; display: flex !important; visibility: visible !important; opacity: 1 !important;';
                     $card.attr('style', newCardStyle);
                 });
-                
+
                 console.log('Added visibility and centering styles to bundle section');
                 console.log('Returning bundle section HTML with ID:', section.attr('id'));
                 return $bundle.html(section);
@@ -436,7 +436,7 @@ class Modifier {
             return $bundle('body').html() || bundleHtml;
         }
 
-        const testTemplatePath = path.join(this.testDir, 'bundle.html');
+        const testTemplatePath = path.join(this.templatesDir, 'bundle-template.html');
         const bundleTemplate = await fs.readFile(testTemplatePath, 'utf-8');
         const $bundle = cheerio.load(bundleTemplate);
         const section = $bundle('#bundle-section');
@@ -448,11 +448,11 @@ class Modifier {
 
     async ensureBundleAssets(websitePath) {
         await fs.copy(
-            path.join(this.testDir, 'bundle.css'),
+            path.join(this.templatesDir, 'bundle.css'),
             path.join(websitePath, 'bundle.css')
         );
         await fs.copy(
-            path.join(this.testDir, 'mobile-fix.css'),
+            path.join(this.templatesDir, 'mobile-fix.css'),
             path.join(websitePath, 'mobile-fix.css')
         );
     }
@@ -549,7 +549,7 @@ class Modifier {
         try {
             const indexPath = path.join(websitePath, 'index.html');
             const $ = await this.loadHTML(indexPath);
-            
+
             console.log('Starting header icon removal...');
             console.log(`Total sections in page: ${$('section').length}`);
             console.log(`Has <header> tag: ${$('header').length > 0}`);
@@ -597,10 +597,10 @@ class Modifier {
             // Target landing page builder icon containers
             const $headerSections = $('section').slice(0, 2);
             console.log(`Checking first 2 sections for header icons...`);
-            
+
             $headerSections.each((sectionIndex, section) => {
                 const $section = $(section);
-                
+
                 // Look for small images in specific container patterns (likely icons)
                 // Only check containers that end with -0 or -2 (typically left/right icons in headers)
                 const $containers = $section.find('[class*="cbox-"]').filter((_, el) => {
@@ -608,16 +608,16 @@ class Modifier {
                     // Only match containers ending with -0 or -2 (not -1, -3, etc which are content)
                     return /cbox-\d+-0\b/.test(className) || /cbox-\d+-2\b/.test(className);
                 });
-                
+
                 console.log(`Section ${sectionIndex}: Found ${$containers.length} potential icon containers`);
-                
+
                 $containers.each((_, container) => {
                     const $container = $(container);
                     const hasContent = $container.find('img, svg, button, a, div, span').length > 0;
-                    
+
                     if (hasContent) {
                         let shouldHide = false;
-                        
+
                         // Check for small images (icons)
                         const imgs = $container.find('img');
                         imgs.each((_, img) => {
@@ -625,30 +625,30 @@ class Modifier {
                             const src = $img.attr('src') || '';
                             const width = $img.attr('width') || '';
                             const widthNum = parseInt(width);
-                            
+
                             console.log(`  Checking image: src="${src}", width="${width}"`);
-                            
+
                             const isSmallIcon = width && widthNum > 0 && widthNum <= 60;
                             const isNotLogo = !src.toLowerCase().includes('logo') && !src.toLowerCase().includes('brand');
-                            
+
                             if (isSmallIcon && isNotLogo) {
                                 shouldHide = true;
                             }
                         });
-                        
+
                         // Check for navigation/menu elements (hamburger menus)
                         if ($container.find('svg, button, [class*="menu"], [class*="hamburger"], [class*="nav"]').length > 0) {
                             shouldHide = true;
                             console.log(`  Found navigation/menu element in container`);
                         }
-                        
+
                         // Hide even if no image but is in position 0 or 2 (likely placeholders for icons)
                         if (!shouldHide && imgs.length === 0) {
                             // Empty containers in icon positions should also be hidden
                             shouldHide = true;
                             console.log(`  Empty icon position container`);
                         }
-                        
+
                         if (shouldHide) {
                             $container.css({
                                 'display': 'none !important',
@@ -712,11 +712,11 @@ class Modifier {
                 const text = $el.text().trim().toLowerCase();
                 const value = ($el.attr('value') || '').toLowerCase();
                 const ariaLabel = ($el.attr('aria-label') || '').toLowerCase();
-                
+
                 // Check if element matches any pattern
-                const matches = patterns.some(pattern => 
-                    text.includes(pattern) || 
-                    value.includes(pattern) || 
+                const matches = patterns.some(pattern =>
+                    text.includes(pattern) ||
+                    value.includes(pattern) ||
                     ariaLabel.includes(pattern)
                 );
 
@@ -725,23 +725,23 @@ class Modifier {
                     $el.removeAttr('href');
                     $el.removeAttr('onclick');
                     $el.removeAttr('data-action');
-                    
+
                     // Add smooth scroll behavior - single line for onclick attribute
                     const scrollScript = `(function(e){e.preventDefault();e.stopPropagation();var t=document.querySelector('${destination}');if(t){t.scrollIntoView({behavior:'smooth',block:'center'});}else{console.warn('Target not found: ${destination}');}return false;})(event||window.event);`;
-                    
+
                     $el.attr('onclick', scrollScript);
                     $el.css('cursor', 'pointer');
-                    
+
                     // For links, set href to destination as fallback
                     if ($el.is('a')) {
                         $el.attr('href', destination);
                     }
-                    
+
                     // Change button type to prevent form submission
                     if ($el.is('button') && !$el.attr('type')) {
                         $el.attr('type', 'button');
                     }
-                    
+
                     buttonsFound++;
                     console.log(`✓ Applied redirect to button: "${text}" → ${destination}`);
                 }
@@ -756,7 +756,7 @@ class Modifier {
             // This handles cases where onclick might be overridden or removed
             const redirectScriptId = 'button-redirect-script';
             $(`#${redirectScriptId}`).remove(); // Remove existing script if any
-            
+
             const globalRedirectScript = `
 <script id="${redirectScriptId}">
 (function() {
@@ -900,7 +900,7 @@ class Modifier {
     setTimeout(setupRedirects, 3000);
 })();
 </script>`;
-            
+
             $('body').append(globalRedirectScript);
 
             // Save modified HTML
@@ -970,8 +970,8 @@ class Modifier {
             return {
                 success: true,
                 count: editedCount,
-                message: editedCount > 0 
-                    ? `Edited ${editedCount} button(s)` 
+                message: editedCount > 0
+                    ? `Edited ${editedCount} button(s)`
                     : `No buttons found with text "${searchText}"`
             };
 
@@ -1022,11 +1022,11 @@ class Modifier {
             const $ = await this.loadHTML(indexPath);
 
             console.log(`🗑️ Attempting to delete element(s) matching: ${selector}`);
-            
+
             // Find and count matching elements
             const elements = $(selector);
             const count = elements.length;
-            
+
             if (count === 0) {
                 console.log('⚠️ No elements found matching selector');
                 return {
@@ -1037,15 +1037,15 @@ class Modifier {
             }
 
             console.log(`Found ${count} element(s) to delete`);
-            
+
             // Remove the element(s)
             elements.remove();
-            
+
             // Save modified HTML
             await this.saveHTML($, indexPath);
 
             console.log(`✅ Successfully deleted ${count} element(s)`);
-            
+
             return {
                 success: true,
                 message: `Successfully deleted ${count} element(s)`,
@@ -1068,26 +1068,26 @@ class Modifier {
             const $ = await this.loadHTML(indexPath);
 
             console.log('🧹 Clearing header content...');
-            
+
             let clearedCount = 0;
 
             // Find header element
             const header = $('header').first();
-            
+
             if (header.length > 0) {
                 console.log('Found header element, clearing all content...');
-                
+
                 // Remove ALL children from header (nav, buttons, links, everything)
                 header.children().each((_, el) => {
                     $(el).remove();
                     clearedCount++;
                 });
-                
+
                 // Also remove any direct text nodes
-                header.contents().filter(function() {
+                header.contents().filter(function () {
                     return this.type === 'text' && $(this).text().trim() !== '';
                 }).remove();
-                
+
                 // Add centered logo placeholder
                 const logoPlaceholder = `
                     <div style="display: flex; justify-content: center; align-items: center; padding: 40px 20px; background: transparent; width: 100%;">
@@ -1098,18 +1098,18 @@ class Modifier {
                     </div>
                 `;
                 header.html(logoPlaceholder);
-                
+
                 console.log(`✅ Cleared entire header (${clearedCount} elements removed)`);
             } else {
                 console.log('⚠️ No header element found, searching for nav...');
-                
+
                 // If no header, find and remove nav elements
                 const nav = $('nav').first();
                 if (nav.length > 0) {
                     const navParent = nav.parent();
                     nav.remove();
                     clearedCount++;
-                    
+
                     // Add logo placeholder where nav was
                     const logoPlaceholder = `
                         <div style="display: flex; justify-content: center; align-items: center; padding: 40px 20px; background: #f8f9fa; width: 100%;">
@@ -1132,13 +1132,13 @@ class Modifier {
                     `;
                     $('body').prepend(logoPlaceholder);
                 }
-                
+
                 console.log(`✅ Cleared navigation elements`);
             }
-            
+
             // Also remove any standalone nav menus anywhere in the page
             $('nav').remove();
-            
+
             // Remove common header menu classes
             $('[class*="menu"]').first().remove();
             $('[class*="navigation"]').first().remove();

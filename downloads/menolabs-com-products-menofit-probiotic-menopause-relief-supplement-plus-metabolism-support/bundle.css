@@ -1,25 +1,58 @@
-/* Responsive Grid Layout */
+/* Bundle Section - Full Width and Centered */
+#bundle-section,
+.offer-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 64px 16px !important;
+    box-sizing: border-box !important;
+    display: block !important;
+}
+
+/* Inner Wrapper for Centering */
+.bundle-wrapper,
+#bundle-section > div:first-child,
+.offer-container > div:first-child {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+/* Pricing Grid - Centered Flexbox */
 .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    max-width: 1800px;
-    margin: 0 auto;
-    padding: 0 16px;
-    /* Prevent edge touching on small screens */
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    gap: 25px !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+}
+
+/* Card Sizing - Fixed Width for Consistency */
+.pricing-grid > *,
+.pricing-grid .card {
+    width: 320px !important;
+    min-width: 280px !important;
+    max-width: 350px !important;
+    flex: 0 0 auto !important;
 }
 
 /* Tablet / Medium Screens */
 @media (max-width: 1200px) {
-    .pricing-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .pricing-grid > * {
+        flex: 0 0 calc(50% - 20px);
+        max-width: calc(50% - 20px);
     }
 }
 
 /* Mobile Screens - Force Single Column Stack */
 @media (max-width: 900px) {
-    .pricing-grid {
-        grid-template-columns: 1fr !important;
+    .pricing-grid > * {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
     }
 
     /* Mobile adjustment for container padding */

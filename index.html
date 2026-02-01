@@ -18,7 +18,8 @@
             <p class="tagline">Advanced Front-end Extraction Tool</p>
             <button id="themeToggleBtn" class="btn-secondary theme-toggle">Light Mode</button>
             <div class="preview-toggle-group">
-                <button id="previewDesktopBtn" class="btn-secondary preview-toggle active" title="Desktop Preview">🖥️</button>
+                <button id="previewDesktopBtn" class="btn-secondary preview-toggle active"
+                    title="Desktop Preview">🖥️</button>
                 <button id="previewMobileBtn" class="btn-secondary preview-toggle" title="Mobile Preview">📱</button>
             </div>
             <button id="homeBtn" class="btn-secondary home-btn" style="display:none;">🏠 Home</button>
@@ -51,9 +52,10 @@
 
                     <div class="control-group">
                         <label class="section-label">Button Text Editor</label>
-                        <input type="text" id="buttonSelectorInput" placeholder="Button selector (e.g., button:contains('Add to Cart'))" 
+                        <input type="text" id="buttonSelectorInput"
+                            placeholder="Button selector (e.g., button:contains('Add to Cart'))"
                             style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                        <input type="text" id="newButtonTextInput" placeholder="New button text" 
+                        <input type="text" id="newButtonTextInput" placeholder="New button text"
                             style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                         <button id="editButtonTextBtn" class="btn-secondary" style="width: 100%;">
                             Change Button Text
@@ -67,10 +69,12 @@
                             <input type="checkbox" id="removeIconsCheck">
                             <span>Remove Header Icons</span>
                         </label>
-                        <button id="clearHeaderBtn" class="btn-small" style="margin-top: 8px; background: #e67e22; width: 100%;">
+                        <button id="clearHeaderBtn" class="btn-small"
+                            style="margin-top: 8px; background: #e67e22; width: 100%;">
                             Clear Header for Logo
                         </button>
-                        <p class="helper-text" id="clearHeaderStatus" style="font-size: 11px; margin-top: 4px; display: none;"></p>
+                        <p class="helper-text" id="clearHeaderStatus"
+                            style="font-size: 11px; margin-top: 4px; display: none;"></p>
                     </div>
 
                     <div class="control-group">
@@ -79,7 +83,8 @@
                             <input type="checkbox" id="elementRemoverCheck">
                             <span>Enable Click-to-Delete Mode</span>
                         </label>
-                        <p class="helper-text" id="elementRemoverStatus" style="font-size: 11px; margin-top: 4px;">Click on any element in the preview to delete it</p>
+                        <p class="helper-text" id="elementRemoverStatus" style="font-size: 11px; margin-top: 4px;">Click
+                            on any element in the preview to delete it</p>
                     </div>
 
                     <div class="control-group">
@@ -93,7 +98,8 @@
                     <div class="control-group">
                         <label class="section-label">Button Redirect</label>
                         <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <select id="buttonTargetSelect" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                            <select id="buttonTargetSelect"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                                 <option value="">Select button to redirect...</option>
                                 <option value="add-to-cart">Add to Cart</option>
                                 <option value="buy-now">Buy Now</option>
@@ -101,7 +107,8 @@
                                 <option value="add-cart">Add Cart</option>
                                 <option value="checkout">Checkout</option>
                             </select>
-                            <select id="redirectDestinationSelect" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                            <select id="redirectDestinationSelect"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                                 <option value="">Select destination...</option>
                                 <option value="#bundle-section">Bundle Section (if injected)</option>
                                 <option value="footer">Footer</option>
@@ -115,7 +122,7 @@
 
                     <div class="control-group">
                         <label class="section-label">Deployment</label>
-                        <input type="text" id="netlifyTokenInput" placeholder="Netlify Personal Access Token" 
+                        <input type="text" id="netlifyTokenInput" placeholder="Netlify Personal Access Token"
                             style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                         <button id="deployNetlifyBtn" class="btn-primary" style="width: 100%;">
                             🚀 Deploy to Netlify
@@ -164,7 +171,8 @@
                     <div class="panel-row">
                         <div>
                             <h3>Bundle Preview Editor</h3>
-                            <p class="helper-text">Edit any text directly in the section below. This is the actual bundle layout.</p>
+                            <p class="helper-text">Edit any text directly in the section below. This is the actual
+                                bundle layout.</p>
                         </div>
                         <div class="bundle-controls">
                             <div class="input-group">
@@ -177,35 +185,33 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-row" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e0e0e0;">
-                        <div style="width: 100%;">
-                            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Card Redirect URL (Optional)</label>
-                            <input type="text" id="cardRedirectUrl" placeholder="https://checkout.example.com" 
-                                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                            <p class="helper-text" style="margin-top: 6px; font-size: 12px;">Click on a card to select it, then enter a redirect URL for its button</p>
-                        </div>
-                    </div>
+
                 </div>
 
                 <!-- NEW STYLING PANEL -->
                 <div class="bundle-panel glass">
                     <h3>🎨 Styling Options</h3>
                     <p class="helper-text">Customize colors, fonts, and sizes for your bundle section</p>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-top: 20px;">
+
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-top: 20px;">
                         <!-- Background Color -->
                         <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Background Color</label>
+                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Background
+                                Color</label>
                             <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="color" id="bundleBgColor" value="#FFF7F6" style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
-                                <input type="text" id="bundleBgColorText" value="#FFF7F6" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                                <input type="color" id="bundleBgColor" value="#FFF7F6"
+                                    style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                                <input type="text" id="bundleBgColorText" value="#FFF7F6"
+                                    style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                             </div>
                         </div>
 
                         <!-- Primary Font -->
                         <div class="style-control">
                             <label style="display: block; font-weight: 600; margin-bottom: 6px;">Primary Font</label>
-                            <select id="bundlePrimaryFont" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                            <select id="bundlePrimaryFont"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                                 <option value="Poppins, sans-serif" selected>Poppins</option>
                                 <option value="Montserrat, sans-serif">Montserrat</option>
                                 <option value="Arial, sans-serif">Arial</option>
@@ -221,16 +227,20 @@
 
                         <!-- Heading Font Size -->
                         <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Heading Size (px)</label>
-                            <input type="number" id="bundleHeadingSize" value="34" min="16" max="72" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Heading Size
+                                (px)</label>
+                            <input type="number" id="bundleHeadingSize" value="34" min="16" max="72"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                         </div>
 
                         <!-- Heading Color -->
                         <div class="style-control">
                             <label style="display: block; font-weight: 600; margin-bottom: 6px;">Heading Color</label>
                             <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="color" id="bundleHeadingColor" value="#000000" style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
-                                <input type="text" id="bundleHeadingColorText" value="#000000" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                                <input type="color" id="bundleHeadingColor" value="#000000"
+                                    style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                                <input type="text" id="bundleHeadingColorText" value="#000000"
+                                    style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                             </div>
                         </div>
 
@@ -238,8 +248,10 @@
                         <div class="style-control">
                             <label style="display: block; font-weight: 600; margin-bottom: 6px;">Accent Color</label>
                             <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="color" id="bundleAccentColor" value="#E32D2D" style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
-                                <input type="text" id="bundleAccentColorText" value="#E32D2D" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                                <input type="color" id="bundleAccentColor" value="#E32D2D"
+                                    style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                                <input type="text" id="bundleAccentColorText" value="#E32D2D"
+                                    style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                             </div>
                         </div>
 
@@ -247,8 +259,10 @@
                         <div class="style-control">
                             <label style="display: block; font-weight: 600; margin-bottom: 6px;">Button Color</label>
                             <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="color" id="bundleButtonColor" value="#1EB13A" style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
-                                <input type="text" id="bundleButtonColorText" value="#1EB13A" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                                <input type="color" id="bundleButtonColor" value="#1EB13A"
+                                    style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                                <input type="text" id="bundleButtonColorText" value="#1EB13A"
+                                    style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                             </div>
                         </div>
 
@@ -256,27 +270,35 @@
                         <div class="style-control">
                             <label style="display: block; font-weight: 600; margin-bottom: 6px;">Body Text Color</label>
                             <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="color" id="bundleTextColor" value="#000000" style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
-                                <input type="text" id="bundleTextColorText" value="#000000" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                                <input type="color" id="bundleTextColor" value="#000000"
+                                    style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                                <input type="text" id="bundleTextColorText" value="#000000"
+                                    style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                             </div>
                         </div>
 
                         <!-- Body Font Size -->
                         <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Body Text Size (px)</label>
-                            <input type="number" id="bundleBodySize" value="16" min="10" max="24" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Body Text Size
+                                (px)</label>
+                            <input type="number" id="bundleBodySize" value="16" min="10" max="24"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                         </div>
 
                         <!-- Card Border Radius -->
                         <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Card Roundness (px)</label>
-                            <input type="number" id="bundleBorderRadius" value="10" min="0" max="30" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Card Roundness
+                                (px)</label>
+                            <input type="number" id="bundleBorderRadius" value="10" min="0" max="30"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                         </div>
 
                         <!-- Padding -->
                         <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Section Padding (px)</label>
-                            <input type="number" id="bundlePadding" value="64" min="16" max="128" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Section Padding
+                                (px)</label>
+                            <input type="number" id="bundlePadding" value="64" min="16" max="128"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
                         </div>
                     </div>
 
@@ -331,9 +353,11 @@
 
                             <div class="stock-warning"
                                 style="display: inline-flex; align-items: center; gap: 6px; background: white; border: 1px solid #E9E9E9; border-radius: 999999px; padding: 6px 12px;">
-                                <span class="dot" style="width: 6px; height: 6px; background: #FF6B00; border-radius: 50%;"></span>
+                                <span class="dot"
+                                    style="width: 6px; height: 6px; background: #FF6B00; border-radius: 50%;"></span>
                                 <span class="editable" contenteditable="true"
-                                    style="font-family: 'Montserrat', sans-serif; font-size: 14px; color: #000;">Warning: Low on
+                                    style="font-family: 'Montserrat', sans-serif; font-size: 14px; color: #000;">Warning:
+                                    Low on
                                     stock</span>
                             </div>
                         </header>
@@ -350,11 +374,17 @@
                                     style="display: flex; flex-direction: row; align-items: center; gap: 12px; margin-top: 20px; margin-bottom: 12px;">
                                     <div
                                         style="width: 120px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative;">
-                                        <img class="bundle-image" src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418" alt="HomeSiren"
+                                        <img class="bundle-image"
+                                            src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418"
+                                            alt="HomeSiren"
                                             style="width: 55px; height: auto; object-fit: contain; position: relative; z-index: 3;">
-                                        <img class="bundle-image" src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418" alt="HomeSiren"
+                                        <img class="bundle-image"
+                                            src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418"
+                                            alt="HomeSiren"
                                             style="width: 55px; height: auto; object-fit: contain; margin-left: -35px; position: relative; z-index: 2; top: -10px;">
-                                        <img class="bundle-image" src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418" alt="HomeSiren"
+                                        <img class="bundle-image"
+                                            src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418"
+                                            alt="HomeSiren"
                                             style="width: 55px; height: auto; object-fit: contain; margin-left: -35px; position: relative; z-index: 1; top: -20px;">
                                     </div>
                                     <div class="info" style="text-align: left; flex-grow: 1; line-height: 1.3;">
@@ -398,9 +428,13 @@
                                     style="display: flex; flex-direction: row; align-items: center; gap: 12px; margin-top: 20px; margin-bottom: 12px;">
                                     <div
                                         style="width: 120px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                                        <img class="bundle-image" src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418" alt="HomeSiren"
+                                        <img class="bundle-image"
+                                            src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418"
+                                            alt="HomeSiren"
                                             style="width: 65px; height: auto; object-fit: contain; position: relative; z-index: 2;">
-                                        <img class="bundle-image" src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418" alt="HomeSiren"
+                                        <img class="bundle-image"
+                                            src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418"
+                                            alt="HomeSiren"
                                             style="width: 65px; height: auto; object-fit: contain; margin-left: -30px; position: relative; z-index: 1; top: -10px;">
                                     </div>
                                     <div class="info" style="text-align: left; flex-grow: 1; line-height: 1.3;">
@@ -444,8 +478,9 @@
                                     style="display: flex; flex-direction: row; align-items: center; gap: 12px; margin-top: 20px; margin-bottom: 12px;">
                                     <div
                                         style="width: 120px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                                        <img class="bundle-image" src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418" alt="1x HomeSiren"
-                                            style="width: 80px; height: auto; object-fit: contain;">
+                                        <img class="bundle-image"
+                                            src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418"
+                                            alt="1x HomeSiren" style="width: 80px; height: auto; object-fit: contain;">
                                     </div>
                                     <div class="info" style="text-align: left; flex-grow: 1; line-height: 1.3;">
                                         <h3 class="editable" contenteditable="true"
@@ -483,6 +518,20 @@
         </div>
     </section>
     <script type="module" src="/src/main.js"></script>
+    <!-- Link Input Modal -->
+    <div id="linkModal" class="modal-overlay hidden"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+        <div class="modal-content glass"
+            style="background: white; padding: 24px; border-radius: 12px; width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+            <h3 style="margin: 0 0 16px 0; font-family: 'Inter', sans-serif;">Set Redirect Link</h3>
+            <input type="text" id="modalUrlInput" placeholder="https://..."
+                style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 16px; font-size: 14px;">
+            <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                <button id="modalCancelBtn" class="btn-secondary">Cancel</button>
+                <button id="modalSaveBtn" class="btn-primary">Save Link</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
