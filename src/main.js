@@ -44,10 +44,42 @@ let currentDoc = null;
 
 const urlInput = document.getElementById('urlInput');
 const extractBtn = document.getElementById('extractBtn');
+
 const previewFrame = document.getElementById('previewFrame');
 const controlsPanel = document.getElementById('controlsPanel');
 const placeholderState = document.getElementById('placeholderState');
 const statusIndicator = document.getElementById('statusIndicator');
+const downloadZipBtn = document.getElementById('downloadZipBtn');
+const downloadZipStatus = document.getElementById('downloadZipStatus');
+// Download ZIP logic
+if (downloadZipBtn) {
+    downloadZipBtn.addEventListener('click', async () => {
+        if (!currentWebsiteName) {
+            alert('Please extract a website first');
+            return;
+        }
+        downloadZipStatus.textContent = 'Preparing ZIP...';
+        downloadZipBtn.disabled = true;
+        try {
+            const url = `${API_BASE}/api/download-zip/${encodeURIComponent(currentWebsiteName)}`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Failed to download ZIP');
+            const blob = await response.blob();
+            const a = document.createElement('a');
+            a.href = window.URL.createObjectURL(blob);
+            a.download = `${currentWebsiteName}.zip`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            downloadZipStatus.textContent = 'ZIP downloaded!';
+        } catch (err) {
+            downloadZipStatus.textContent = 'Download failed: ' + err.message;
+        } finally {
+            downloadZipBtn.disabled = false;
+            setTimeout(() => { downloadZipStatus.textContent = ''; }, 3000);
+        }
+    });
+}
 
 // Element remover state
 let isElementRemoverActive = false;

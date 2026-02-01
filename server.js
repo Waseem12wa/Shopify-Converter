@@ -1,9 +1,11 @@
+
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 import fs from 'fs-extra';
+import archiver from 'archiver';
 
 // Import services
 import downloader from './services/downloader.js';
@@ -42,6 +44,41 @@ const upload = multer({ storage });
 // ============================================
 // API ENDPOINTS
 // ============================================
+
+/**
+ * GET /api/download-zip/:websiteName
+ * Download the zipped code for a site
+ */
+app.get('/api/download-zip/:websiteName', async (req, res) => {
+    try {
+        const { websiteName } = req.params;
+        if (!websiteName) {
+            return res.status(400).json({ error: 'Website name is required' });
+        }
+        const websitePath = downloader.getWebsitePath(websiteName);
+        if (!await fs.pathExists(websitePath)) {
+            return res.status(404).json({ error: 'Website not found' });
+        }
+
+        res.setHeader('Content-Type', 'application/zip');
+        res.setHeader('Content-Disposition', `attachment; filename="${websiteName}.zip"`);
+
+        const archive = archiver('zip', { zlib: { level: 9 } });
+        archive.directory(websitePath, false);
+        archive.on('error', err => {
+            throw err;
+        });
+        archive.pipe(res);
+        await archive.finalize();
+    } catch (error) {
+        console.error('Zip download error:', error);
+        if (!res.headersSent) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.end();
+        }
+    }
+});
 
 /**
  * POST /api/extract

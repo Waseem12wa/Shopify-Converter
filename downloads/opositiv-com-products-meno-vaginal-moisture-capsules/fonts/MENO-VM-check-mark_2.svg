@@ -1,0 +1,15 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 14 12" height="12px" width="14px">
+    <title>Group 19</title>
+    <g fill-rule="evenodd" fill="none" stroke-width="1" stroke="none" id="Page-1">
+        <g transform="translate(-19, -4893)" id="MOBILE">
+            <g transform="translate(19, 4815)" id="Group-32">
+                <g transform="translate(0, 78)" id="Group-19">
+                    <circle r="6" cy="6" cx="6" fill="#F3E3FE" id="Oval"></circle>
+                    <g fill-rule="nonzero" fill="#6D99F2" transform="translate(3.1111, 0)" id="Checkmark">
+                        <path id="Path" d="M3.51584984,9.16712863 C3.07628808,9.58721122 2.68548532,9.63408466 2.29508114,9.16712863 C1.90434482,8.04661198 1.07424601,6.45977444 0.0973387679,5.24544739 C-0.244372838,4.77855487 0.341665223,4.26497945 1.41575833,5.33881319 C1.97783042,5.92230457 2.46929993,6.56453033 2.88085349,7.25332024 C4.49235851,4.73180846 7.32443295,1.83638887 9.96120565,0.249932412 C10.6936536,-0.170340723 10.7915702,0.0165814228 10.8888889,0.249932412 C7.81275371,2.49077516 5.02950471,5.85238862 3.51584984,9.16712863 Z"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
