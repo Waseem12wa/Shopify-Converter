@@ -252,7 +252,7 @@ function setupEventListeners() {
         }
 
         if (variantId) {
-            console.log(`Attached Commerce Logic to: ${ text } (${ actionStr })`);
+            console.log('Attached Commerce Logic to: ' + text + ' (' + actionStr + ')');
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
