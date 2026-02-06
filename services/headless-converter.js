@@ -236,24 +236,67 @@ function setupEventListeners() {
         // Check if text matches any mapping
         const mapping = window.SHOPIFY_CONFIG.productMapping;
         let variantId = null;
+        let actionStr = 'cart';
 
         // Simple text match (case insensitive partial)
-        for (const [key, vid] of Object.entries(mapping)) {
+        for (const [key, val] of Object.entries(mapping)) {
             if (text.toLowerCase().includes(key.toLowerCase())) {
-                variantId = vid;
+                if (typeof val === 'object') {
+                    variantId = val.variantId;
+                    actionStr = val.action || 'cart';
+                } else {
+                    variantId = val; // Backward compatibility
+                }
                 break;
             }
         }
 
         if (variantId) {
-            console.log('Attached Commerce Logic to:', text);
+            console.log(`Attached Commerce Logic to: ${ text } (${ actionStr })`);
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                addToCart(variantId);
+                
+                if (actionStr === 'checkout') {
+                    buyNow(variantId);
+                } else {
+                    addToCart(variantId);
+                }
             });
         }
     });
+}
+
+async function buyNow(variantId) {
+    // Direct Checkout flow
+    // 1. Create a new checkout with this item
+    // 2. Redirect to webUrl
+    
+    // We don't use the persistence cart for Buy Now usually, 
+    // but if you want to include existing items, you'd fetch existing checkout.
+    // Let's assume Buy Now means "Buy JUST THIS" for simplicity, or "Add & Go".
+    // "Add & Go" is safer.
+    
+    if (!checkoutId) {
+        await createCheckout();
+    }
+    
+    try {
+        const lineItemsToAdd = [{
+            variantId: variantId,
+            quantity: 1
+        }];
+        
+        // Add item
+        const checkout = await client.checkout.addLineItems(checkoutId, lineItemsToAdd);
+        
+        // Redirect
+        window.location.href = checkout.webUrl;
+        
+    } catch (e) {
+        console.error('Error in Buy Now:', e);
+        alert('Could not proceed to checkout.');
+    }
 }
 
 async function addToCart(variantId) {

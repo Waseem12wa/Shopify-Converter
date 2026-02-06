@@ -175,16 +175,19 @@ closeHeadlessBtn.addEventListener('click', () => {
     controlsPanel.classList.remove('hidden');
 });
 
+const mappingContainer = document.getElementById('mappingContainer');
+const deploymentResult = document.getElementById('deploymentResult');
+const liveUrlLink = document.getElementById('liveUrlLink');
+
+// Add Row using Template
 addMappingBtn.addEventListener('click', () => {
-    const row = document.createElement('div');
-    row.className = 'mapping-row';
-    row.innerHTML = `
-        <input type="text" placeholder="Button Text" class="map-key">
-        <input type="text" placeholder="Variant ID" class="map-val">
-        <button class="icon-btn remove-row">&times;</button>
-    `;
-    row.querySelector('.remove-row').addEventListener('click', () => row.remove());
-    mappingContainer.appendChild(row);
+    const template = document.querySelector('.mapping-row.template');
+    const clone = template.cloneNode(true);
+    clone.classList.remove('template');
+    clone.style.display = 'flex';
+
+    clone.querySelector('.remove-btn').addEventListener('click', () => clone.remove());
+    mappingContainer.appendChild(clone);
 });
 
 async function deployHeadless() {
@@ -195,11 +198,19 @@ async function deployHeadless() {
     const netlifyToken = document.getElementById('netlifyToken').value;
 
     // Collect Mappings
+    // Collect Mappings
     const productMapping = {};
-    document.querySelectorAll('.mapping-row').forEach(row => {
+    document.querySelectorAll('.mapping-row:not(.template)').forEach(row => {
         const key = row.querySelector('.map-key').value.trim();
         const val = row.querySelector('.map-val').value.trim();
-        if (key && val) productMapping[key] = val;
+        const action = row.querySelector('.map-action').value;
+
+        if (key && val) {
+            productMapping[key] = {
+                variantId: val,
+                action: action // 'cart' or 'checkout'
+            };
+        }
     });
 
     const shopifyConfig = {

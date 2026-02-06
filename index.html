@@ -113,28 +113,39 @@
                     <div class="mapping-table-header">
                         <span>Button Text (on website)</span>
                         <span>Shopify Variant ID</span>
+                        <span>Action</span>
                         <span></span>
                     </div>
-                    <div id="mappingContainer" class="mapping-list">
-                        <!-- Rows injected here -->
+                </div>
+                <div id="mappingContainer" class="mapping-list">
+                    <!-- Rows injected here (Template for JS) -->
+                    <div class="mapping-row template" style="display:none">
+                        <input type="text" placeholder="e.g. Add to Cart" class="map-key">
+                        <input type="text" placeholder="gid://..." class="map-val">
+                        <select class="map-action">
+                            <option value="cart">Add to Cart</option>
+                            <option value="checkout">Direct Checkout</option>
+                        </select>
+                        <button class="remove-btn">&times;</button>
                     </div>
                 </div>
+            </div>
 
-                <div class="headless-footer">
-                    <span id="headlessStatus" class="status-text">Ready to deploy</span>
-                    <button id="deployHeadlessBtn" class="btn-primary deploy-action">
-                        🚀 Save & Deploy to Netlify
-                    </button>
-                </div>
+            <div class="headless-footer">
+                <span id="headlessStatus" class="status-text">Ready to deploy</span>
+                <button id="deployHeadlessBtn" class="btn-primary deploy-action">
+                    🚀 Save & Deploy to Netlify
+                </button>
+            </div>
 
-                <div id="deploymentResult" class="deployment-success glass hidden">
-                    <div class="success-icon">🎉</div>
-                    <h3>Deployment Successful!</h3>
-                    <p>Your headless store is live.</p>
-                    <a href="#" id="liveUrlLink" target="_blank" class="btn-primary">View Live Site</a>
-                </div>
+            <div id="deploymentResult" class="deployment-success glass hidden">
+                <div class="success-icon">🎉</div>
+                <h3>Deployment Successful!</h3>
+                <p>Your headless store is live.</p>
+                <a href="#" id="liveUrlLink" target="_blank" class="btn-primary">View Live Site</a>
             </div>
         </div>
+    </div>
     </div>
 
     <script type="module" src="/src/main.js"></script>
