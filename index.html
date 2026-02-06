@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shopify Extractor & modifier</title>
+    <title>Shopify Theme Converter</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -14,130 +14,37 @@
 <body>
     <div id="app">
         <header class="app-header">
-            <div class="logo">Shopify<span>Forger</span></div>
-            <p class="tagline">Advanced Front-end Extraction Tool</p>
-            <button id="themeToggleBtn" class="btn-secondary theme-toggle">Light Mode</button>
-            <div class="preview-toggle-group">
-                <button id="previewDesktopBtn" class="btn-secondary preview-toggle active"
-                    title="Desktop Preview">🖥️</button>
-                <button id="previewMobileBtn" class="btn-secondary preview-toggle" title="Mobile Preview">📱</button>
-            </div>
-            <button id="homeBtn" class="btn-secondary home-btn" style="display:none;">🏠 Home</button>
+            <div class="logo">Shopify<span>Converter</span></div>
+            <p class="tagline">Convert Any Website to Shopify Theme</p>
         </header>
 
         <main class="workspace">
             <aside class="sidebar">
                 <div class="panel glass">
-                    <h3>Target Configuration</h3>
+                    <h3>Website URL</h3>
                     <div class="input-group">
-                        <label>Shopify Store URL</label>
-                        <input type="text" id="urlInput" placeholder="https://example.myshopify.com"
-                            value="https://themes.shopify.com/themes/dawn/styles/default/preview">
+                        <label>Enter Website URL</label>
+                        <input type="text" id="urlInput" placeholder="https://example.com">
                         <button id="extractBtn" class="btn-primary">
-                            <span class="icon">⚡</span> Extract Front-end
+                            <span class="icon">⚡</span> Extract Website
                         </button>
                     </div>
                 </div>
 
                 <div class="panel glass hidden" id="controlsPanel">
-                    <h3>Modifications</h3>
-
+                    <h3>Download Shopify Theme</h3>
                     <div class="control-group">
-                        <label class="section-label">Global Injection</label>
-                        <button id="injectBundleBtn" class="btn-secondary">
-                            Configure Bundle Section
+                        <button id="downloadShopifyBtn" class="btn-primary" style="width: 100%;">
+                            🛍️ Download as Shopify Theme
                         </button>
-                        <p class="helper-text" id="bundleDraftStatus">No bundle draft yet</p>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="section-label">Download Extracted Code</label>
-                        <button id="downloadZipBtn" class="btn-primary" style="width: 100%;">
-                            ⬇️ Download as ZIP
+                        <button id="openHeadlessBtn" class="btn-secondary"
+                            style="width: 100%; margin-top: 10px; background: #2c3e50;">
+                            ⚛️ Configure Headless Deployment
                         </button>
-                        <p class="helper-text" id="downloadZipStatus"></p>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="section-label">Button Text Editor</label>
-                        <input type="text" id="buttonSelectorInput"
-                            placeholder="Button selector (e.g., button:contains('Add to Cart'))"
-                            style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                        <input type="text" id="newButtonTextInput" placeholder="New button text"
-                            style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                        <button id="editButtonTextBtn" class="btn-secondary" style="width: 100%;">
-                            Change Button Text
-                        </button>
-                        <p class="helper-text" id="buttonEditStatus"></p>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="section-label">Header Adjustments</label>
-                        <label class="toggle-row">
-                            <input type="checkbox" id="removeIconsCheck">
-                            <span>Remove Header Icons</span>
-                        </label>
-                        <button id="clearHeaderBtn" class="btn-small"
-                            style="margin-top: 8px; background: #e67e22; width: 100%;">
-                            Clear Header for Logo
-                        </button>
-                        <p class="helper-text" id="clearHeaderStatus"
-                            style="font-size: 11px; margin-top: 4px; display: none;"></p>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="section-label">Element Remover</label>
-                        <label class="toggle-row">
-                            <input type="checkbox" id="elementRemoverCheck">
-                            <span>Enable Click-to-Delete Mode</span>
-                        </label>
-                        <p class="helper-text" id="elementRemoverStatus" style="font-size: 11px; margin-top: 4px;">Click
-                            on any element in the preview to delete it</p>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="section-label">Asset Replacement</label>
-                        <input type="file" id="logoInput" accept="image/*" style="display: none;">
-                        <div class="btn-grid">
-                            <button id="injectLogoBtn" class="btn-small">Inject Logo</button>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="section-label">Button Redirect</label>
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <select id="buttonTargetSelect"
-                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                                <option value="">Select button to redirect...</option>
-                                <option value="add-to-cart">Add to Cart</option>
-                                <option value="buy-now">Buy Now</option>
-                                <option value="shop-now">Shop Now</option>
-                                <option value="add-cart">Add Cart</option>
-                                <option value="checkout">Checkout</option>
-                            </select>
-                            <select id="redirectDestinationSelect"
-                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                                <option value="">Select destination...</option>
-                                <option value="#bundle-section">Bundle Section (if injected)</option>
-                                <option value="footer">Footer</option>
-                                <option value="#custom-bundle-section">Custom Bundle (if exists)</option>
-                                <option value="[class*='faq']">FAQ Section (if exists)</option>
-                            </select>
-                            <button id="applyRedirectBtn" class="btn-small">Apply Redirect</button>
-                        </div>
-                        <p class="helper-text" id="redirectStatus"></p>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="section-label">Deployment</label>
-                        <input type="text" id="netlifyTokenInput" placeholder="Netlify Personal Access Token"
-                            style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                        <button id="deployNetlifyBtn" class="btn-primary" style="width: 100%;">
-                            🚀 Deploy to Netlify
-                        </button>
-                        <p class="helper-text" id="deployStatus"></p>
                     </div>
                 </div>
+
+
             </aside>
 
             <section class="preview-area">
@@ -151,395 +58,86 @@
                     <iframe id="previewFrame" title="Site Preview"
                         sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
                     <div id="placeholderState" class="placeholder">
-                        <h2>Ready to Extract</h2>
-                        <p>Enter a URL to fetch and modify the codebase.</p>
+                        <h2>Ready to Convert</h2>
+                        <p>Enter a website URL and click Extract to begin.</p>
                     </div>
                 </div>
             </section>
         </main>
-    </div>
 
-    <section id="bundleBuilder" class="bundle-builder hidden" aria-hidden="true">
-        <div class="bundle-shell">
-            <header class="bundle-header">
-                <button class="btn-secondary btn-back" id="bundleBackBtn">← Back</button>
-                <div class="bundle-title">
-                    <h2>Bundle Builder</h2>
-                    <p>Configure the bundle section that will be injected into the storefront.</p>
+        <!-- Full Screen Headless Setup Overlay -->
+        <div id="headlessPanel" class="headless-overlay hidden">
+            <div class="headless-container glass">
+                <div class="headless-header">
+                    <div class="headless-title">
+                        <h2>⚛️ Headless Setup</h2>
+                        <p>Configure your Shopify & Netlify integration</p>
+                    </div>
+                    <button id="closeHeadlessBtn" class="icon-btn close-overlay">&times;</button>
                 </div>
-                <div class="bundle-actions">
-                    <button id="themeToggleBtnBundle" class="btn-secondary theme-toggle">Light Mode</button>
-                    <button class="btn-secondary" id="bundleSaveBtn">Save Draft</button>
-                    <button class="btn-primary" id="bundleSubmitBtn">Submit Bundle</button>
-                </div>
-            </header>
 
-            <div class="bundle-content">
-                <div class="bundle-panel glass">
-                    <div class="panel-row">
-                        <div>
-                            <h3>Bundle Preview Editor</h3>
-                            <p class="helper-text">Edit any text directly in the section below. This is the actual
-                                bundle layout.</p>
+                <div class="headless-content-grid">
+                    <!-- Column 1: Shopify Config -->
+                    <div class="config-section">
+                        <h3>1. Shopify Credentials</h3>
+                        <div class="input-group">
+                            <label>Shopify Domain</label>
+                            <input type="text" id="shopifyDomain" placeholder="your-store.myshopify.com">
                         </div>
-                        <div class="bundle-controls">
-                            <div class="input-group">
-                                <label>Product Image</label>
-                                <input type="file" id="bundleImageInput" accept="image/*">
-                            </div>
-                            <div class="bundle-actions-inline">
-                                <button class="btn-secondary" id="bundleAddImageBtn">+ Add Image</button>
-                                <button class="btn-secondary" id="bundleRemoveImageBtn">Remove Image</button>
-                            </div>
+                        <div class="input-group">
+                            <label>Storefront Access Token</label>
+                            <input type="password" id="shopifyToken" placeholder="shpat_xxxxxxxxxxxxxxxx">
                         </div>
                     </div>
 
-                </div>
-
-                <!-- NEW STYLING PANEL -->
-                <div class="bundle-panel glass">
-                    <h3>🎨 Styling Options</h3>
-                    <p class="helper-text">Customize colors, fonts, and sizes for your bundle section</p>
-
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-top: 20px;">
-                        <!-- Background Color -->
-                        <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Background
-                                Color</label>
-                            <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="color" id="bundleBgColor" value="#FFF7F6"
-                                    style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
-                                <input type="text" id="bundleBgColorText" value="#FFF7F6"
-                                    style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                            </div>
+                    <!-- Column 2: Netlify Config -->
+                    <div class="config-section">
+                        <h3>2. Netlify Deployment</h3>
+                        <div class="input-group">
+                            <label>Netlify Personal Access Token</label>
+                            <input type="password" id="netlifyToken" placeholder="nfp_xxxxxxxxxxxxxxxx">
+                            <small class="helper-text">Leave empty to specifically download a ZIP instead of
+                                auto-deploying.</small>
                         </div>
-
-                        <!-- Primary Font -->
-                        <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Primary Font</label>
-                            <select id="bundlePrimaryFont"
-                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                                <option value="Poppins, sans-serif" selected>Poppins</option>
-                                <option value="Montserrat, sans-serif">Montserrat</option>
-                                <option value="Arial, sans-serif">Arial</option>
-                                <option value="Helvetica, sans-serif">Helvetica</option>
-                                <option value="Georgia, serif">Georgia</option>
-                                <option value="Times New Roman, serif">Times New Roman</option>
-                                <option value="Courier New, monospace">Courier New</option>
-                                <option value="Roboto, sans-serif">Roboto</option>
-                                <option value="Open Sans, sans-serif">Open Sans</option>
-                                <option value="Lato, sans-serif">Lato</option>
-                            </select>
-                        </div>
-
-                        <!-- Heading Font Size -->
-                        <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Heading Size
-                                (px)</label>
-                            <input type="number" id="bundleHeadingSize" value="34" min="16" max="72"
-                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                        </div>
-
-                        <!-- Heading Color -->
-                        <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Heading Color</label>
-                            <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="color" id="bundleHeadingColor" value="#000000"
-                                    style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
-                                <input type="text" id="bundleHeadingColorText" value="#000000"
-                                    style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                            </div>
-                        </div>
-
-                        <!-- Accent Color (Red) -->
-                        <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Accent Color</label>
-                            <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="color" id="bundleAccentColor" value="#E32D2D"
-                                    style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
-                                <input type="text" id="bundleAccentColorText" value="#E32D2D"
-                                    style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                            </div>
-                        </div>
-
-                        <!-- Button Color -->
-                        <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Button Color</label>
-                            <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="color" id="bundleButtonColor" value="#1EB13A"
-                                    style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
-                                <input type="text" id="bundleButtonColorText" value="#1EB13A"
-                                    style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                            </div>
-                        </div>
-
-                        <!-- Text Color -->
-                        <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Body Text Color</label>
-                            <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="color" id="bundleTextColor" value="#000000"
-                                    style="width: 50px; height: 35px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
-                                <input type="text" id="bundleTextColorText" value="#000000"
-                                    style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                            </div>
-                        </div>
-
-                        <!-- Body Font Size -->
-                        <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Body Text Size
-                                (px)</label>
-                            <input type="number" id="bundleBodySize" value="16" min="10" max="24"
-                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                        </div>
-
-                        <!-- Card Border Radius -->
-                        <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Card Roundness
-                                (px)</label>
-                            <input type="number" id="bundleBorderRadius" value="10" min="0" max="30"
-                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                        </div>
-
-                        <!-- Padding -->
-                        <div class="style-control">
-                            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Section Padding
-                                (px)</label>
-                            <input type="number" id="bundlePadding" value="64" min="16" max="128"
-                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 16px; display: flex; gap: 12px; justify-content: flex-end;">
-                        <button class="btn-secondary" id="bundleResetStyleBtn">Reset to Default</button>
-                        <button class="btn-primary" id="bundleApplyStyleBtn">Apply Styles</button>
                     </div>
                 </div>
 
-                <div class="bundle-panel glass">
-                    <section id="bundlePreview" class="offer-container"
-                        style="background-color: #FFF7F6; padding: 64px 16px; width: 100%;">
-                        <header class="offer-header" style="text-align: center; margin-bottom: 32px;">
-                            <h1 class="editable" contenteditable="true"
-                                style="font-family: 'Poppins', sans-serif; font-size: 34px; font-weight: 700; color: #000; margin: 0 0 8px 0; line-height: 1.2;">
-                                Bundle & Save</h1>
-                            <h2 class="editable" contenteditable="true"
-                                style="font-family: 'Poppins', sans-serif; font-size: 34px; font-weight: 700; color: #E32D2D; margin: 0 0 12px 0; line-height: 1.2;">
-                                Protect More Spaces for Less</h2>
-                            <p class="editable" contenteditable="true"
-                                style="font-family: 'Poppins', sans-serif; font-size: 16px; color: #000; line-height: 1.6; margin: 0 0 20px 0;">
-                                <strong>50% discount</strong> on the HomeSiren for first-time buyers -<br>
-                                Pay once, own forever. No monthly fees. No contracts. Complete ownership autonomy.
-                            </p>
+                <div class="divider-horizontal"></div>
 
-                            <div class="timer-section"
-                                style="display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
-                                <span class="editable" contenteditable="true"
-                                    style="font-family: 'Montserrat', sans-serif; font-weight: 700; color: #E32D2D; font-size: 16px;">Limited
-                                    Time Offer!</span>
-                                <div class="timer-units" style="display: flex; gap: 8px;">
-                                    <div class="unit"
-                                        style="background: white; padding: 4px 12px; border-radius: 6px; text-align: center;">
-                                        <span id="hours"
-                                            style="display: block; font-size: 20px; font-weight: 700; color: #E32D2D; font-family: 'Montserrat', sans-serif;">08</span><small
-                                            style="display: block; font-size: 12px; color: #666; font-family: 'Montserrat', sans-serif;">Hours</small>
-                                    </div>
-                                    <div class="unit"
-                                        style="background: white; padding: 4px 12px; border-radius: 6px; text-align: center;">
-                                        <span id="minutes"
-                                            style="display: block; font-size: 20px; font-weight: 700; color: #E32D2D; font-family: 'Montserrat', sans-serif;">24</span><small
-                                            style="display: block; font-size: 12px; color: #666; font-family: 'Montserrat', sans-serif;">Minutes</small>
-                                    </div>
-                                    <div class="unit"
-                                        style="background: white; padding: 4px 12px; border-radius: 6px; text-align: center;">
-                                        <span id="seconds"
-                                            style="display: block; font-size: 20px; font-weight: 700; color: #E32D2D; font-family: 'Montserrat', sans-serif;">36</span><small
-                                            style="display: block; font-size: 12px; color: #666; font-family: 'Montserrat', sans-serif;">Seconds</small>
-                                    </div>
-                                </div>
-                            </div>
+                <!-- Product Mapping Section -->
+                <div class="mapping-section">
+                    <div class="mapping-header">
+                        <h3>3. Product Mapping</h3>
+                        <button id="addMappingBtn" class="btn-small">+ Add Button Mapping</button>
+                    </div>
+                    <div class="mapping-table-header">
+                        <span>Button Text (on website)</span>
+                        <span>Shopify Variant ID</span>
+                        <span></span>
+                    </div>
+                    <div id="mappingContainer" class="mapping-list">
+                        <!-- Rows injected here -->
+                    </div>
+                </div>
 
-                            <div class="stock-warning"
-                                style="display: inline-flex; align-items: center; gap: 6px; background: white; border: 1px solid #E9E9E9; border-radius: 999999px; padding: 6px 12px;">
-                                <span class="dot"
-                                    style="width: 6px; height: 6px; background: #FF6B00; border-radius: 50%;"></span>
-                                <span class="editable" contenteditable="true"
-                                    style="font-family: 'Montserrat', sans-serif; font-size: 14px; color: #000;">Warning:
-                                    Low on
-                                    stock</span>
-                            </div>
-                        </header>
+                <div class="headless-footer">
+                    <span id="headlessStatus" class="status-text">Ready to deploy</span>
+                    <button id="deployHeadlessBtn" class="btn-primary deploy-action">
+                        🚀 Save & Deploy to Netlify
+                    </button>
+                </div>
 
-                        <div class="pricing-grid">
-                            <div class="card recommended" data-card="1"
-                                style="background: #FFFFFF; border: 2px solid #FC0000; border-radius: 10px; padding: 16px 10px; position: relative; box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px; display: flex; flex-direction: column;">
-                                <button class="card-remove" type="button" title="Remove bundle">×</button>
-                                <div class="badge-red editable" contenteditable="true"
-                                    style="position: absolute; top: 0; left: 0; padding: 4px 12px; border-radius: 10px 0px 10px 0px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; background: #FC0000; color: white;">
-                                    Recommended Deal</div>
-
-                                <div class="card-content"
-                                    style="display: flex; flex-direction: row; align-items: center; gap: 12px; margin-top: 20px; margin-bottom: 12px;">
-                                    <div
-                                        style="width: 120px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative;">
-                                        <img class="bundle-image"
-                                            src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418"
-                                            alt="HomeSiren"
-                                            style="width: 55px; height: auto; object-fit: contain; position: relative; z-index: 3;">
-                                        <img class="bundle-image"
-                                            src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418"
-                                            alt="HomeSiren"
-                                            style="width: 55px; height: auto; object-fit: contain; margin-left: -35px; position: relative; z-index: 2; top: -10px;">
-                                        <img class="bundle-image"
-                                            src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418"
-                                            alt="HomeSiren"
-                                            style="width: 55px; height: auto; object-fit: contain; margin-left: -35px; position: relative; z-index: 1; top: -20px;">
-                                    </div>
-                                    <div class="info" style="text-align: left; flex-grow: 1; line-height: 1.3;">
-                                        <h3 class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: #444343; margin: 0 0 2px 0; line-height: 1.2;">
-                                            3x HomeSiren</h3>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 13px; color: #1EB13A; margin: 0 0 3px 0; font-weight: 600; line-height: 1.2;">
-                                            All Entries +<br>Window Security</p>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 12px; color: #999; margin: 0 0 2px 0; line-height: 1.2;">
-                                            Total : £39.99</p>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 600; color: #2f2e2e; margin: 0 0 3px 0; line-height: 1.1;">
-                                            <del>£149.99</del>
-                                        </p>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 12px; color: #E32D2D; font-weight: 600; margin: 0; line-height: 1.3;">
-                                            Only £13.33 each</p>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 12px; color: #E32D2D; font-weight: 600; margin: 0; line-height: 1.3;">
-                                            + Free Shipping</p>
-                                    </div>
-                                </div>
-                                <button class="cta-btn editable" contenteditable="true"
-                                    style="width: 100%; padding: 11px 16px; background: #1EB13A; color: #FFFFFF; border: none; border-radius: 999px; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.3s; margin-top: auto;">GET
-                                    60% OFF</button>
-                                <p class="editable" contenteditable="true"
-                                    style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #666; margin: 7px 0 0 0; text-align: center; line-height: 1.2;">
-                                    180 Day Money Back Guarantee</p>
-                            </div>
-
-                            <div class="card" data-card="2"
-                                style="background: #FFFFFF; border: 1px solid #E0E0E0; border-radius: 10px; padding: 16px 10px; position: relative; box-shadow: rgba(90, 89, 89, 0.08) 0px 2px 8px; display: flex; flex-direction: column;">
-                                <button class="card-remove" type="button" title="Remove bundle">×</button>
-                                <div class="badge-gray editable" contenteditable="true"
-                                    style="position: absolute; top: 0; left: 0; padding: 4px 12px; border-radius: 10px 0px 10px 0px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; background: #EBEBEB; color: #000;">
-                                    PROMO</div>
-
-                                <div class="card-content"
-                                    style="display: flex; flex-direction: row; align-items: center; gap: 12px; margin-top: 20px; margin-bottom: 12px;">
-                                    <div
-                                        style="width: 120px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                                        <img class="bundle-image"
-                                            src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418"
-                                            alt="HomeSiren"
-                                            style="width: 65px; height: auto; object-fit: contain; position: relative; z-index: 2;">
-                                        <img class="bundle-image"
-                                            src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418"
-                                            alt="HomeSiren"
-                                            style="width: 65px; height: auto; object-fit: contain; margin-left: -30px; position: relative; z-index: 1; top: -10px;">
-                                    </div>
-                                    <div class="info" style="text-align: left; flex-grow: 1; line-height: 1.3;">
-                                        <h3 class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: #575656; margin: 0 0 2px 0; line-height: 1.2;">
-                                            2x HomeSiren</h3>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 13px; color: #1EB13A; margin: 0 0 3px 0; font-weight: 600; line-height: 1.2;">
-                                            Main Door +<br>Back Door Security</p>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 12px; color: #999; margin: 0 0 2px 0; line-height: 1.2;">
-                                            Total: £29.99</p>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 600; color: #000; margin: 0 0 3px 0; line-height: 1.1;">
-                                            <del>£99.99</del>
-                                        </p>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 12px; color: #E32D2D; font-weight: 600; margin: 0; line-height: 1.3;">
-                                            Only £14.99 each</p>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 12px; color: #E32D2D; font-weight: 600; margin: 0; line-height: 1.3;">
-                                            + Free Shipping</p>
-                                    </div>
-                                </div>
-                                <button class="cta-btn editable" contenteditable="true"
-                                    style="width: 100%; padding: 11px 16px; background: #1EB13A; color: #FFFFFF; border: none; border-radius: 999px; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.3s; margin-top: auto;">GET
-                                    55% OFF</button>
-                                <p class="editable" contenteditable="true"
-                                    style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #666; margin: 7px 0 0 0; text-align: center; line-height: 1.2;">
-                                    180 Day Money Back Guarantee</p>
-                            </div>
-
-                            <div class="card" data-card="3"
-                                style="background: #FFFFFF; border: 1px solid #E0E0E0; border-radius: 10px; padding: 16px 10px; position: relative; box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px; display: flex; flex-direction: column;">
-                                <button class="card-remove" type="button" title="Remove bundle">×</button>
-                                <div class="badge-gray editable" contenteditable="true"
-                                    style="position: absolute; top: 0; left: 0; padding: 4px 12px; border-radius: 10px 0px 10px 0px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; background: #EBEBEB; color: #000;">
-                                    PROMO</div>
-
-                                <div class="card-content"
-                                    style="display: flex; flex-direction: row; align-items: center; gap: 12px; margin-top: 20px; margin-bottom: 12px;">
-                                    <div
-                                        style="width: 120px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                                        <img class="bundle-image"
-                                            src="https://uk.viasox.com/cdn/shop/files/navy-blue.png?v=1762442418"
-                                            alt="1x HomeSiren" style="width: 80px; height: auto; object-fit: contain;">
-                                    </div>
-                                    <div class="info" style="text-align: left; flex-grow: 1; line-height: 1.3;">
-                                        <h3 class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: #4b4b4b; margin: 0 0 2px 0; line-height: 1.2;">
-                                            1x HomeSiren</h3>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 13px; color: #1EB13A; margin: 0 0 3px 0; font-weight: 600; line-height: 1.2;">
-                                            Main Entry Door<br>Security</p>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 12px; color: #999; margin: 0 0 2px 0; line-height: 1.2;">
-                                            Total: £19.99</p>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 600; color: #4f4f4f; margin: 0 0 3px 0; line-height: 1.1;">
-                                            <del>£66.99</del>
-                                        </p>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 12px; color: #E32D2D; font-weight: 600; margin: 0; line-height: 1.3;">
-                                            Only £19.99 each</p>
-                                        <p class="editable" contenteditable="true"
-                                            style="font-family: 'Montserrat', sans-serif; font-size: 12px; color: #E32D2D; font-weight: 600; margin: 0; line-height: 1.3;">
-                                            + Free Shipping</p>
-                                    </div>
-                                </div>
-                                <button class="cta-btn editable" contenteditable="true"
-                                    style="width: 100%; padding: 11px 16px; background: #1EB13A; color: #FFFFFF; border: none; border-radius: 999px; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.3s; margin-top: auto;">GET
-                                    50% OFF</button>
-                                <p class="editable" contenteditable="true"
-                                    style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #666; margin: 7px 0 0 0; text-align: center; line-height: 1.2;">
-                                    180 Day Money Back Guarantee</p>
-                            </div>
-                        </div>
-                    </section>
+                <div id="deploymentResult" class="deployment-success glass hidden">
+                    <div class="success-icon">🎉</div>
+                    <h3>Deployment Successful!</h3>
+                    <p>Your headless store is live.</p>
+                    <a href="#" id="liveUrlLink" target="_blank" class="btn-primary">View Live Site</a>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
-    <!-- Link Input Modal -->
-    <div id="linkModal" class="modal-overlay hidden"
-        style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;">
-        <div class="modal-content glass"
-            style="background: white; padding: 24px; border-radius: 12px; width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
-            <h3 style="margin: 0 0 16px 0; font-family: 'Inter', sans-serif;">Set Redirect Link</h3>
-            <input type="text" id="modalUrlInput" placeholder="https://..."
-                style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 16px; font-size: 14px;">
-            <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                <button id="modalCancelBtn" class="btn-secondary">Cancel</button>
-                <button id="modalSaveBtn" class="btn-primary">Save Link</button>
-            </div>
-        </div>
-    </div>
 </body>
 
 </html>
