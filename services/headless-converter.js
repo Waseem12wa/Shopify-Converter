@@ -23,21 +23,30 @@ class HeadlessConverter {
         // 2. Copy All Assets (The exact site)
         await this.copyWebsiteFiles(websitePath, deployPath);
 
-        // 3. Process HTML to Inject Commerce Logic
-        const indexPath = path.join(deployPath, 'index.html');
-        if (await fs.pathExists(indexPath)) {
-            let htmlContent = await fs.readFile(indexPath, 'utf-8');
-            htmlContent = await this.injectCommerceLogic(htmlContent, deployPath);
-            await fs.writeFile(indexPath, htmlContent);
-        } else {
-            throw new Error('No index.html found to inject commerce logic.');
-        }
-
-        // 4. Create Configuration File
+        // 3. Create Configuration File
         await this.createConfigFile(deployPath, shopifyConfig);
 
-        // 5. Create Commerce Script (The Engine)
-        await this.createCommerceScript(deployPath);
+        // 4. Create Commerce Script (The Engine)
+        const commerceScript = await this.createCommerceScript(deployPath);
+
+        // 5. Process HTML & Inject Logic
+        const indexHtmlPath = path.join(websitePath, 'index.html');
+        if (await fs.pathExists(indexHtmlPath)) {
+            let html = await fs.readFile(indexHtmlPath, 'utf-8');
+            html = await this.injectCommerceLogic(html, deployPath);
+            await fs.writeFile(path.join(deployPath, 'index.html'), html);
+
+            // --- PREVIEW MODE (Source Root) ---
+            // Write injected preview.html to root
+            await fs.writeFile(path.join(websitePath, 'preview.html'), html);
+            // Write config & script to root
+            await this.createConfigFile(websitePath, shopifyConfig);
+            await fs.writeFile(path.join(websitePath, 'shopify-commerce.js'), commerceScript);
+
+            console.log('✓ Preview files generated in root: preview.html, shopify-config.js, shopify-commerce.js');
+        } else {
+            throw new Error('No index.html found!');
+        }
 
         console.log(`✓ Headless site created at: ${deployPath}`);
 
@@ -110,6 +119,31 @@ window.SHOPIFY_CONFIG = SHOPIFY_CONFIG;
     async injectCommerceLogic(html, deployPath) {
         const dom = new JSDOM(html);
         const document = dom.window.document;
+
+        // 0. CLEANUP: Remove conflicting Shopify Scripts (Payment Button, Analytics, etc.)
+        const scripts = document.querySelectorAll('script');
+        scripts.forEach(script => {
+            const src = script.src || '';
+            const content = script.textContent || '';
+
+            // List of blockers to remove
+            if (
+                src.includes('portable-wallets') ||
+                src.includes('shopify-payment-button') ||
+                src.includes('storefront-experiences') ||
+                src.includes('pixie') ||
+                content.includes('Shopify.PaymentButton') ||
+                content.includes('pixie(') ||
+                content.includes('loadFeatures') ||
+                content.includes('loadFeatures') ||
+                content.includes('RechargeStorefrontConfig') ||
+                content.includes('widget_page_id') ||
+                src.includes('shop.app/pay')
+            ) {
+                script.remove();
+                console.log('Removed conflicting script: ' + (src || 'inline'));
+            }
+        });
 
         // 1. Inject Config Script
         const configScript = document.createElement('script');
@@ -189,122 +223,204 @@ let checkoutId;
 
 // Initialize Shopify Client
 function initShopify() {
+    console.log('[Shopify] Initializing...');
     if (!window.SHOPIFY_CONFIG || !window.ShopifyBuy) {
-        console.error('Shopify Config or SDK missing');
+        console.error('[Shopify] Critical Error: Config or SDK missing', {
+            config: !!window.SHOPIFY_CONFIG,
+            sdk: !!window.ShopifyBuy
+        });
         return;
     }
 
-    client = ShopifyBuy.buildClient({
-        domain: window.SHOPIFY_CONFIG.domain,
-        storefrontAccessToken: window.SHOPIFY_CONFIG.storefrontAccessToken
-    });
+    console.log('[Shopify] Config found:', window.SHOPIFY_CONFIG);
+
+    try {
+        const configDomain = window.SHOPIFY_CONFIG.domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        const currentHost = window.location.hostname;
+
+        // Validation: Prevent using the Netlify app itself as the Shopify domain
+        if (configDomain === currentHost || configDomain.includes('netlify.app') || (configDomain.includes('localhost') && !currentHost.includes('localhost'))) {
+             console.error('[Shopify] CRITICAL CONFIG ERROR: Shopify Domain is set to the website itself or a non-Shopify domain.', configDomain);
+             alert('Setup Error: "Shopify Domain" should be your actual Shopify store URL (e.g. your-store.myshopify.com), NOT this website URL.\n\nPlease go back to "Headless Setup" and fix the domain.');
+             return; // Stop initialization
+        }
+
+        client = ShopifyBuy.buildClient({
+            domain: window.SHOPIFY_CONFIG.domain,
+            storefrontAccessToken: window.SHOPIFY_CONFIG.storefrontAccessToken
+        });
+        console.log('[Shopify] Client built successfully');
+    } catch (e) {
+        console.error('[Shopify] Client build failed:', e);
+        return;
+    }
 
     createCheckout();
     setupEventListeners();
 }
 
 async function createCheckout() {
+    console.log('[Shopify] createCheckout called');
     // Check local storage for existing checkout
     const existingId = localStorage.getItem('shopify_checkout_id');
     if (existingId) {
+        console.log('[Shopify] Found existing checkout ID:', existingId);
         try {
             const checkout = await client.checkout.fetch(existingId);
             if (!checkout.completedAt) {
+                console.log('[Shopify] Existing checkout is valid');
                 checkoutId = existingId;
                 updateCartUI(checkout);
                 return;
+            } else {
+                console.log('[Shopify] Existing checkout was completed, clearing it');
             }
         } catch (e) {
-            console.log('Expired checkout, creating new one');
+            console.log('[Shopify] Expired/Invalid checkout, creating new one');
         }
     }
 
-    const checkout = await client.checkout.create();
-    checkoutId = checkout.id;
-    localStorage.setItem('shopify_checkout_id', checkoutId);
-    updateCartUI(checkout);
+    try {
+        console.log('[Shopify] Creating new checkout instance...');
+        const checkout = await client.checkout.create();
+        checkoutId = checkout.id;
+        localStorage.setItem('shopify_checkout_id', checkoutId);
+        console.log('[Shopify] New checkout created:', checkoutId);
+        updateCartUI(checkout);
+    } catch (e) {
+        console.error('[Shopify] Failed to create checkout:', e);
+    }
 }
 
 function setupEventListeners() {
-    // Find all potential "Add to Cart" buttons
-    const buttons = document.querySelectorAll('button, a.btn, input[type="submit"]');
+    console.log('[Shopify] Setting up event listeners');
     
-    buttons.forEach(btn => {
-        const text = btn.innerText || btn.value;
-        if (!text) return;
-
-        // Check if text matches any mapping
-        const mapping = window.SHOPIFY_CONFIG.productMapping;
-        let variantId = null;
-        let actionStr = 'cart';
-
-        // Simple text match (case insensitive partial)
-        for (const [key, val] of Object.entries(mapping)) {
-            if (text.toLowerCase().includes(key.toLowerCase())) {
-                if (typeof val === 'object') {
-                    variantId = val.variantId;
-                    actionStr = val.action || 'cart';
-                } else {
-                    variantId = val; // Backward compatibility
-                }
-                break;
-            }
-        }
-
-        if (variantId) {
-            console.log('Attached Commerce Logic to: ' + text + ' (' + actionStr + ')');
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                if (actionStr === 'checkout') {
-                    buyNow(variantId);
-                } else {
-                    addToCart(variantId);
+    // Custom MutationObserver to catch lazy-loaded buttons
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === 1) { // Element node
+                    if (node.matches && (node.matches('button, a, input[type="submit"]'))) {
+                        attachListener(node);
+                    }
+                    const childButtons = node.querySelectorAll ? node.querySelectorAll('button, a, input[type="submit"]') : [];
+                    childButtons.forEach(attachListener);
                 }
             });
-        }
+        });
     });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    
+    // Initial scan
+    const buttons = document.querySelectorAll('button, a, input[type="submit"]');
+    console.log('[Shopify] Initial scan found buttons:', buttons.length);
+    buttons.forEach(attachListener);
+}
+
+function attachListener(btn) {
+    if (btn.dataset.shopifyAttached) return; 
+    
+    const text = btn.innerText || btn.value;
+    if (!text) return;
+
+    // Check if text matches any mapping
+    const mapping = window.SHOPIFY_CONFIG.productMapping;
+    let variantId = null;
+    let actionStr = 'cart';
+
+    for (const [key, val] of Object.entries(mapping)) {
+        if (text.toLowerCase().includes(key.toLowerCase())) {
+            console.log(\`[Shopify] Match found for "\${text}" -> Key: "\${key}"\`);
+            if (typeof val === 'object') {
+                variantId = val.variantId;
+                actionStr = val.action || 'cart';
+            } else {
+                variantId = val; 
+            }
+            break;
+        }
+    }
+
+    if (variantId) {
+        console.log(\`[Shopify] Attaching \${actionStr} logic to button: "\${text}" (Variant: \${variantId})\`);
+        btn.dataset.shopifyAttached = 'true';
+        
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        
+        newBtn.addEventListener('click', (e) => {
+            console.log(\`[Shopify] Click detected on \${text}\`);
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (actionStr === 'checkout') {
+                buyNow(variantId);
+            } else {
+                addToCart(variantId);
+            }
+        });
+    }
 }
 
 async function buyNow(variantId) {
-    // Direct Checkout flow
-    // 1. Create a new checkout with this item
-    // 2. Redirect to webUrl
+    console.log('[Shopify] buyNow execution started for variant:', variantId);
     
-    // We don't use the persistence cart for Buy Now usually, 
-    // but if you want to include existing items, you'd fetch existing checkout.
-    // Let's assume Buy Now means "Buy JUST THIS" for simplicity, or "Add & Go".
-    // "Add & Go" is safer.
-    
-    if (!checkoutId) {
-        await createCheckout();
-    }
-    
+    let numericId = variantId;
     try {
+        if (variantId.includes('/')) {
+            numericId = variantId.split('/').pop();
+        }
+    } catch (e) {}
+
+    // Method A: Storefront API
+    try {
+        if (!checkoutId) {
+            console.log('[Shopify] No checkoutId found, waiting for creation...');
+            await createCheckout();
+        }
+
         const lineItemsToAdd = [{
             variantId: variantId,
             quantity: 1
         }];
         
-        // Add item
+        console.log('[Shopify] API: AddLineItems initiated', lineItemsToAdd);
         const checkout = await client.checkout.addLineItems(checkoutId, lineItemsToAdd);
         
-        // Redirect
+        console.log('[Shopify] API: Success! Redirecting to:', checkout.webUrl);
         window.location.href = checkout.webUrl;
         
     } catch (e) {
-        console.error('Error in Buy Now:', e);
-        alert('Could not proceed to checkout.');
+        console.error('[Shopify] API Checkout failed:', e);
+        console.log('[Shopify] Fallback: Initiating Permalink redirect...');
+        
+        const domain = window.SHOPIFY_CONFIG.domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        
+        // Prevent redirect loop if misconfigured
+        if (domain === window.location.hostname) {
+             alert('Configuration Error: Cannot redirect to checkout because "Shopify Domain" is set to this website.\nPlease update it to your actual Shopify URL (e.g. myshop.myshopify.com).');
+             return;
+        }
+
+        const fallbackUrl = \`https://\${domain}/cart/\${numericId}:1\`;
+        
+        console.log('[Shopify] Fallback URL:', fallbackUrl);
+        window.location.href = fallbackUrl;
     }
 }
 
 async function addToCart(variantId) {
-    if (!checkoutId) return;
+    console.log('[Shopify] addToCart execution started for variant:', variantId);
+    if (!checkoutId) {
+        console.error('[Shopify] Cannot add to cart, checkoutId missing');
+        return;
+    }
 
-    openCart(); // Open drawer immediately for feedback
-    
-    // Show loading state if you want
+    openCart(); 
     
     const lineItemsToAdd = [{
         variantId: variantId,
@@ -313,14 +429,16 @@ async function addToCart(variantId) {
 
     try {
         const checkout = await client.checkout.addLineItems(checkoutId, lineItemsToAdd);
+        console.log('[Shopify] addToCart success');
         updateCartUI(checkout);
     } catch (e) {
-        console.error('Error adding to cart:', e);
-        alert('Could not add to cart. Check your configuration.');
+        console.error('[Shopify] addToCart failed:', e);
+        alert('Cart Error: ' + e.message);
     }
 }
 
 function updateCartUI(checkout) {
+    console.log('[Shopify] Updating Cart UI. Item count:', checkout.lineItems.length);
     const itemsContainer = document.getElementById('cart-items');
     const totalEl = document.getElementById('cart-total-price');
     const count = checkout.lineItems.length;
@@ -344,15 +462,16 @@ function updateCartUI(checkout) {
 }
 
 window.openCart = function() {
+    console.log('[Shopify] Opening cart drawer');
     const drawer = document.getElementById('shopify-cart-drawer');
     drawer.style.display = 'block';
-    // Small delay to allow display:block to apply before adding class for transition
     setTimeout(() => {
         drawer.classList.add('open');
     }, 10);
 };
 
 window.closeCart = function() {
+    console.log('[Shopify] Closing cart drawer');
     const drawer = document.getElementById('shopify-cart-drawer');
     drawer.classList.remove('open');
     setTimeout(() => {
@@ -361,6 +480,7 @@ window.closeCart = function() {
 };
 
 window.checkout = async function() {
+    console.log('[Shopify] Proceeding to checkout from Cart Drawer');
     if (!client || !checkoutId) return;
     const checkout = await client.checkout.fetch(checkoutId);
     window.location.href = checkout.webUrl;
@@ -373,7 +493,9 @@ if (document.readyState === 'loading') {
     initShopify();
 }
 `;
-        await fs.writeFile(path.join(deployPath, 'shopify-commerce.js'), scriptContent);
+        const scriptPath = path.join(deployPath, 'shopify-commerce.js');
+        await fs.writeFile(scriptPath, scriptContent);
+        return scriptContent; // Return content for reuse in preview generation
     }
 }
 

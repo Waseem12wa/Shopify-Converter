@@ -222,6 +222,8 @@ async function deployHeadless() {
     headlessStatus.textContent = 'Processing...';
     headlessStatus.style.color = '#3498db';
     deployHeadlessBtn.disabled = true;
+    deployHeadlessBtn.innerHTML = '⏳ Deploying...';
+    saveHeadlessBtn.disabled = true;
     deploymentResult.classList.add('hidden');
 
     try {
@@ -254,10 +256,89 @@ async function deployHeadless() {
         headlessStatus.style.color = '#e74c3c';
     } finally {
         deployHeadlessBtn.disabled = false;
+        deployHeadlessBtn.innerHTML = '🚀 Deploy to Netlify';
+        saveHeadlessBtn.disabled = false;
     }
 }
 
-deployHeadlessBtn.addEventListener('click', deployHeadless);
+// Save Settings Only
+function saveHeadlessSettings() {
+    const domain = document.getElementById('shopifyDomain').value.trim();
+    const token = document.getElementById('shopifyToken').value.trim();
+    const netlifyToken = document.getElementById('netlifyToken').value.trim();
+
+    // Collect Mappings
+    const rows = document.querySelectorAll('.mapping-row:not(.template)');
+    const mappings = [];
+    rows.forEach(row => {
+        const key = row.querySelector('.map-key').value.trim();
+        const val = row.querySelector('.map-val').value.trim();
+        const action = row.querySelector('.map-action').value;
+        if (key && val) {
+            mappings.push({ key, val, action });
+        }
+    });
+
+    const settings = {
+        domain,
+        token,
+        netlifyToken,
+        mappings
+    };
+
+    localStorage.setItem('headless_settings', JSON.stringify(settings));
+
+    headlessStatus.textContent = '💾 Settings Saved!';
+    headlessStatus.style.color = '#27ae60';
+    setTimeout(() => {
+        headlessStatus.textContent = '';
+    }, 3000);
+}
+
+// Load Settings
+function loadHeadlessSettings() {
+    const saved = localStorage.getItem('headless_settings');
+    if (!saved) return;
+
+    try {
+        const settings = JSON.parse(saved);
+        if (settings.domain) document.getElementById('shopifyDomain').value = settings.domain;
+        if (settings.token) document.getElementById('shopifyToken').value = settings.token;
+        if (settings.netlifyToken) document.getElementById('netlifyToken').value = settings.netlifyToken;
+
+        if (settings.mappings && Array.isArray(settings.mappings)) {
+            const container = document.getElementById('mappingContainer');
+            // Clear existing except template
+            container.querySelectorAll('.mapping-row:not(.template)').forEach(el => el.remove());
+
+            settings.mappings.forEach(m => {
+                const row = document.querySelector('.mapping-row.template').cloneNode(true);
+                row.classList.remove('template');
+                row.style.display = 'flex';
+                row.querySelector('.map-key').value = m.key;
+                row.querySelector('.map-val').value = m.val;
+                row.querySelector('.map-action').value = m.action || 'cart';
+
+                row.querySelector('.remove-btn').addEventListener('click', () => {
+                    row.remove();
+                });
+
+                container.appendChild(row);
+            });
+        }
+    } catch (e) {
+        console.error('Error loading settings', e);
+    }
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', loadHeadlessSettings);
+
+deployHeadlessBtn.addEventListener('click', async () => {
+    saveHeadlessSettings(); // Auto-save on deploy
+    await deployHeadless();
+});
+saveHeadlessBtn.addEventListener('click', saveHeadlessSettings);
 
 // Refresh preview
 function refreshPreview() {
