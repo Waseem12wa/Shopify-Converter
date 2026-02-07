@@ -191,6 +191,57 @@ app.post('/api/deploy-headless', async (req, res) => {
 });
 
 /**
+ * POST /api/deploy-shopify-theme
+ * Convert to Shopify Theme and Upload to Store
+ */
+app.post('/api/deploy-shopify-theme', async (req, res) => {
+    try {
+        const { websiteName, shopDomain, accessToken } = req.body;
+
+        if (!websiteName || !shopDomain || !accessToken) {
+            return res.status(400).json({ error: 'Website name, shop domain, and access token are required' });
+        }
+
+        const websitePath = downloader.getWebsitePath(websiteName);
+        if (!await fs.pathExists(websitePath)) {
+            return res.status(404).json({ error: 'Website not found' });
+        }
+
+        console.log(`Starting Shopify deployment for ${websiteName} to ${shopDomain}...`);
+
+        // 1. Convert to Shopify Theme Structure
+        console.log('Step 1: Converting to Shopify Theme...');
+        const conversionResult = await shopifyConverter.convertToShopifyTheme(websitePath, websiteName);
+
+        // 2. Upload to Shopify
+        console.log('Step 2: Uploading to Shopify...');
+        // Dynamically import service to avoid circular dependencies if any
+        const shopifyService = await import('./services/shopify-api-service.js');
+
+        const deployResult = await shopifyService.default.deployTheme(
+            shopDomain,
+            accessToken,
+            conversionResult.themePath,
+            `${websiteName} - Imported`
+        );
+
+        res.json({
+            success: true,
+            message: 'Theme successfully deployed to Shopify',
+            themeId: deployResult.themeId,
+            previewUrl: deployResult.previewUrl
+        });
+
+    } catch (error) {
+        console.error('Shopify deployment error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+/**
  * GET /api/download-file/:filename
  * Generic file downloader
  */

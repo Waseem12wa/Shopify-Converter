@@ -368,30 +368,41 @@ class ShopifyConverter {
     async createLiquidTemplates(themePath, document, originalHTML, websitePath) {
         // Extract head and body content
         const headContent = this.extractHeadContent(document);
-        const bodyContent = this.extractBodyContent(document);
+
+        // chunk the body content to avoid 256KB limit
+        const bodyContentChunks = this.extractAndChunkBodyContent(document);
+
+        // Create snippets for each chunk
+        const chunkRenderTags = [];
+        for (let i = 0; i < bodyContentChunks.length; i++) {
+            const chunkName = `content-chunk-${i + 1}`;
+            await fs.writeFile(
+                path.join(themePath, 'snippets', `${chunkName}.liquid`),
+                bodyContentChunks[i]
+            );
+            chunkRenderTags.push(`{% render '${chunkName}' %}`);
+        }
+
+        const bodyContentLiquid = chunkRenderTags.join(''); // Join with empty string to avoid whitespace injection
         const bodyAttributes = this.extractBodyAttributes(document);
 
-        // Collect and inline ALL CSS
-        const cssFiles = [];
-        await this.findAssetFiles(websitePath, cssFiles, [], [], []);
-        const inlinedCSS = await this.inlineAllCSS(cssFiles, websitePath);
-
-        // Create layout/theme.liquid with inlined CSS
-        const themeLiquid = this.generateThemeLiquid(headContent, bodyAttributes, inlinedCSS);
+        // Create layout/theme.liquid (NO INLINED CSS)
+        const themeLiquid = this.generateThemeLiquid(headContent, bodyAttributes);
         await fs.writeFile(
             path.join(themePath, 'layout', 'theme.liquid'),
             themeLiquid
         );
 
         // Create templates/index.liquid (homepage)
-        const indexLiquid = this.generateIndexLiquid(bodyContent);
+        // Use the chunked content references
+        const indexLiquid = this.generateIndexLiquid(bodyContentLiquid);
         await fs.writeFile(
             path.join(themePath, 'templates', 'index.liquid'),
             indexLiquid
         );
 
         // Create templates/page.liquid (standard page template)
-        const pageLiquid = this.generatePageLiquid(bodyContent);
+        const pageLiquid = this.generatePageLiquid(bodyContentLiquid);
         await fs.writeFile(
             path.join(themePath, 'templates', 'page.liquid'),
             pageLiquid
@@ -425,14 +436,232 @@ class ShopifyConverter {
             cartLiquid
         );
 
-        // Create sections/main-clone.liquid with actual content
-        const sectionLiquid = this.generateSectionLiquid(bodyContent);
+        // Create sections/main-clone.liquid with chunk references
+        const sectionLiquid = this.generateSectionLiquid(bodyContentLiquid);
         await fs.writeFile(
             path.join(themePath, 'sections', 'main-clone.liquid'),
             sectionLiquid
         );
 
-        console.log(`✓ Created Liquid templates`);
+        console.log(`✓ Created Liquid templates (split into ${bodyContentChunks.length} chunks)`);
+    }
+
+    /**
+     * Extract body content and split into chunks < 100KB (Recursive)
+     */
+    extractAndChunkBodyContent(document) {
+        const chunks = [];
+        let currentChunk = '';
+        const MAX_CHUNK_SIZE = 100 * 1024; // 100KB limit
+
+        const flushChunk = () => {
+            if (currentChunk.length > 0) {
+                chunks.push(currentChunk);
+                currentChunk = '';
+            }
+        };
+
+        const addToChunk = (str) => {
+            if (str.length > MAX_CHUNK_SIZE) {
+                // If the single string itself is huge (e.g. huge text node)
+                // flush current first
+                flushChunk();
+
+                // Split the huge string
+                let remaining = str;
+                while (remaining.length > 0) {
+                    const slice = remaining.slice(0, MAX_CHUNK_SIZE);
+                    chunks.push(slice);
+                    remaining = remaining.slice(MAX_CHUNK_SIZE);
+                }
+                return;
+            }
+
+            if ((currentChunk.length + str.length) > MAX_CHUNK_SIZE) {
+                flushChunk();
+            }
+            currentChunk += str;
+        };
+
+        const traverse = (node) => {
+            if (node.nodeType === 3) { // Text node
+                addToChunk(node.textContent);
+                return;
+            }
+            if (node.nodeType === 8) { // Comment
+                addToChunk(`<!-- ${node.textContent} -->`);
+                return;
+            }
+            if (node.nodeType === 1) { // Element
+                let outerHTML = node.outerHTML;
+                // Process assets in the element (using the string representation)
+                outerHTML = this.processBodyHTML(outerHTML);
+
+                if (outerHTML.length <= MAX_CHUNK_SIZE) {
+                    addToChunk(outerHTML);
+                } else {
+                    // Element is too big, need to split it
+                    const tagName = node.tagName.toLowerCase();
+                    const isVoid = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'].includes(tagName);
+
+                    if (isVoid) {
+                        // Void elements can't be children-split. Must add as is (and likely fail if > 256kb, but rare)
+                        addToChunk(outerHTML);
+                        return;
+                    }
+
+                    // Get opening tag
+                    let cloneHTML = node.cloneNode(false).outerHTML;
+                    cloneHTML = this.processBodyHTML(cloneHTML); // Process attributes
+
+                    const closingTag = `</${tagName}>`;
+                    const openingTag = cloneHTML.slice(0, -closingTag.length);
+
+                    addToChunk(openingTag);
+
+                    // Recurse children
+                    for (const child of node.childNodes) {
+                        traverse(child);
+                    }
+
+                    addToChunk(closingTag);
+                }
+            }
+        };
+
+        const body = document.querySelector('body');
+        if (body) {
+            for (const child of body.childNodes) {
+                traverse(child);
+            }
+        }
+
+        flushChunk();
+        if (chunks.length === 0) chunks.push('');
+
+        return chunks;
+    }
+
+    /**
+     * Process HTML string to convert assets (refactored from old extractBodyContent)
+     */
+    processBodyHTML(html) {
+        // Convert image sources to Shopify asset_url
+        html = html.replace(
+            /<img([^>]*?)src=["']([^"']+?)["']([^>]*?)>/gi,
+            (match, before, src, after) => {
+                // Skip external URLs and data URIs
+                if (src.startsWith('http://') || src.startsWith('https://') ||
+                    src.startsWith('//') || src.startsWith('data:')) {
+                    return match;
+                }
+
+                const originalFilename = src.split('/').pop();
+                const sanitizedFilename = this.sanitizeAssetFilename(originalFilename);
+
+                if (this.assetMap.has(originalFilename)) {
+                    const mappedFilename = this.assetMap.get(originalFilename);
+                    return `<img${before}src="{{ '${mappedFilename}' | asset_url }}"${after}>`;
+                } else if (this.assetMap.has(sanitizedFilename)) {
+                    return `<img${before}src="{{ '${sanitizedFilename}' | asset_url }}"${after}>`;
+                }
+                return match;
+            }
+        );
+
+        // Convert srcset features
+        html = html.replace(
+            /srcset=["']([^"']+)["']/gi,
+            (match, srcset) => {
+                const converted = srcset.split(',').map(src => {
+                    const parts = src.trim().split(/\s+/);
+                    const url = parts[0];
+
+                    if (url.startsWith('http://') || url.startsWith('https://') ||
+                        url.startsWith('//') || url.startsWith('data:')) {
+                        return src;
+                    }
+
+                    const originalFilename = url.split('/').pop();
+                    const sanitizedFilename = this.sanitizeAssetFilename(originalFilename);
+
+                    if (this.assetMap.has(originalFilename)) {
+                        const mappedFilename = this.assetMap.get(originalFilename);
+                        parts[0] = `{{ '${mappedFilename}' | asset_url }}`;
+                        return parts.join(' ');
+                    } else if (this.assetMap.has(sanitizedFilename)) {
+                        parts[0] = `{{ '${sanitizedFilename}' | asset_url }}`;
+                        return parts.join(' ');
+                    }
+                    return src;
+                }).join(', ');
+
+                return `srcset="${converted}"`;
+            }
+        );
+
+        // Convert data-src (lazy loading)
+        html = html.replace(
+            /data-src=["']([^"']+)["']/gi,
+            (match, src) => {
+                if (src.startsWith('http://') || src.startsWith('https://') ||
+                    src.startsWith('//') || src.startsWith('data:')) {
+                    return match;
+                }
+
+                const originalFilename = src.split('/').pop();
+                const sanitizedFilename = this.sanitizeAssetFilename(originalFilename);
+
+                if (this.assetMap.has(originalFilename)) {
+                    const mappedFilename = this.assetMap.get(originalFilename);
+                    return `data-src="{{ '${mappedFilename}' | asset_url }}"`;
+                } else if (this.assetMap.has(sanitizedFilename)) {
+                    return `data-src="{{ '${sanitizedFilename}' | asset_url }}"`;
+                }
+                return match;
+            }
+        );
+
+        // Convert background images in inline styles
+        html = this.convertInlineStyleURLs(html);
+
+        // Convert JS script tags
+        html = html.replace(
+            /<script([^>]*?)src=["']([^"']*?\.js[^"']*)["']([^>]*?)>/gi,
+            (match, before, src, after) => {
+                if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('//')) {
+                    return match;
+                }
+
+                const filename = src.split('/').pop().split('?')[0];
+                if (this.assetMap.has(filename)) {
+                    return `<script${before}src="{{ '${filename}' | asset_url }}"${after}>`;
+                }
+                return match;
+            }
+        );
+
+        // Convert video/audio sources
+        html = html.replace(
+            /<(source|video|audio)([^>]*?)src=["']([^"']+)["']([^>]*?)>/gi,
+            (match, tag, before, src, after) => {
+                if (src.startsWith('http://') || src.startsWith('https://') ||
+                    src.startsWith('//') || src.startsWith('data:')) {
+                    return match;
+                }
+
+                const filename = src.split('/').pop().split('?')[0];
+                if (this.assetMap.has(filename)) {
+                    return `<${tag}${before}src="{{ '${filename}' | asset_url }}"${after}>`;
+                }
+                return match;
+            }
+        );
+
+        // Convert Cart Buttons
+        html = this.convertCartButtons(html);
+
+        return html;
     }
 
     /**
@@ -582,132 +811,7 @@ class ShopifyConverter {
         return html;
     }
 
-    /**
-     * Extract body content and convert to Liquid
-     */
-    extractBodyContent(document) {
-        const body = document.querySelector('body');
-        if (!body) return '';
 
-        let bodyHTML = body.innerHTML;
-
-        // Convert image sources to Shopify asset_url
-        bodyHTML = bodyHTML.replace(
-            /<img([^>]*?)src=["']([^"']+?)["']([^>]*?)>/gi,
-            (match, before, src, after) => {
-                // Skip external URLs and data URIs
-                if (src.startsWith('http://') || src.startsWith('https://') ||
-                    src.startsWith('//') || src.startsWith('data:')) {
-                    return match;
-                }
-
-                const originalFilename = src.split('/').pop();
-                const sanitizedFilename = this.sanitizeAssetFilename(originalFilename);
-
-                if (this.assetMap.has(originalFilename)) {
-                    const mappedFilename = this.assetMap.get(originalFilename);
-                    return `<img${before}src="{{ '${mappedFilename}' | asset_url }}"${after}>`;
-                } else if (this.assetMap.has(sanitizedFilename)) {
-                    return `<img${before}src="{{ '${sanitizedFilename}' | asset_url }}"${after}>`;
-                }
-                return match;
-            }
-        );
-
-        // Convert srcset attributes
-        bodyHTML = bodyHTML.replace(
-            /srcset=["']([^"']+)["']/gi,
-            (match, srcset) => {
-                const converted = srcset.split(',').map(src => {
-                    const parts = src.trim().split(/\s+/);
-                    const url = parts[0];
-
-                    if (url.startsWith('http://') || url.startsWith('https://') ||
-                        url.startsWith('//') || url.startsWith('data:')) {
-                        return src;
-                    }
-
-                    const originalFilename = url.split('/').pop();
-                    const sanitizedFilename = this.sanitizeAssetFilename(originalFilename);
-
-                    if (this.assetMap.has(originalFilename)) {
-                        const mappedFilename = this.assetMap.get(originalFilename);
-                        parts[0] = `{{ '${mappedFilename}' | asset_url }}`;
-                        return parts.join(' ');
-                    } else if (this.assetMap.has(sanitizedFilename)) {
-                        parts[0] = `{{ '${sanitizedFilename}' | asset_url }}`;
-                        return parts.join(' ');
-                    }
-                    return src;
-                }).join(', ');
-
-                return `srcset="${converted}"`;
-            }
-        );
-
-        // Convert data-src (lazy loading)
-        bodyHTML = bodyHTML.replace(
-            /data-src=["']([^"']+)["']/gi,
-            (match, src) => {
-                if (src.startsWith('http://') || src.startsWith('https://') ||
-                    src.startsWith('//') || src.startsWith('data:')) {
-                    return match;
-                }
-
-                const originalFilename = src.split('/').pop();
-                const sanitizedFilename = this.sanitizeAssetFilename(originalFilename);
-
-                if (this.assetMap.has(originalFilename)) {
-                    const mappedFilename = this.assetMap.get(originalFilename);
-                    return `data-src="{{ '${mappedFilename}' | asset_url }}"`;
-                } else if (this.assetMap.has(sanitizedFilename)) {
-                    return `data-src="{{ '${sanitizedFilename}' | asset_url }}"`;
-                }
-                return match;
-            }
-        );
-
-        // Convert background images in inline styles
-        bodyHTML = this.convertInlineStyleURLs(bodyHTML);
-
-        // Convert JS script tags in body
-        bodyHTML = bodyHTML.replace(
-            /<script([^>]*?)src=["']([^"']*?\.js[^"']*)["']([^>]*?)>/gi,
-            (match, before, src, after) => {
-                if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('//')) {
-                    return match;
-                }
-
-                const filename = src.split('/').pop().split('?')[0];
-                if (this.assetMap.has(filename)) {
-                    return `<script${before}src="{{ '${filename}' | asset_url }}"${after}>`;
-                }
-                return match;
-            }
-        );
-
-        // Convert video/audio sources
-        bodyHTML = bodyHTML.replace(
-            /<(source|video|audio)([^>]*?)src=["']([^"']+)["']([^>]*?)>/gi,
-            (match, tag, before, src, after) => {
-                if (src.startsWith('http://') || src.startsWith('https://') ||
-                    src.startsWith('//') || src.startsWith('data:')) {
-                    return match;
-                }
-
-                const filename = src.split('/').pop().split('?')[0];
-                if (this.assetMap.has(filename)) {
-                    return `<${tag}${before}src="{{ '${filename}' | asset_url }}"${after}>`;
-                }
-                return match;
-            }
-        );
-
-        // **NEW: Convert Add to Cart buttons to Shopify forms**
-        bodyHTML = this.convertCartButtons(bodyHTML);
-
-        return bodyHTML;
-    }
 
     /**
      * Convert Add to Cart buttons to Shopify cart forms
@@ -793,7 +897,7 @@ class ShopifyConverter {
     /**
      * Generate theme.liquid layout file with inlined CSS
      */
-    generateThemeLiquid(headContent, bodyAttributes, inlinedCSS = '') {
+    generateThemeLiquid(headContent, bodyAttributes) {
         return `<!DOCTYPE html>
 <html lang="{{ request.locale.iso_code }}">
 <head>
@@ -822,9 +926,6 @@ class ShopifyConverter {
   {% render 'meta-tags' %}
 
   ${headContent}
-
-  <!-- Inlined CSS for guaranteed loading -->
-  ${inlinedCSS ? `<style>\n${inlinedCSS}\n  </style>` : ''}
 
   {{ content_for_header }}
 
@@ -870,39 +971,24 @@ class ShopifyConverter {
      * Generate index.liquid template (homepage) - Simple approach
      */
     generateIndexLiquid(bodyContent) {
-        // Simple Liquid template that renders content directly
-        return `<div id="MainContent" class="content-for-layout" role="main">
-  <div class="page-width">
-${bodyContent}
-  </div>
-</div>`;
+        // Render content directly without wrappers to preserve original layout
+        return bodyContent;
     }
 
     /**
      * Generate page.liquid template - Simple approach
      */
     generatePageLiquid(bodyContent) {
-        // Simple Liquid template that renders content directly
-        return `<div id="MainContent" class="content-for-layout" role="main">
-  <div class="page-width">
-    <h1>{{ page.title }}</h1>
-${bodyContent}
-  </div>
-</div>`;
+        // Render content directly without wrappers
+        return bodyContent;
     }
 
     /**
      * Generate main-clone.liquid section (for theme editor)
      */
     generateSectionLiquid(bodyContent) {
-        return `<div class="shopify-section section-clone">
-  <div id="MainContent" class="content-for-layout">
-    <div class="page-width">
-      <div class="clone-content">
+        return `<div class="clone-content">
 ${bodyContent}
-      </div>
-    </div>
-  </div>
 </div>
 
 {% schema %}
@@ -1008,11 +1094,11 @@ ${bodyContent}
         const settingsSchema = [
             {
                 "name": "theme_info",
-                "theme_name": websiteName,
+                "theme_name": websiteName.substring(0, 25),
                 "theme_version": "1.0.0",
                 "theme_author": "Website Clone Tool",
-                "theme_documentation_url": "",
-                "theme_support_url": ""
+                "theme_documentation_url": "https://example.com",
+                "theme_support_url": "https://example.com"
             },
             {
                 "name": "Colors",

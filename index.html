@@ -37,11 +37,12 @@
                         <button id="downloadShopifyBtn" class="btn-primary" style="width: 100%;">
                             🛍️ Download as Shopify Theme
                         </button>
-                        <button id="openHeadlessBtn" class="btn-secondary"
-                            style="width: 100%; margin-top: 10px; background: #2c3e50;">
-                            ⚛️ Configure Headless Deployment
+                        <button id="openShopifyDeployBtn" class="btn-primary"
+                            style="width: 100%; margin-top: 10px; background: #9b59b6;">
+                            🚀 Deploy to Shopify
                         </button>
                     </div>
+                    <div id="downloadStatus" style="font-size: 0.9rem; margin-top: 10px; text-align: center;"></div>
                 </div>
 
 
@@ -65,98 +66,43 @@
             </section>
         </main>
 
-        <!-- Full Screen Headless Setup Overlay -->
-        <div id="headlessPanel" class="headless-overlay hidden">
-            <div class="headless-container glass">
+        <!-- Shopify Theme Deployment Overlay -->
+        <div id="shopifyDeployPanel" class="headless-overlay hidden">
+            <div class="headless-container glass" style="max-width: 500px;">
                 <div class="headless-header">
                     <div class="headless-title">
-                        <h2>⚛️ Headless Setup</h2>
-                        <p>Configure your Shopify & Netlify integration</p>
+                        <h2>🛍️ Deploy to Shopify</h2>
+                        <p>Upload directly to your Online Store</p>
                     </div>
-                    <button id="closeHeadlessBtn" class="icon-btn close-overlay">&times;</button>
+                    <button id="closeShopifyDeployBtn" class="icon-btn close-overlay">&times;</button>
                 </div>
 
-                <div class="headless-content-grid">
-                    <!-- Column 1: Shopify Config -->
-                    <div class="config-section">
-                        <h3>1. Shopify Credentials</h3>
-                        <div class="input-group">
-                            <label>Shopify Domain</label>
-                            <input type="text" id="shopifyDomain" placeholder="your-store.myshopify.com">
-                        </div>
-                        <div class="input-group">
-                            <label>Storefront Access Token</label>
-                            <input type="password" id="shopifyToken" placeholder="shpat_xxxxxxxxxxxxxxxx">
-                        </div>
+                <div class="config-section" style="margin-top: 20px;">
+                    <div class="input-group">
+                        <label>Shopify Domain</label>
+                        <input type="text" id="deployShopDomain" placeholder="your-store.myshopify.com">
                     </div>
-
-                    <!-- Column 2: Netlify Config -->
-                    <div class="config-section">
-                        <h3>2. Netlify Deployment</h3>
-                        <div class="input-group">
-                            <label>Netlify Personal Access Token</label>
-                            <input type="password" id="netlifyToken" placeholder="nfp_xxxxxxxxxxxxxxxx">
-                            <small class="helper-text">Leave empty to specifically download a ZIP instead of
-                                auto-deploying.</small>
-                        </div>
+                    <div class="input-group">
+                        <label>Admin Access Token (shpat_...)</label>
+                        <input type="password" id="deployShopToken" placeholder="shpat_xxxxxxxxxxxxxxxx">
+                        <small class="helper-text">Requires 'write_themes' and 'read_themes' scopes.</small>
                     </div>
                 </div>
 
-                <div class="divider-horizontal"></div>
-
-                <!-- Product Mapping Section -->
-                <div class="mapping-section" style="max-width: 95%; margin: 0 auto;">
-                    <div class="mapping-header">
-                        <h3>3. Product Mapping</h3>
-                        <button id="addMappingBtn" class="btn-small">+ Add Button Mapping</button>
-                    </div>
-                    <div class="mapping-table-header">
-                        <span>Button Text (on website)</span>
-                        <span>Shopify Variant ID</span>
-                        <span>Action</span>
-                        <span></span>
-                    </div>
+                <div class="headless-footer" style="justify-content: center; margin-top: 2rem;">
+                    <button id="startDeployBtn" class="btn-primary" style="width: 100%;">
+                        🚀 Upload Theme
+                    </button>
                 </div>
-                <div id="mappingContainer" class="mapping-list">
-                    <!-- Rows injected here (Template for JS) -->
-                    <div class="mapping-row template" style="display:none">
-                        <input type="text" placeholder="e.g. Add to Cart" class="map-key">
-                        <input type="text" placeholder="gid://..." class="map-val">
-                        <select class="map-action">
-                            <option value="cart">Add to Cart</option>
-                            <option value="checkout">Direct Checkout</option>
-                        </select>
-                        <button class="remove-btn">&times;</button>
-                    </div>
+
+                <div id="shopifyDeployStatus" class="status-center" style="margin-top: 15px; text-align: center;"></div>
+
+                <div id="shopifyDeployResult" class="deployment-success glass hidden" style="margin-top: 20px;">
+                    <div class="success-icon">🎉</div>
+                    <h3>Theme Uploaded!</h3>
+                    <p>Your theme is ready to preview.</p>
+                    <a href="#" id="shopifyPreviewLink" target="_blank" class="btn-primary">Preview Theme</a>
                 </div>
-            </div>
-
-            <!-- Buttons moved below the main container as per user request -->
-            <div class="headless-footer"
-                style="justify-content: center; gap: 20px; margin-top: 2rem; padding-bottom: 1rem; flex-wrap: wrap; background: transparent; border: none;">
-                <button id="saveHeadlessBtn" class="btn-secondary"
-                    style="border-radius: 50px; padding: 12px 30px; min-width: 160px; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);">
-                    💾 Save Settings
-                </button>
-                <a href="./preview.html" target="_blank" id="previewBtn" class="btn-secondary"
-                    style="border-radius: 50px; padding: 12px 30px; min-width: 160px; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); color: white; text-decoration: none; display: flex; align-items: center; justify-content: center;">
-                    👁️ Preview
-                </a>
-                <button id="deployHeadlessBtn" class="btn-primary deploy-action"
-                    style="border-radius: 50px; padding: 12px 30px; min-width: 160px;">
-                    🚀 Deploy to Netlify
-                </button>
-            </div>
-
-            <div id="headlessStatus" class="status-center"
-                style="text-align: center; margin-top: 10px; font-size: 0.95rem; min-height: 24px; font-weight: 500;">
-            </div>
-
-            <div id="deploymentResult" class="deployment-success glass hidden">
-                <div class="success-icon">🎉</div>
-                <h3>Deployment Successful!</h3>
-                <p>Your headless store is live.</p>
-                <a href="#" id="liveUrlLink" target="_blank" class="btn-primary">View Live Site</a>
             </div>
         </div>
     </div>

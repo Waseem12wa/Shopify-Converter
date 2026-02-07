@@ -1,0 +1,1 @@
+!function(){const n=document.currentScript;null!=n&&n.src?import(new URL("kaching-bundles.js",n.src).href):import("./kaching-bundles.js")}();

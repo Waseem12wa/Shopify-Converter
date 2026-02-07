@@ -1,0 +1,28 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "biorootlabs-com-products-",
+    "theme_version": "1.0.0",
+    "theme_author": "Website Clone Tool",
+    "theme_documentation_url": "https://example.com",
+    "theme_support_url": "https://example.com"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Theme Colors"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Font Settings"
+      }
+    ]
+  }
+]
